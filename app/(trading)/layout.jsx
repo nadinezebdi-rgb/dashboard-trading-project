@@ -1,6 +1,6 @@
 export const metadata = {
-    title: 'Trading Psychologique - Dashboard',
-    description: 'Dashboard de trading psychologique avec analyse de discipline'
+    title: 'Journal de Trading Intelligent - Coach IA Adri',
+    description: 'Journal de trading intelligent avec coach IA, analyse comportementale et suivi de discipline'
 };
 
 export default function TradingLayout({ children }) {
