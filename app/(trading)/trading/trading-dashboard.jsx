@@ -428,7 +428,8 @@ export default function TradingDashboard() {
         conforme: true,
         setup: '',
         session: 'London',
-        sentiment: 'Serein'
+        sentiment: 'Serein',
+        tradingview_link: ''
     });
     const [submitting, setSubmitting] = useState(false);
     const [submitMsg, setSubmitMsg] = useState('');
@@ -601,6 +602,7 @@ export default function TradingDashboard() {
             setup: formData.setup || null,
             session: formData.session || null,
             sentiment: formData.sentiment || null,
+            tradingview_link: formData.tradingview_link || null,
             created_at: new Date().toISOString()
         };
 
@@ -610,7 +612,7 @@ export default function TradingDashboard() {
                 setSubmitMsg(`Erreur: ${error.message}`);
             } else {
                 setSubmitMsg('Trade ajout\u00e9 avec succ\u00e8s');
-                setFormData({ pnl: '', conforme: true, setup: '', session: 'London', sentiment: 'Serein' });
+                setFormData({ pnl: '', conforme: true, setup: '', session: 'London', sentiment: 'Serein', tradingview_link: '' });
                 await fetchTrades();
             }
         } catch (err) {
@@ -796,6 +798,35 @@ export default function TradingDashboard() {
                                                 <span>{s.label}</span>
                                             </button>
                                         ))}
+                                    </div>
+                                </div>
+
+                                {/* Row 4: Lien TradingView */}
+                                <div>
+                                    <label className="mb-1.5 block text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+                                        Lien TradingView
+                                    </label>
+                                    <div className="flex items-center gap-3">
+                                        <input
+                                            type="url"
+                                            placeholder="https://www.tradingview.com/chart/..."
+                                            value={formData.tradingview_link}
+                                            onChange={(e) => setFormData({ ...formData, tradingview_link: e.target.value })}
+                                            className="flex-1 rounded-lg border border-slate-700 bg-slate-800 px-4 py-2.5 text-sm text-slate-200 placeholder-slate-600 transition-all focus:border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
+                                        />
+                                        {formData.tradingview_link && (
+                                            <a
+                                                href={formData.tradingview_link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex shrink-0 items-center gap-1.5 rounded-lg border border-cyan-500/30 bg-cyan-500/10 px-3 py-2.5 text-xs font-medium text-cyan-400 transition-all hover:border-cyan-500/50 hover:bg-cyan-500/20 hover:text-cyan-300"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                </svg>
+                                                Voir le graphique
+                                            </a>
+                                        )}
                                     </div>
                                 </div>
 
