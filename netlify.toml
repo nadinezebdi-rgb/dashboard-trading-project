@@ -1,3 +1,6 @@
 [build]
-  publish = ".next"
-  command = "npm run build"
+  publish = "public_html"
+  command = "mkdir -p public_html && cp index.html public_html/index.html"
+
+[build.environment]
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
