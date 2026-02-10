@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import TradingHeatmap from 'components/trading-heatmap';
 
 const SUPABASE_URL = 'https://yyzgzcxqegeliluaqjqw.supabase.co';
 const SUPABASE_ANON_KEY =
@@ -464,6 +465,13 @@ export default function TradingDashboard() {
                         suffix="$"
                         positive={avgTrade >= 0}
                     />
+                </div>
+
+                {/* ─── Trading Heatmap ─── */}
+                <div className="mb-6">
+                    <BentoCard title="Heatmap — Activité & PnL sur 365 Jours" className="shadow-xl shadow-slate-950/50">
+                        <TradingHeatmap trades={trades} />
+                    </BentoCard>
                 </div>
 
                 {/* ─── Chart ─── */}
