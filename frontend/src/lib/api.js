@@ -189,6 +189,55 @@ class ApiClient {
       method: 'PUT'
     });
   }
+
+  // Community
+  async getCommunityPosts(category = 'all', limit = 20, skip = 0) {
+    const params = new URLSearchParams({ limit, skip });
+    if (category && category !== 'all') {
+      params.append('category', category);
+    }
+    return this.request(`/api/community/posts?${params}`);
+  }
+
+  async getPostDetail(postId) {
+    return this.request(`/api/community/posts/${postId}`);
+  }
+
+  async createPost(data) {
+    return this.request('/api/community/posts', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  }
+
+  async addComment(postId, content) {
+    return this.request(`/api/community/posts/${postId}/comments`, {
+      method: 'POST',
+      body: JSON.stringify({ content })
+    });
+  }
+
+  async togglePostLike(postId) {
+    return this.request(`/api/community/posts/${postId}/like`, {
+      method: 'POST'
+    });
+  }
+
+  async toggleCommentLike(commentId) {
+    return this.request(`/api/community/comments/${commentId}/like`, {
+      method: 'POST'
+    });
+  }
+
+  async deletePost(postId) {
+    return this.request(`/api/community/posts/${postId}`, {
+      method: 'DELETE'
+    });
+  }
+
+  async getUserProfile(userId) {
+    return this.request(`/api/community/user/${userId}`);
+  }
 }
 
 export const api = new ApiClient();
