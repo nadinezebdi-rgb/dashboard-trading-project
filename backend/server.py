@@ -41,6 +41,9 @@ payment_transactions_collection = db["payment_transactions"]
 questionnaires_collection = db["questionnaires"]
 tickets_collection = db["tickets"]
 economic_events_collection = db["economic_events"]
+community_posts_collection = db["community_posts"]
+community_comments_collection = db["community_comments"]
+community_likes_collection = db["community_likes"]
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
