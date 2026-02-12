@@ -427,18 +427,61 @@ export default function DashboardPage() {
 
           {/* Heatmap */}
           <div className="card mb-8">
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-zinc-800">
+            <div className="flex items-center justify-between mb-6 pb-4 border-b" style={{ borderColor: 'var(--border)' }}>
               <h2 className="font-heading text-lg font-bold uppercase tracking-tight">Heatmap PnL</h2>
-              <span className="text-xs text-muted-foreground">365 derniers jours</span>
+              <span className="text-xs" style={{ color: 'var(--muted-foreground)' }}>365 derniers jours</span>
             </div>
             <TradingHeatmap trades={heatmapData} />
           </div>
+
+          {/* Duration Chart */}
+          {durationChartData.length > 0 && (
+            <div className="card mb-8">
+              <div className="flex items-center gap-2 mb-6 pb-4 border-b" style={{ borderColor: 'var(--border)' }}>
+                <Clock className="w-5 h-5 text-primary" />
+                <h2 className="font-heading text-lg font-bold uppercase tracking-tight">Durée des Trades</h2>
+              </div>
+              <div className="h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={durationChartData}>
+                    <XAxis 
+                      dataKey="name" 
+                      tick={{ fill: 'var(--muted-foreground)', fontSize: 11 }}
+                      axisLine={{ stroke: 'var(--border)' }}
+                    />
+                    <YAxis 
+                      tick={{ fill: 'var(--muted-foreground)', fontSize: 11 }}
+                      axisLine={{ stroke: 'var(--border)' }}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'var(--card)', 
+                        border: '1px solid var(--border)',
+                        borderRadius: '4px'
+                      }}
+                      labelStyle={{ color: 'var(--foreground)' }}
+                      formatter={(value, name) => {
+                        if (name === 'count') return [value, 'Trades'];
+                        if (name === 'winrate') return [`${value}%`, 'Winrate'];
+                        return [value, name];
+                      }}
+                    />
+                    <Bar dataKey="count" name="count" radius={[4, 4, 0, 0]}>
+                      {durationChartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.pnl >= 0 ? 'var(--profit)' : 'var(--loss)'} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          )}
 
           {/* Two columns */}
           <div className="grid lg:grid-cols-2 gap-6">
             {/* AI Briefing */}
             <div className="card">
-              <div className="flex items-center justify-between mb-4 pb-2 border-b border-zinc-800">
+              <div className="flex items-center justify-between mb-4 pb-2 border-b" style={{ borderColor: 'var(--border)' }}>
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-primary" />
                   <h2 className="font-heading text-lg font-bold uppercase tracking-tight">Briefing IA</h2>
@@ -455,15 +498,15 @@ export default function DashboardPage() {
                 )}
               </div>
               {briefing ? (
-                <div className="prose prose-invert prose-sm max-w-none">
-                  <div className="whitespace-pre-wrap text-sm text-muted-foreground leading-relaxed">
+                <div className="prose prose-sm max-w-none">
+                  <div className="whitespace-pre-wrap text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
                     {briefing}
                   </div>
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <Brain className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-50" />
-                  <p className="text-muted-foreground text-sm">
+                  <Brain className="w-12 h-12 mx-auto mb-3 opacity-50" style={{ color: 'var(--muted-foreground)' }} />
+                  <p className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
                     Clique sur "Générer" pour ton briefing personnalisé
                   </p>
                 </div>
@@ -472,23 +515,23 @@ export default function DashboardPage() {
 
             {/* Common Errors */}
             <div className="card">
-              <div className="flex items-center gap-2 mb-4 pb-2 border-b border-zinc-800">
-                <AlertCircle className="w-5 h-5 text-loss" />
+              <div className="flex items-center gap-2 mb-4 pb-2 border-b" style={{ borderColor: 'var(--border)' }}>
+                <AlertCircle className="w-5 h-5" style={{ color: 'var(--loss)' }} />
                 <h2 className="font-heading text-lg font-bold uppercase tracking-tight">Erreurs Fréquentes</h2>
               </div>
               {stats?.common_errors?.length > 0 ? (
                 <div className="space-y-3">
                   {stats.common_errors.map((error, index) => (
-                    <div key={index} className="flex items-center justify-between py-2 border-b border-zinc-800/50 last:border-0">
-                      <span className="text-sm text-muted-foreground">{error.error}</span>
-                      <span className="font-mono text-sm font-bold text-loss">{error.count}x</span>
+                    <div key={index} className="flex items-center justify-between py-2 border-b last:border-0" style={{ borderColor: 'var(--border)' }}>
+                      <span className="text-sm" style={{ color: 'var(--muted-foreground)' }}>{error.error}</span>
+                      <span className="font-mono text-sm font-bold" style={{ color: 'var(--loss)' }}>{error.count}x</span>
                     </div>
                   ))}
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <Target className="w-12 h-12 text-profit mx-auto mb-3 opacity-50" />
-                  <p className="text-muted-foreground text-sm">
+                  <Target className="w-12 h-12 mx-auto mb-3 opacity-50" style={{ color: 'var(--profit)' }} />
+                  <p className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
                     Aucune erreur enregistrée. Continue comme ça !
                   </p>
                 </div>
@@ -497,7 +540,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Quick Actions */}
-          <div className="grid sm:grid-cols-3 gap-4 mt-8">
+          <div className="grid sm:grid-cols-4 gap-4 mt-8">
             <Link href="/journal" className="card flex items-center gap-4 hover:border-primary/30 transition-colors group" data-testid="quick-journal">
               <div className="w-12 h-12 rounded-sm bg-primary/10 flex items-center justify-center">
                 <BookOpen className="w-6 h-6 text-primary" />
