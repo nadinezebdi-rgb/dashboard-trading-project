@@ -1965,6 +1965,8 @@ async def get_current_season_info(user: dict = Depends(get_current_user)):
     start_date = season["start_date"]
     if isinstance(start_date, str):
         start_date = datetime.fromisoformat(start_date.replace('Z', '+00:00'))
+    elif not start_date.tzinfo:
+        start_date = start_date.replace(tzinfo=timezone.utc)
     
     user_trades = list(trades_collection.find({
         "user_id": user["id"],
