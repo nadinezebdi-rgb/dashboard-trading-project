@@ -118,6 +118,21 @@ class AIMessage(BaseModel):
     message: str
     context: Optional[str] = None  # "coaching", "analysis", "education"
 
+class TicketCreate(BaseModel):
+    subject: str
+    category: str  # "strategy", "psychology", "technical", "other"
+    message: str
+    priority: str = "normal"  # "low", "normal", "high"
+
+class TicketReply(BaseModel):
+    message: str
+
+class EconomicEventQuery(BaseModel):
+    start_date: Optional[str] = None
+    end_date: Optional[str] = None
+    impact: Optional[str] = None  # "high", "medium", "low"
+
+
 class CheckoutRequest(BaseModel):
     plan: str  # "starter", "pro", "elite"
     origin_url: str
