@@ -4,9 +4,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Dark theme (default) */
 :root {
   --background: #09090B;
   --foreground: #FAFAFA;
+  --card: #18181B;
+  --card-foreground: #FAFAFA;
+  --primary: #3B82F6;
+  --primary-foreground: #FFFFFF;
+  --secondary: #27272A;
+  --secondary-foreground: #FAFAFA;
+  --muted: #27272A;
+  --muted-foreground: #A1A1AA;
+  --accent: #27272A;
+  --border: #27272A;
+  --input: #27272A;
+  --profit: #10B981;
+  --loss: #EF4444;
+}
+
+/* Light theme */
+html.light {
+  --background: #FAFAFA;
+  --foreground: #09090B;
+  --card: #FFFFFF;
+  --card-foreground: #09090B;
+  --primary: #2563EB;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F4F4F5;
+  --secondary-foreground: #09090B;
+  --muted: #F4F4F5;
+  --muted-foreground: #71717A;
+  --accent: #F4F4F5;
+  --border: #E4E4E7;
+  --input: #E4E4E7;
+  --profit: #059669;
+  --loss: #DC2626;
 }
 
 html {
@@ -17,6 +50,7 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: 'Inter', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Custom scrollbar */
@@ -26,11 +60,11 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #18181B;
+  background: var(--card);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3B82F6;
+  background: var(--primary);
   border-radius: 3px;
 }
 
@@ -41,26 +75,56 @@ body {
 /* Glassmorphism utility */
 .glass {
   backdrop-filter: blur(12px);
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: color-mix(in srgb, var(--background) 80%, transparent);
+  border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
 }
 
 /* Neon glow */
 .neon-glow {
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(59, 130, 246, 0.2);
 }
 
 /* Grid background */
 .bg-grid {
-  background-image: linear-gradient(to right, #80808012 1px, transparent 1px), 
-                    linear-gradient(to bottom, #80808012 1px, transparent 1px);
+  background-image: linear-gradient(to right, color-mix(in srgb, var(--foreground) 5%, transparent) 1px, transparent 1px), 
+                    linear-gradient(to bottom, color-mix(in srgb, var(--foreground) 5%, transparent) 1px, transparent 1px);
   background-size: 24px 24px;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animated gradient border */
+.gradient-border {
+  position: relative;
+  background: var(--card);
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, #3B82F6, #06B6D4, #8B5CF6, #3B82F6);
+  background-size: 300% 300%;
+  border-radius: inherit;
+  z-index: -1;
+  animation: gradient-rotate 4s ease infinite;
+}
+
+@keyframes gradient-rotate {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 /* Animations */
 @keyframes pulse-glow {
   0%, 100% { box-shadow: 0 0 10px rgba(59, 130, 246, 0.4); }
-  50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8); }
+  50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.8); }
 }
 
 .animate-pulse-glow {
@@ -68,33 +132,186 @@ body {
 }
 
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in {
-  animation: fade-in 0.5s ease-out forwards;
+  animation: fade-in 0.6s ease-out forwards;
 }
+
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.5s ease-out forwards;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Stagger animations */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
 
 /* Button styles */
 .btn-primary {
-  @apply bg-primary hover:bg-blue-500 text-white font-bold uppercase tracking-wider text-xs px-6 py-3 border border-blue-400/20 shadow-[0_0_10px_rgba(37,99,235,0.3)] transition-all active:scale-95;
+  @apply bg-primary hover:brightness-110 text-white font-bold uppercase tracking-wider text-xs px-6 py-3 
+         border border-blue-400/20 shadow-[0_0_15px_rgba(37,99,235,0.3)] 
+         transition-all duration-300 active:scale-95 relative overflow-hidden;
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+
+.btn-primary:hover::after {
+  transform: translateX(100%);
 }
 
 .btn-secondary {
-  @apply bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-700 font-medium uppercase tracking-wide text-xs px-6 py-3 transition-all;
+  @apply bg-secondary hover:brightness-110 text-secondary-foreground border border-border 
+         font-medium uppercase tracking-wide text-xs px-6 py-3 transition-all duration-300;
 }
 
 /* Card styles */
 .card {
-  @apply bg-zinc-900/50 border border-zinc-800/60 p-6 backdrop-blur-sm relative overflow-hidden;
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  @apply p-6 backdrop-blur-sm relative overflow-hidden transition-all duration-300;
 }
 
 .card:hover {
-  @apply border-blue-500/30;
+  border-color: var(--primary);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+}
+
+/* Hero card special effect */
+.hero-card {
+  @apply relative overflow-hidden;
+  background: linear-gradient(135deg, 
+    color-mix(in srgb, var(--primary) 10%, var(--card)) 0%, 
+    var(--card) 100%);
+}
+
+.hero-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 60%);
+  animation: rotate-bg 20s linear infinite;
+}
+
+@keyframes rotate-bg {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* Input styles */
 .input {
-  @apply bg-zinc-950 border border-zinc-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 h-10 px-3 text-sm placeholder:text-zinc-600 transition-all outline-none;
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  @apply focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 px-3 text-sm 
+         placeholder:text-muted-foreground transition-all outline-none;
+}
+
+/* Stats value with gradient */
+.stat-value {
+  @apply font-heading text-4xl font-black;
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--muted-foreground) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Calendar day styles */
+.calendar-day {
+  @apply aspect-square flex flex-col items-center justify-center rounded-sm text-xs font-mono
+         transition-all duration-200 cursor-pointer relative;
+}
+
+.calendar-day:hover {
+  @apply scale-105;
+}
+
+.calendar-day.has-trades::after {
+  content: '';
+  @apply absolute bottom-1 w-1.5 h-1.5 rounded-full;
+}
+
+.calendar-day.profit::after {
+  @apply bg-profit;
+}
+
+.calendar-day.loss::after {
+  @apply bg-loss;
+}
+
+/* Ticket status badges */
+.badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.badge-pending {
+  @apply bg-yellow-500/20 text-yellow-400;
+}
+
+.badge-open {
+  @apply bg-blue-500/20 text-blue-400;
+}
+
+.badge-resolved {
+  @apply bg-green-500/20 text-green-400;
+}
+
+.badge-closed {
+  @apply bg-zinc-500/20 text-zinc-400;
+}
+
+/* Chart tooltip */
+.chart-tooltip {
+  @apply bg-card border border-border p-3 rounded-sm shadow-xl;
+}
+
+/* Recharts customization */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: var(--border);
+}
+
+.recharts-text {
+  fill: var(--muted-foreground);
+  font-size: 11px;
 }
