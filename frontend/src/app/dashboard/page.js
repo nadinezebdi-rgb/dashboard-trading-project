@@ -24,7 +24,8 @@ import {
   Sun,
   Moon,
   Clock,
-  Users
+  Users,
+  Trophy
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { useTheme } from '@/lib/theme-context';
