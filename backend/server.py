@@ -1217,6 +1217,555 @@ async def get_user_profile(user_id: str, user: dict = Depends(get_current_user))
         "member_since": target_user["created_at"].isoformat() if isinstance(target_user.get("created_at"), datetime) else None
     }
 
+# ============== CHALLENGES & GAMIFICATION ENDPOINTS ==============
+
+# Predefined challenges
+CHALLENGE_TEMPLATES = [
+    {
+        "id": "daily_3_trades",
+        "type": "daily",
+        "title": "Trader du Jour",
+        "description": "Enregistre 3 trades aujourd'hui",
+        "icon": "📊",
+        "target": 3,
+        "metric": "trades_count",
+        "xp_reward": 50,
+        "badge_reward": None
+    },
+    {
+        "id": "daily_profitable",
+        "type": "daily",
+        "title": "Journée Verte",
+        "description": "Termine la journée en profit",
+        "icon": "💚",
+        "target": 1,
+        "metric": "profitable_day",
+        "xp_reward": 100,
+        "badge_reward": None
+    },
+    {
+        "id": "weekly_5_wins",
+        "type": "weekly",
+        "title": "Série Gagnante",
+        "description": "Accumule 5 trades gagnants cette semaine",
+        "icon": "🔥",
+        "target": 5,
+        "metric": "winning_trades",
+        "xp_reward": 200,
+        "badge_reward": "hot_streak"
+    },
+    {
+        "id": "weekly_respect_plan",
+        "type": "weekly",
+        "title": "Discipline de Fer",
+        "description": "Respecte ton plan sur 100% de tes trades cette semaine",
+        "icon": "🎯",
+        "target": 100,
+        "metric": "plan_adherence",
+        "xp_reward": 300,
+        "badge_reward": "disciplined"
+    },
+    {
+        "id": "weekly_community",
+        "type": "weekly",
+        "title": "Membre Actif",
+        "description": "Publie 3 posts dans la communauté",
+        "icon": "💬",
+        "target": 3,
+        "metric": "posts_count",
+        "xp_reward": 150,
+        "badge_reward": None
+    },
+    {
+        "id": "monthly_20_trades",
+        "type": "monthly",
+        "title": "Trader Régulier",
+        "description": "Enregistre 20 trades ce mois",
+        "icon": "📈",
+        "target": 20,
+        "metric": "trades_count",
+        "xp_reward": 500,
+        "badge_reward": "consistent"
+    },
+    {
+        "id": "monthly_positive",
+        "type": "monthly",
+        "title": "Mois Profitable",
+        "description": "Termine le mois avec un PnL positif",
+        "icon": "🏆",
+        "target": 1,
+        "metric": "profitable_month",
+        "xp_reward": 1000,
+        "badge_reward": "profitable_month"
+    },
+    {
+        "id": "monthly_winrate_60",
+        "type": "monthly",
+        "title": "Sniper",
+        "description": "Maintiens un winrate supérieur à 60%",
+        "icon": "🎯",
+        "target": 60,
+        "metric": "winrate",
+        "xp_reward": 800,
+        "badge_reward": "sniper"
+    }
+]
+
+# Predefined achievements/badges
+ACHIEVEMENTS = {
+    "first_trade": {"name": "Premier Pas", "description": "Enregistre ton premier trade", "icon": "🎯", "xp": 50},
+    "first_win": {"name": "Première Victoire", "description": "Remporte ton premier trade gagnant", "icon": "🏆", "xp": 100},
+    "first_post": {"name": "Voix de la Communauté", "description": "Publie ton premier post", "icon": "💬", "xp": 50},
+    "streak_7": {"name": "Semaine de Feu", "description": "7 jours de connexion consécutifs", "icon": "🔥", "xp": 200},
+    "streak_30": {"name": "Mois de Fer", "description": "30 jours de connexion consécutifs", "icon": "⚡", "xp": 500},
+    "trades_10": {"name": "Trader Actif", "description": "10 trades enregistrés", "icon": "📊", "xp": 100},
+    "trades_50": {"name": "Trader Confirmé", "description": "50 trades enregistrés", "icon": "📈", "xp": 300},
+    "trades_100": {"name": "Trader Expert", "description": "100 trades enregistrés", "icon": "🚀", "xp": 500},
+    "hot_streak": {"name": "Série Chaude", "description": "5 trades gagnants d'affilée", "icon": "🔥", "xp": 200},
+    "disciplined": {"name": "Discipline de Fer", "description": "100% respect du plan sur 10 trades", "icon": "🎯", "xp": 300},
+    "consistent": {"name": "Régularité", "description": "20 trades en un mois", "icon": "📅", "xp": 200},
+    "profitable_month": {"name": "Mois Vert", "description": "Mois clôturé en profit", "icon": "💚", "xp": 400},
+    "sniper": {"name": "Sniper", "description": "Winrate > 60% sur 20+ trades", "icon": "🎯", "xp": 500},
+    "helper": {"name": "Mentor", "description": "10 commentaires utiles", "icon": "🤝", "xp": 200},
+    "popular": {"name": "Influenceur", "description": "50 likes reçus", "icon": "⭐", "xp": 300},
+    "elite_trader": {"name": "Trader Élite", "description": "Atteins le niveau 10", "icon": "👑", "xp": 1000},
+}
+
+def calculate_level(xp: int) -> dict:
+    """Calculate user level from XP"""
+    levels = [0, 100, 250, 500, 1000, 2000, 3500, 5500, 8000, 12000, 20000]
+    level = 1
+    for i, threshold in enumerate(levels):
+        if xp >= threshold:
+            level = i + 1
+        else:
+            break
+    
+    current_threshold = levels[level - 1] if level <= len(levels) else levels[-1]
+    next_threshold = levels[level] if level < len(levels) else levels[-1] + 10000
+    progress = ((xp - current_threshold) / (next_threshold - current_threshold)) * 100 if next_threshold > current_threshold else 100
+    
+    return {
+        "level": level,
+        "xp": xp,
+        "current_threshold": current_threshold,
+        "next_threshold": next_threshold,
+        "progress": round(progress, 1)
+    }
+
+def check_and_award_achievements(user_id: str):
+    """Check and award achievements based on user activity"""
+    user = users_collection.find_one({"_id": user_id})
+    if not user:
+        return []
+    
+    trades = list(trades_collection.find({"user_id": user_id}))
+    posts = list(community_posts_collection.find({"author_id": user_id}))
+    
+    new_achievements = []
+    existing = set([a["achievement_id"] for a in user_achievements_collection.find({"user_id": user_id})])
+    
+    # Check achievements
+    checks = [
+        ("first_trade", len(trades) >= 1),
+        ("first_win", any((t.get("pnl") or 0) > 0 for t in trades)),
+        ("first_post", len(posts) >= 1),
+        ("trades_10", len(trades) >= 10),
+        ("trades_50", len(trades) >= 50),
+        ("trades_100", len(trades) >= 100),
+    ]
+    
+    for achievement_id, condition in checks:
+        if condition and achievement_id not in existing:
+            user_achievements_collection.insert_one({
+                "_id": str(uuid.uuid4()),
+                "user_id": user_id,
+                "achievement_id": achievement_id,
+                "earned_at": datetime.now(timezone.utc)
+            })
+            # Add XP
+            xp_reward = ACHIEVEMENTS[achievement_id]["xp"]
+            users_collection.update_one({"_id": user_id}, {"$inc": {"xp": xp_reward}})
+            new_achievements.append(achievement_id)
+    
+    return new_achievements
+
+@app.get("/api/gamification/profile")
+async def get_gamification_profile(user: dict = Depends(get_current_user)):
+    """Get user's gamification profile with level, XP, achievements, and streak"""
+    user_data = users_collection.find_one({"_id": user["id"]})
+    xp = user_data.get("xp", 0)
+    level_info = calculate_level(xp)
+    
+    # Get achievements
+    user_achs = list(user_achievements_collection.find({"user_id": user["id"]}))
+    achievements = []
+    for ua in user_achs:
+        ach_id = ua["achievement_id"]
+        if ach_id in ACHIEVEMENTS:
+            achievements.append({
+                "id": ach_id,
+                **ACHIEVEMENTS[ach_id],
+                "earned_at": ua["earned_at"].isoformat() if isinstance(ua["earned_at"], datetime) else ua["earned_at"]
+            })
+    
+    # Get streak
+    streak_data = streaks_collection.find_one({"user_id": user["id"]})
+    current_streak = 0
+    longest_streak = 0
+    if streak_data:
+        current_streak = streak_data.get("current_streak", 0)
+        longest_streak = streak_data.get("longest_streak", 0)
+    
+    # Check and award new achievements
+    new_achievements = check_and_award_achievements(user["id"])
+    
+    return {
+        **level_info,
+        "achievements": achievements,
+        "achievements_count": len(achievements),
+        "total_achievements": len(ACHIEVEMENTS),
+        "current_streak": current_streak,
+        "longest_streak": longest_streak,
+        "new_achievements": new_achievements
+    }
+
+@app.post("/api/gamification/checkin")
+async def daily_checkin(user: dict = Depends(get_current_user)):
+    """Record daily check-in and update streak"""
+    today = datetime.now(timezone.utc).date()
+    streak_data = streaks_collection.find_one({"user_id": user["id"]})
+    
+    if streak_data:
+        last_checkin = streak_data.get("last_checkin")
+        if last_checkin:
+            last_date = last_checkin.date() if isinstance(last_checkin, datetime) else datetime.fromisoformat(last_checkin).date()
+            
+            if last_date == today:
+                return {"message": "Déjà connecté aujourd'hui", "streak": streak_data.get("current_streak", 1), "xp_earned": 0}
+            elif last_date == today - timedelta(days=1):
+                # Continue streak
+                new_streak = streak_data.get("current_streak", 0) + 1
+                longest = max(new_streak, streak_data.get("longest_streak", 0))
+                streaks_collection.update_one(
+                    {"user_id": user["id"]},
+                    {"$set": {
+                        "current_streak": new_streak,
+                        "longest_streak": longest,
+                        "last_checkin": datetime.now(timezone.utc)
+                    }}
+                )
+                xp_earned = min(10 + (new_streak * 5), 100)  # Max 100 XP per day
+                users_collection.update_one({"_id": user["id"]}, {"$inc": {"xp": xp_earned}})
+                
+                # Check streak achievements
+                if new_streak >= 7:
+                    check_and_award_achievements(user["id"])
+                
+                return {"message": f"Streak de {new_streak} jours !", "streak": new_streak, "xp_earned": xp_earned}
+            else:
+                # Streak broken
+                streaks_collection.update_one(
+                    {"user_id": user["id"]},
+                    {"$set": {"current_streak": 1, "last_checkin": datetime.now(timezone.utc)}}
+                )
+                users_collection.update_one({"_id": user["id"]}, {"$inc": {"xp": 10}})
+                return {"message": "Nouvelle série commencée", "streak": 1, "xp_earned": 10}
+    else:
+        # First checkin
+        streaks_collection.insert_one({
+            "_id": str(uuid.uuid4()),
+            "user_id": user["id"],
+            "current_streak": 1,
+            "longest_streak": 1,
+            "last_checkin": datetime.now(timezone.utc)
+        })
+        users_collection.update_one({"_id": user["id"]}, {"$inc": {"xp": 10}})
+        return {"message": "Première connexion !", "streak": 1, "xp_earned": 10}
+
+@app.get("/api/gamification/challenges")
+async def get_active_challenges(user: dict = Depends(get_current_user)):
+    """Get active challenges with user progress"""
+    now = datetime.now(timezone.utc)
+    today = now.date()
+    
+    # Get date ranges
+    week_start = today - timedelta(days=today.weekday())
+    month_start = today.replace(day=1)
+    
+    # Get user's activity data
+    trades_today = list(trades_collection.find({
+        "user_id": user["id"],
+        "created_at": {"$gte": datetime.combine(today, datetime.min.time()).replace(tzinfo=timezone.utc)}
+    }))
+    
+    trades_week = list(trades_collection.find({
+        "user_id": user["id"],
+        "created_at": {"$gte": datetime.combine(week_start, datetime.min.time()).replace(tzinfo=timezone.utc)}
+    }))
+    
+    trades_month = list(trades_collection.find({
+        "user_id": user["id"],
+        "created_at": {"$gte": datetime.combine(month_start, datetime.min.time()).replace(tzinfo=timezone.utc)}
+    }))
+    
+    posts_week = community_posts_collection.count_documents({
+        "author_id": user["id"],
+        "created_at": {"$gte": datetime.combine(week_start, datetime.min.time()).replace(tzinfo=timezone.utc)}
+    })
+    
+    # Calculate metrics
+    def calc_metrics(trades):
+        if not trades:
+            return {"trades_count": 0, "winning_trades": 0, "pnl": 0, "winrate": 0, "plan_adherence": 0}
+        winning = [t for t in trades if (t.get("pnl") or 0) > 0]
+        respected = [t for t in trades if t.get("respected_plan", True)]
+        total_pnl = sum(t.get("pnl") or 0 for t in trades)
+        return {
+            "trades_count": len(trades),
+            "winning_trades": len(winning),
+            "pnl": total_pnl,
+            "winrate": round((len(winning) / len(trades)) * 100, 1) if trades else 0,
+            "plan_adherence": round((len(respected) / len(trades)) * 100, 1) if trades else 0,
+            "profitable_day": 1 if total_pnl > 0 else 0,
+            "profitable_month": 1 if total_pnl > 0 else 0
+        }
+    
+    daily_metrics = calc_metrics(trades_today)
+    weekly_metrics = calc_metrics(trades_week)
+    weekly_metrics["posts_count"] = posts_week
+    monthly_metrics = calc_metrics(trades_month)
+    
+    # Get completed challenges
+    completed = set()
+    user_challenges = user_challenges_collection.find({"user_id": user["id"]})
+    for uc in user_challenges:
+        completed.add(uc["challenge_id"])
+    
+    # Build challenges list with progress
+    challenges = []
+    for template in CHALLENGE_TEMPLATES:
+        if template["type"] == "daily":
+            metrics = daily_metrics
+            reset_text = "Se réinitialise demain"
+        elif template["type"] == "weekly":
+            metrics = weekly_metrics
+            reset_text = f"Se réinitialise dans {7 - today.weekday()} jours"
+        else:
+            metrics = monthly_metrics
+            days_left = (month_start.replace(month=month_start.month % 12 + 1) - today).days
+            reset_text = f"Se réinitialise dans {days_left} jours"
+        
+        current = metrics.get(template["metric"], 0)
+        progress = min((current / template["target"]) * 100, 100) if template["target"] > 0 else 0
+        is_completed = progress >= 100
+        
+        challenges.append({
+            "id": template["id"],
+            "type": template["type"],
+            "title": template["title"],
+            "description": template["description"],
+            "icon": template["icon"],
+            "target": template["target"],
+            "current": current,
+            "progress": round(progress, 1),
+            "is_completed": is_completed,
+            "xp_reward": template["xp_reward"],
+            "badge_reward": template["badge_reward"],
+            "reset_text": reset_text
+        })
+    
+    return {"challenges": challenges}
+
+@app.post("/api/gamification/challenges/{challenge_id}/claim")
+async def claim_challenge_reward(challenge_id: str, user: dict = Depends(get_current_user)):
+    """Claim reward for completed challenge"""
+    # Find challenge template
+    template = next((c for c in CHALLENGE_TEMPLATES if c["id"] == challenge_id), None)
+    if not template:
+        raise HTTPException(404, "Challenge non trouvé")
+    
+    # Check if already claimed
+    existing = user_challenges_collection.find_one({
+        "user_id": user["id"],
+        "challenge_id": challenge_id,
+        "period": datetime.now(timezone.utc).strftime("%Y-%m-%d" if template["type"] == "daily" else "%Y-%W" if template["type"] == "weekly" else "%Y-%m")
+    })
+    
+    if existing:
+        raise HTTPException(400, "Récompense déjà réclamée")
+    
+    # Record claim
+    user_challenges_collection.insert_one({
+        "_id": str(uuid.uuid4()),
+        "user_id": user["id"],
+        "challenge_id": challenge_id,
+        "period": datetime.now(timezone.utc).strftime("%Y-%m-%d" if template["type"] == "daily" else "%Y-%W" if template["type"] == "weekly" else "%Y-%m"),
+        "claimed_at": datetime.now(timezone.utc)
+    })
+    
+    # Award XP
+    users_collection.update_one({"_id": user["id"]}, {"$inc": {"xp": template["xp_reward"]}})
+    
+    # Award badge if applicable
+    badge_awarded = None
+    if template["badge_reward"] and template["badge_reward"] in ACHIEVEMENTS:
+        existing_badge = user_achievements_collection.find_one({
+            "user_id": user["id"],
+            "achievement_id": template["badge_reward"]
+        })
+        if not existing_badge:
+            user_achievements_collection.insert_one({
+                "_id": str(uuid.uuid4()),
+                "user_id": user["id"],
+                "achievement_id": template["badge_reward"],
+                "earned_at": datetime.now(timezone.utc)
+            })
+            badge_awarded = ACHIEVEMENTS[template["badge_reward"]]
+    
+    return {
+        "message": "Récompense réclamée !",
+        "xp_earned": template["xp_reward"],
+        "badge_awarded": badge_awarded
+    }
+
+@app.get("/api/gamification/leaderboard")
+async def get_leaderboard(period: str = "weekly", user: dict = Depends(get_current_user)):
+    """Get leaderboard rankings"""
+    now = datetime.now(timezone.utc)
+    today = now.date()
+    
+    if period == "daily":
+        start_date = datetime.combine(today, datetime.min.time()).replace(tzinfo=timezone.utc)
+    elif period == "weekly":
+        week_start = today - timedelta(days=today.weekday())
+        start_date = datetime.combine(week_start, datetime.min.time()).replace(tzinfo=timezone.utc)
+    else:  # monthly
+        month_start = today.replace(day=1)
+        start_date = datetime.combine(month_start, datetime.min.time()).replace(tzinfo=timezone.utc)
+    
+    # Aggregate trades by user
+    pipeline = [
+        {"$match": {"created_at": {"$gte": start_date}}},
+        {"$group": {
+            "_id": "$user_id",
+            "total_pnl": {"$sum": {"$ifNull": ["$pnl", 0]}},
+            "trades_count": {"$sum": 1},
+            "winning_trades": {"$sum": {"$cond": [{"$gt": [{"$ifNull": ["$pnl", 0]}, 0]}, 1, 0]}}
+        }},
+        {"$sort": {"total_pnl": -1}},
+        {"$limit": 20}
+    ]
+    
+    results = list(trades_collection.aggregate(pipeline))
+    
+    leaderboard = []
+    for i, result in enumerate(results):
+        user_data = users_collection.find_one({"_id": result["_id"]}, {"name": 1, "xp": 1})
+        if user_data:
+            winrate = round((result["winning_trades"] / result["trades_count"]) * 100, 1) if result["trades_count"] > 0 else 0
+            level_info = calculate_level(user_data.get("xp", 0))
+            leaderboard.append({
+                "rank": i + 1,
+                "user_id": result["_id"],
+                "name": user_data.get("name", "Trader"),
+                "level": level_info["level"],
+                "total_pnl": round(result["total_pnl"], 2),
+                "trades_count": result["trades_count"],
+                "winrate": winrate,
+                "is_current_user": result["_id"] == user["id"]
+            })
+    
+    # Get current user's rank if not in top 20
+    current_user_rank = next((l for l in leaderboard if l["is_current_user"]), None)
+    
+    return {
+        "period": period,
+        "leaderboard": leaderboard,
+        "current_user_rank": current_user_rank
+    }
+
+@app.get("/api/gamification/hall-of-fame")
+async def get_hall_of_fame(user: dict = Depends(get_current_user)):
+    """Get hall of fame with top performers"""
+    # Top by XP (all time)
+    top_xp = list(users_collection.find({}, {"_id": 1, "name": 1, "xp": 1}).sort("xp", -1).limit(5))
+    
+    # Top by total PnL (all time)
+    pnl_pipeline = [
+        {"$group": {
+            "_id": "$user_id",
+            "total_pnl": {"$sum": {"$ifNull": ["$pnl", 0]}},
+            "trades_count": {"$sum": 1}
+        }},
+        {"$sort": {"total_pnl": -1}},
+        {"$limit": 5}
+    ]
+    top_pnl = list(trades_collection.aggregate(pnl_pipeline))
+    
+    # Top by winrate (min 20 trades)
+    winrate_pipeline = [
+        {"$group": {
+            "_id": "$user_id",
+            "trades_count": {"$sum": 1},
+            "winning_trades": {"$sum": {"$cond": [{"$gt": [{"$ifNull": ["$pnl", 0]}, 0]}, 1, 0]}}
+        }},
+        {"$match": {"trades_count": {"$gte": 20}}},
+        {"$addFields": {
+            "winrate": {"$multiply": [{"$divide": ["$winning_trades", "$trades_count"]}, 100]}
+        }},
+        {"$sort": {"winrate": -1}},
+        {"$limit": 5}
+    ]
+    top_winrate = list(trades_collection.aggregate(winrate_pipeline))
+    
+    # Format results
+    def format_user(user_id, extra_data=None):
+        u = users_collection.find_one({"_id": user_id}, {"name": 1, "xp": 1})
+        if not u:
+            return None
+        level_info = calculate_level(u.get("xp", 0))
+        result = {
+            "user_id": user_id,
+            "name": u.get("name", "Trader"),
+            "level": level_info["level"],
+            "xp": u.get("xp", 0)
+        }
+        if extra_data:
+            result.update(extra_data)
+        return result
+    
+    hall_of_fame = {
+        "top_levels": [
+            format_user(u["_id"]) for u in top_xp if format_user(u["_id"])
+        ],
+        "top_pnl": [
+            format_user(p["_id"], {"total_pnl": round(p["total_pnl"], 2), "trades_count": p["trades_count"]})
+            for p in top_pnl if format_user(p["_id"])
+        ],
+        "top_winrate": [
+            format_user(w["_id"], {"winrate": round(w["winrate"], 1), "trades_count": w["trades_count"]})
+            for w in top_winrate if format_user(w["_id"])
+        ]
+    }
+    
+    return hall_of_fame
+
+@app.get("/api/gamification/achievements")
+async def get_all_achievements(user: dict = Depends(get_current_user)):
+    """Get all available achievements with user's progress"""
+    user_achs = set([a["achievement_id"] for a in user_achievements_collection.find({"user_id": user["id"]})])
+    
+    achievements = []
+    for ach_id, ach in ACHIEVEMENTS.items():
+        achievements.append({
+            "id": ach_id,
+            **ach,
+            "earned": ach_id in user_achs
+        })
+    
+    return {"achievements": achievements}
+
 # ============== HEALTH CHECK ==============
 
 @app.get("/api/health")
