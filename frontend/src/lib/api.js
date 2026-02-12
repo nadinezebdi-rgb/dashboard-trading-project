@@ -271,6 +271,46 @@ class ApiClient {
   async getAllAchievements() {
     return this.request('/api/gamification/achievements');
   }
+
+  // Notifications
+  async getNotifications(limit = 20) {
+    return this.request(`/api/notifications?limit=${limit}`);
+  }
+
+  async markNotificationsRead(notificationIds = null) {
+    return this.request('/api/notifications/read', {
+      method: 'POST',
+      body: JSON.stringify(notificationIds ? { notification_ids: notificationIds } : {})
+    });
+  }
+
+  // Seasons
+  async getCurrentSeason() {
+    return this.request('/api/seasons/current');
+  }
+
+  async getSeasonsHistory() {
+    return this.request('/api/seasons/history');
+  }
+
+  // Themes & Rewards
+  async getThemes() {
+    return this.request('/api/rewards/themes');
+  }
+
+  async activateTheme(themeId) {
+    return this.request(`/api/rewards/themes/${themeId}/activate`, {
+      method: 'POST'
+    });
+  }
+
+  async getLevelPerks() {
+    return this.request('/api/rewards/level-perks');
+  }
+
+  async getTopPerformerRewards() {
+    return this.request('/api/rewards/top-performer');
+  }
 }
 
 export const api = new ApiClient();
