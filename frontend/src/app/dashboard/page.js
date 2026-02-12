@@ -315,6 +315,7 @@ export default function DashboardPage() {
     { href: '/journal', label: 'Journal', icon: BookOpen },
     { href: '/calendar', label: 'Calendrier', icon: Calendar },
     { href: '/community', label: 'Communauté', icon: Users },
+    { href: '/challenges', label: 'Challenges', icon: Trophy },
     { href: '/economic', label: 'Économie', icon: Newspaper },
     { href: '/analysis', label: 'Analyse IA', icon: Brain },
     { href: '/coaching', label: 'Coaching', icon: Target },
