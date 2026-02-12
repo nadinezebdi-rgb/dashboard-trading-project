@@ -236,8 +236,10 @@ function StatCard({ label, value, subValue, trend, icon: Icon }) {
 export default function DashboardPage() {
   const router = useRouter();
   const { user, logout, loading: authLoading } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [stats, setStats] = useState(null);
   const [heatmapData, setHeatmapData] = useState([]);
+  const [durationStats, setDurationStats] = useState(null);
   const [briefing, setBriefing] = useState(null);
   const [loadingBriefing, setLoadingBriefing] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -256,12 +258,14 @@ export default function DashboardPage() {
 
   const loadDashboardData = async () => {
     try {
-      const [statsData, heatmap] = await Promise.all([
+      const [statsData, heatmap, duration] = await Promise.all([
         api.getTradeStats(),
-        api.getHeatmapData()
+        api.getHeatmapData(),
+        api.getDurationStats()
       ]);
       setStats(statsData);
       setHeatmapData(heatmap.trades || []);
+      setDurationStats(duration.duration_stats || null);
     } catch (error) {
       console.error('Error loading dashboard:', error);
     }
@@ -284,9 +288,20 @@ export default function DashboardPage() {
     router.push('/');
   };
 
+  // Prepare duration chart data
+  const durationChartData = useMemo(() => {
+    if (!durationStats) return [];
+    return Object.entries(durationStats).map(([key, value]) => ({
+      name: key,
+      count: value.count,
+      pnl: value.total_pnl,
+      winrate: value.count > 0 ? Math.round((value.wins / value.count) * 100) : 0
+    }));
+  }, [durationStats]);
+
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--background)' }}>
         <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" />
       </div>
     );
@@ -297,6 +312,8 @@ export default function DashboardPage() {
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: BarChart3, active: true },
     { href: '/journal', label: 'Journal', icon: BookOpen },
+    { href: '/calendar', label: 'Calendrier', icon: Calendar },
+    { href: '/economic', label: 'Économie', icon: Newspaper },
     { href: '/analysis', label: 'Analyse IA', icon: Brain },
     { href: '/coaching', label: 'Coaching', icon: Target },
     { href: '/subscription', label: 'Abonnement', icon: Sparkles },
