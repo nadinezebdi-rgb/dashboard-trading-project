@@ -1,228 +1,1347 @@
 {
   "summary": {
-    "tests_run": 37,
-    "tests_passed": 0,
-    "success_rate": 0.0
+    "tests_run": 38,
+    "tests_passed": 37,
+    "success_rate": 97.36842105263158
   },
   "results": [
     {
       "test": "Health Check",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.911579"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:40.818420",
+      "status_code": 200,
+      "response_data": {
+        "status": "healthy",
+        "timestamp": "2026-02-12T10:51:40.817800+00:00"
+      }
     },
     {
       "test": "User Registration",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913431"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.052840",
+      "status_code": 200,
+      "response_data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZGI3ZWY5Mi1mNjNhLTRmMWQtOTI2YS05MzY5NGQ5Y2RjMTUiLCJlbWFpbCI6InRlc3RfNWQ0NzJjNjdAZXhhbXBsZS5jb20iLCJleHAiOjE3NzE0OTgzMDF9.rHL20PeDedomWMCVWudoMWoYTtQzgQaj0_wn1dGQ62M",
+        "user": {
+          "id": "9db7ef92-f63a-4f1d-926a-93694d9cdc15",
+          "email": "test_5d472c67@example.com",
+          "name": "Test Trader"
+        }
+      }
     },
     {
       "test": "User Login",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913444",
-      "error": "No registered user to test login"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.284609",
+      "status_code": 200,
+      "response_data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZGI3ZWY5Mi1mNjNhLTRmMWQtOTI2YS05MzY5NGQ5Y2RjMTUiLCJlbWFpbCI6InRlc3RfNWQ0NzJjNjdAZXhhbXBsZS5jb20iLCJleHAiOjE3NzE0OTgzMDF9.rHL20PeDedomWMCVWudoMWoYTtQzgQaj0_wn1dGQ62M",
+        "user": {
+          "id": "9db7ef92-f63a-4f1d-926a-93694d9cdc15",
+          "email": "test_5d472c67@example.com",
+          "name": "Test Trader",
+          "subscription": "free",
+          "onboarding_completed": false
+        }
+      }
     },
     {
       "test": "Get Current User",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913450",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.287446",
+      "status_code": 200,
+      "response_data": {
+        "user": {
+          "email": "test_5d472c67@example.com",
+          "name": "Test Trader",
+          "created_at": "2026-02-12T10:51:41.051000",
+          "subscription": "free",
+          "subscription_expires": null,
+          "onboarding_completed": false,
+          "trading_style": null,
+          "experience_level": null,
+          "preferred_markets": [],
+          "id": "9db7ef92-f63a-4f1d-926a-93694d9cdc15"
+        }
+      }
     },
     {
       "test": "Save Questionnaire",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913457",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.291028",
+      "status_code": 200,
+      "response_data": {
+        "message": "Questionnaire enregistr\u00e9"
+      }
     },
     {
       "test": "Get Questionnaires",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913462",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.293537",
+      "status_code": 200,
+      "response_data": {
+        "questionnaires": [
+          {
+            "type": "assistant",
+            "answers": {
+              "trading_style": "day_trading",
+              "experience_level": "intermediate",
+              "markets": [
+                "crypto",
+                "forex"
+              ],
+              "sessions": [
+                "london",
+                "new_york"
+              ],
+              "difficulties": [
+                "fomo",
+                "overtrading"
+              ]
+            },
+            "created_at": "2026-02-12T10:51:41.289000"
+          }
+        ]
+      }
     },
     {
       "test": "Create Trade",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913467",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.298324",
+      "status_code": 200,
+      "response_data": {
+        "id": "534908f6-125a-45a9-b744-5e487a44179c",
+        "message": "Trade enregistr\u00e9"
+      }
     },
     {
       "test": "Get Trades",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913474",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.301040",
+      "status_code": 200,
+      "response_data": {
+        "trades": [
+          {
+            "symbol": "EURUSD",
+            "direction": "LONG",
+            "entry_price": 1.085,
+            "exit_price": 1.092,
+            "quantity": 1.0,
+            "pnl": 70.0,
+            "setup_type": "Support/Resistance",
+            "notes": "Test trade entry",
+            "session": "london",
+            "respected_plan": true,
+            "emotions": "Calm and focused",
+            "errors": [],
+            "created_at": "2026-02-12T10:51:41.297000"
+          }
+        ]
+      }
     },
     {
       "test": "Get Trade Stats",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913480",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.303295",
+      "status_code": 200,
+      "response_data": {
+        "total_trades": 1,
+        "winning_trades": 1,
+        "losing_trades": 0,
+        "winrate": 100.0,
+        "total_pnl": 70.0,
+        "average_pnl": 70.0,
+        "plan_adherence": 100.0,
+        "best_session": "london",
+        "common_errors": [],
+        "sessions": {
+          "london": {
+            "pnl": 70.0,
+            "count": 1
+          }
+        }
+      }
     },
     {
       "test": "Get Heatmap Data",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913485",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.305732",
+      "status_code": 200,
+      "response_data": {
+        "trades": [
+          {
+            "pnl": 70.0,
+            "created_at": "2026-02-12T10:51:41.297000"
+          }
+        ]
+      }
     },
     {
       "test": "Get Gamification Profile",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913491",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.310035",
+      "status_code": 200,
+      "response_data": {
+        "level": 1,
+        "xp": 0,
+        "current_threshold": 0,
+        "next_threshold": 100,
+        "progress": 0.0,
+        "achievements": [],
+        "achievements_count": 0,
+        "total_achievements": 19,
+        "current_streak": 0,
+        "longest_streak": 0,
+        "new_achievements": [
+          "first_trade",
+          "first_win"
+        ]
+      }
     },
     {
       "test": "Daily Check-in",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913497",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.312946",
+      "status_code": 200,
+      "response_data": {
+        "message": "Premi\u00e8re connexion !",
+        "streak": 1,
+        "xp_earned": 10
+      }
     },
     {
       "test": "Get Challenges",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913502",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.316591",
+      "status_code": 200,
+      "response_data": {
+        "challenges": [
+          {
+            "id": "daily_3_trades",
+            "type": "daily",
+            "title": "Trader du Jour",
+            "description": "Enregistre 3 trades aujourd'hui",
+            "icon": "\ud83d\udcca",
+            "target": 3,
+            "current": 1,
+            "progress": 33.3,
+            "is_completed": false,
+            "xp_reward": 50,
+            "badge_reward": null,
+            "reset_text": "Se r\u00e9initialise demain"
+          },
+          {
+            "id": "daily_profitable",
+            "type": "daily",
+            "title": "Journ\u00e9e Verte",
+            "description": "Termine la journ\u00e9e en profit",
+            "icon": "\ud83d\udc9a",
+            "target": 1,
+            "current": 1,
+            "progress": 100.0,
+            "is_completed": true,
+            "xp_reward": 100,
+            "badge_reward": null,
+            "reset_text": "Se r\u00e9initialise demain"
+          },
+          {
+            "id": "weekly_5_wins",
+            "type": "weekly",
+            "title": "S\u00e9rie Gagnante",
+            "description": "Accumule 5 trades gagnants cette semaine",
+            "icon": "\ud83d\udd25",
+            "target": 5,
+            "current": 1,
+            "progress": 20.0,
+            "is_completed": false,
+            "xp_reward": 200,
+            "badge_reward": "hot_streak",
+            "reset_text": "Se r\u00e9initialise dans 4 jours"
+          },
+          {
+            "id": "weekly_respect_plan",
+            "type": "weekly",
+            "title": "Discipline de Fer",
+            "description": "Respecte ton plan sur 100% de tes trades cette semaine",
+            "icon": "\ud83c\udfaf",
+            "target": 100,
+            "current": 100.0,
+            "progress": 100.0,
+            "is_completed": true,
+            "xp_reward": 300,
+            "badge_reward": "disciplined",
+            "reset_text": "Se r\u00e9initialise dans 4 jours"
+          },
+          {
+            "id": "weekly_community",
+            "type": "weekly",
+            "title": "Membre Actif",
+            "description": "Publie 3 posts dans la communaut\u00e9",
+            "icon": "\ud83d\udcac",
+            "target": 3,
+            "current": 0,
+            "progress": 0.0,
+            "is_completed": false,
+            "xp_reward": 150,
+            "badge_reward": null,
+            "reset_text": "Se r\u00e9initialise dans 4 jours"
+          },
+          {
+            "id": "monthly_20_trades",
+            "type": "monthly",
+            "title": "Trader R\u00e9gulier",
+            "description": "Enregistre 20 trades ce mois",
+            "icon": "\ud83d\udcc8",
+            "target": 20,
+            "current": 1,
+            "progress": 5.0,
+            "is_completed": false,
+            "xp_reward": 500,
+            "badge_reward": "consistent",
+            "reset_text": "Se r\u00e9initialise dans 17 jours"
+          },
+          {
+            "id": "monthly_positive",
+            "type": "monthly",
+            "title": "Mois Profitable",
+            "description": "Termine le mois avec un PnL positif",
+            "icon": "\ud83c\udfc6",
+            "target": 1,
+            "current": 1,
+            "progress": 100.0,
+            "is_completed": true,
+            "xp_reward": 1000,
+            "badge_reward": "profitable_month",
+            "reset_text": "Se r\u00e9initialise dans 17 jours"
+          },
+          {
+            "id": "monthly_winrate_60",
+            "type": "monthly",
+            "title": "Sniper",
+            "description": "Maintiens un winrate sup\u00e9rieur \u00e0 60%",
+            "icon": "\ud83c\udfaf",
+            "target": 60,
+            "current": 100.0,
+            "progress": 100,
+            "is_completed": true,
+            "xp_reward": 800,
+            "badge_reward": "sniper",
+            "reset_text": "Se r\u00e9initialise dans 17 jours"
+          }
+        ]
+      }
     },
     {
-      "test": "Get Leaderboard",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913507",
-      "error": "No auth token"
+      "test": "Get Leaderboard (daily)",
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.348457",
+      "status_code": 200,
+      "response_data": {
+        "period": "daily",
+        "leaderboard": [
+          {
+            "rank": 1,
+            "user_id": "5597521f-12bf-4f5d-849f-61190cc461a0",
+            "name": "Test Trader",
+            "level": 1,
+            "total_pnl": 70.0,
+            "trades_count": 1,
+            "winrate": 100.0,
+            "is_current_user": false
+          },
+          {
+            "rank": 2,
+            "user_id": "15bfc2b6-2459-498e-b065-8957e5333d0f",
+            "name": "Test Trader",
+            "level": 1,
+            "total_pnl": 70.0,
+            "trades_count": 1,
+            "winrate": 100.0,
+            "is_current_user": false
+          },
+          {
+            "rank": 3,
+            "user_id": "9db7ef92-f63a-4f1d-926a-93694d9cdc15",
+            "name": "Test Trader",
+            "level": 2,
+            "total_pnl": 70.0,
+            "trades_count": 1,
+            "winrate": 100.0,
+            "is_current_user": true
+          },
+          {
+            "rank": 4,
+            "user_id": "30e24740-0575-47d4-85ec-6e2005915c67",
+            "name": "Test Trader",
+            "level": 1,
+            "total_pnl": 70.0,
+            "trades_count": 1,
+            "winrate": 100.0,
+            "is_current_user": false
+          },
+          {
+            "rank": 5,
+            "user_id": "3ff09c1c-5911-4bc5-a211-8112e3de7bb3",
+            "name": "Test Trader",
+            "level": 2,
+            "total_pnl": 70.0,
+            "trades_count": 1,
+            "winrate": 100.0,
+            "is_current_user": false
+          }
+        ],
+        "current_user_rank": {
+          "rank": 3,
+          "user_id": "9db7ef92-f63a-4f1d-926a-93694d9cdc15",
+          "name": "Test Trader",
+          "level": 2,
+          "total_pnl": 70.0,
+          "trades_count": 1,
+          "winrate": 100.0,
+          "is_current_user": true
+        }
+      }
+    },
+    {
+      "test": "Get Leaderboard (weekly)",
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.352700",
+      "status_code": 200,
+      "response_data": {
+        "period": "weekly",
+        "leaderboard": [
+          {
+            "rank": 1,
+            "user_id": "5597521f-12bf-4f5d-849f-61190cc461a0",
+            "name": "Test Trader",
+            "level": 1,
+            "total_pnl": 70.0,
+            "trades_count": 1,
+            "winrate": 100.0,
+            "is_current_user": false
+          },
+          {
+            "rank": 2,
+            "user_id": "15bfc2b6-2459-498e-b065-8957e5333d0f",
+            "name": "Test Trader",
+            "level": 1,
+            "total_pnl": 70.0,
+            "trades_count": 1,
+            "winrate": 100.0,
+            "is_current_user": false
+          },
+          {
+            "rank": 3,
+            "user_id": "9db7ef92-f63a-4f1d-926a-93694d9cdc15",
+            "name": "Test Trader",
+            "level": 2,
+            "total_pnl": 70.0,
+            "trades_count": 1,
+            "winrate": 100.0,
+            "is_current_user": true
+          },
+          {
+            "rank": 4,
+            "user_id": "30e24740-0575-47d4-85ec-6e2005915c67",
+            "name": "Test Trader",
+            "level": 1,
+            "total_pnl": 70.0,
+            "trades_count": 1,
+            "winrate": 100.0,
+            "is_current_user": false
+          },
+          {
+            "rank": 5,
+            "user_id": "3ff09c1c-5911-4bc5-a211-8112e3de7bb3",
+            "name": "Test Trader",
+            "level": 2,
+            "total_pnl": 70.0,
+            "trades_count": 1,
+            "winrate": 100.0,
+            "is_current_user": false
+          }
+        ],
+        "current_user_rank": {
+          "rank": 3,
+          "user_id": "9db7ef92-f63a-4f1d-926a-93694d9cdc15",
+          "name": "Test Trader",
+          "level": 2,
+          "total_pnl": 70.0,
+          "trades_count": 1,
+          "winrate": 100.0,
+          "is_current_user": true
+        }
+      }
     },
     {
       "test": "Get Hall of Fame",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913511",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.358735",
+      "status_code": 200,
+      "response_data": {
+        "top_levels": [
+          {
+            "user_id": "3ff09c1c-5911-4bc5-a211-8112e3de7bb3",
+            "name": "Test Trader",
+            "level": 2,
+            "xp": 210
+          },
+          {
+            "user_id": "9db7ef92-f63a-4f1d-926a-93694d9cdc15",
+            "name": "Test Trader",
+            "level": 2,
+            "xp": 160
+          },
+          {
+            "user_id": "87dbbbce-6204-4eca-8439-addfad97d677",
+            "name": "Test Trader",
+            "level": 1,
+            "xp": 10
+          },
+          {
+            "user_id": "30e24740-0575-47d4-85ec-6e2005915c67",
+            "name": "Test Trader",
+            "level": 1,
+            "xp": 0
+          },
+          {
+            "user_id": "15bfc2b6-2459-498e-b065-8957e5333d0f",
+            "name": "Test Trader",
+            "level": 1,
+            "xp": 0
+          }
+        ],
+        "top_pnl": [
+          {
+            "user_id": "15bfc2b6-2459-498e-b065-8957e5333d0f",
+            "name": "Test Trader",
+            "level": 1,
+            "xp": 0,
+            "total_pnl": 70.0,
+            "trades_count": 1
+          },
+          {
+            "user_id": "3ff09c1c-5911-4bc5-a211-8112e3de7bb3",
+            "name": "Test Trader",
+            "level": 2,
+            "xp": 210,
+            "total_pnl": 70.0,
+            "trades_count": 1
+          },
+          {
+            "user_id": "30e24740-0575-47d4-85ec-6e2005915c67",
+            "name": "Test Trader",
+            "level": 1,
+            "xp": 0,
+            "total_pnl": 70.0,
+            "trades_count": 1
+          },
+          {
+            "user_id": "9db7ef92-f63a-4f1d-926a-93694d9cdc15",
+            "name": "Test Trader",
+            "level": 2,
+            "xp": 160,
+            "total_pnl": 70.0,
+            "trades_count": 1
+          },
+          {
+            "user_id": "5597521f-12bf-4f5d-849f-61190cc461a0",
+            "name": "Test Trader",
+            "level": 1,
+            "xp": 0,
+            "total_pnl": 70.0,
+            "trades_count": 1
+          }
+        ],
+        "top_winrate": []
+      }
     },
     {
       "test": "Get Achievements",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913517",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.361670",
+      "status_code": 200,
+      "response_data": {
+        "achievements": [
+          {
+            "id": "first_trade",
+            "name": "Premier Pas",
+            "description": "Enregistre ton premier trade",
+            "icon": "\ud83c\udfaf",
+            "xp": 50,
+            "earned": true
+          },
+          {
+            "id": "first_win",
+            "name": "Premi\u00e8re Victoire",
+            "description": "Remporte ton premier trade gagnant",
+            "icon": "\ud83c\udfc6",
+            "xp": 100,
+            "earned": true
+          },
+          {
+            "id": "first_post",
+            "name": "Voix de la Communaut\u00e9",
+            "description": "Publie ton premier post",
+            "icon": "\ud83d\udcac",
+            "xp": 50,
+            "earned": false
+          },
+          {
+            "id": "streak_7",
+            "name": "Semaine de Feu",
+            "description": "7 jours de connexion cons\u00e9cutifs",
+            "icon": "\ud83d\udd25",
+            "xp": 200,
+            "earned": false
+          },
+          {
+            "id": "streak_30",
+            "name": "Mois de Fer",
+            "description": "30 jours de connexion cons\u00e9cutifs",
+            "icon": "\u26a1",
+            "xp": 500,
+            "earned": false
+          },
+          {
+            "id": "trades_10",
+            "name": "Trader Actif",
+            "description": "10 trades enregistr\u00e9s",
+            "icon": "\ud83d\udcca",
+            "xp": 100,
+            "earned": false
+          },
+          {
+            "id": "trades_50",
+            "name": "Trader Confirm\u00e9",
+            "description": "50 trades enregistr\u00e9s",
+            "icon": "\ud83d\udcc8",
+            "xp": 300,
+            "earned": false
+          },
+          {
+            "id": "trades_100",
+            "name": "Trader Expert",
+            "description": "100 trades enregistr\u00e9s",
+            "icon": "\ud83d\ude80",
+            "xp": 500,
+            "earned": false
+          },
+          {
+            "id": "hot_streak",
+            "name": "S\u00e9rie Chaude",
+            "description": "5 trades gagnants d'affil\u00e9e",
+            "icon": "\ud83d\udd25",
+            "xp": 200,
+            "earned": false
+          },
+          {
+            "id": "disciplined",
+            "name": "Discipline de Fer",
+            "description": "100% respect du plan sur 10 trades",
+            "icon": "\ud83c\udfaf",
+            "xp": 300,
+            "earned": false
+          },
+          {
+            "id": "consistent",
+            "name": "R\u00e9gularit\u00e9",
+            "description": "20 trades en un mois",
+            "icon": "\ud83d\udcc5",
+            "xp": 200,
+            "earned": false
+          },
+          {
+            "id": "profitable_month",
+            "name": "Mois Vert",
+            "description": "Mois cl\u00f4tur\u00e9 en profit",
+            "icon": "\ud83d\udc9a",
+            "xp": 400,
+            "earned": false
+          },
+          {
+            "id": "sniper",
+            "name": "Sniper",
+            "description": "Winrate > 60% sur 20+ trades",
+            "icon": "\ud83c\udfaf",
+            "xp": 500,
+            "earned": false
+          },
+          {
+            "id": "helper",
+            "name": "Mentor",
+            "description": "10 commentaires utiles",
+            "icon": "\ud83e\udd1d",
+            "xp": 200,
+            "earned": false
+          },
+          {
+            "id": "popular",
+            "name": "Influenceur",
+            "description": "50 likes re\u00e7us",
+            "icon": "\u2b50",
+            "xp": 300,
+            "earned": false
+          },
+          {
+            "id": "elite_trader",
+            "name": "Trader \u00c9lite",
+            "description": "Atteins le niveau 10",
+            "icon": "\ud83d\udc51",
+            "xp": 1000,
+            "earned": false
+          },
+          {
+            "id": "season_champion",
+            "name": "Champion de Saison",
+            "description": "Top 1 d'une saison",
+            "icon": "\ud83c\udfc5",
+            "xp": 2000,
+            "earned": false
+          },
+          {
+            "id": "season_podium",
+            "name": "Podium",
+            "description": "Top 3 d'une saison",
+            "icon": "\ud83e\udd47",
+            "xp": 1000,
+            "earned": false
+          },
+          {
+            "id": "season_top10",
+            "name": "Top 10",
+            "description": "Top 10 d'une saison",
+            "icon": "\ud83c\udf1f",
+            "xp": 500,
+            "earned": false
+          }
+        ]
+      }
     },
     {
       "test": "Claim Challenge Reward",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913523",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.364696",
+      "status_code": 200,
+      "response_data": {
+        "message": "R\u00e9compense r\u00e9clam\u00e9e !",
+        "xp_earned": 50,
+        "badge_awarded": null,
+        "leveled_up": false
+      }
     },
     {
       "test": "Create Community Post",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913531",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.367940",
+      "status_code": 200,
+      "response_data": {
+        "id": "03459fa1-1576-449a-bcf8-e5427b085199",
+        "message": "Post cr\u00e9\u00e9 avec succ\u00e8s"
+      }
     },
     {
       "test": "Get Community Posts",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913536",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.370514",
+      "status_code": 200,
+      "response_data": {
+        "posts": [
+          {
+            "id": "03459fa1-1576-449a-bcf8-e5427b085199",
+            "author_id": "9db7ef92-f63a-4f1d-926a-93694d9cdc15",
+            "author_name": "Test Trader",
+            "author_level": "intermediate",
+            "title": "Test Community Post",
+            "content": "This is a test post for the trading community. Sharing my experience with EUR/USD trading.",
+            "category": "experience",
+            "has_screenshot": false,
+            "tags": [
+              "EURUSD",
+              "day-trading"
+            ],
+            "likes_count": 0,
+            "comments_count": 0,
+            "is_liked": false,
+            "created_at": "2026-02-12T10:51:41.367000"
+          },
+          {
+            "id": "7464211a-f85e-42a4-a4fb-c8820fac75eb",
+            "author_id": "bcbf0719-3d7f-4e8f-a4b0-adc32e78e087",
+            "author_name": "Test Community User",
+            "author_level": null,
+            "title": "Test Community Post",
+            "content": "Ceci est un test de publication dans la communaut\u00e9. Je partage mon exp\u00e9rience avec le trading EUR/USD.",
+            "category": "experience",
+            "has_screenshot": false,
+            "tags": [],
+            "likes_count": 0,
+            "comments_count": 0,
+            "is_liked": false,
+            "created_at": "2026-02-12T10:26:22.490000"
+          },
+          {
+            "id": "1abb88e2-f6a5-419c-866d-846de7e751d5",
+            "author_id": "30e24740-0575-47d4-85ec-6e2005915c67",
+            "author_name": "Test Trader",
+            "author_level": "intermediate",
+            "title": "Test Community Post",
+            "content": "This is a test post for the trading community. Sharing my experience with EUR/USD trading.",
+            "category": "experience",
+            "has_screenshot": false,
+            "tags": [
+              "EURUSD",
+              "day-trading"
+            ],
+            "likes_count": 0,
+            "comments_count": 1,
+            "is_liked": false,
+            "created_at": "2026-02-12T10:22:29.227000"
+          }
+        ]
+      }
     },
     {
       "test": "Get Community Posts by Category",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913541",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.373126",
+      "status_code": 200,
+      "response_data": {
+        "posts": [
+          {
+            "id": "03459fa1-1576-449a-bcf8-e5427b085199",
+            "author_id": "9db7ef92-f63a-4f1d-926a-93694d9cdc15",
+            "author_name": "Test Trader",
+            "author_level": "intermediate",
+            "title": "Test Community Post",
+            "content": "This is a test post for the trading community. Sharing my experience with EUR/USD trading.",
+            "category": "experience",
+            "has_screenshot": false,
+            "tags": [
+              "EURUSD",
+              "day-trading"
+            ],
+            "likes_count": 0,
+            "comments_count": 0,
+            "is_liked": false,
+            "created_at": "2026-02-12T10:51:41.367000"
+          },
+          {
+            "id": "7464211a-f85e-42a4-a4fb-c8820fac75eb",
+            "author_id": "bcbf0719-3d7f-4e8f-a4b0-adc32e78e087",
+            "author_name": "Test Community User",
+            "author_level": null,
+            "title": "Test Community Post",
+            "content": "Ceci est un test de publication dans la communaut\u00e9. Je partage mon exp\u00e9rience avec le trading EUR/USD.",
+            "category": "experience",
+            "has_screenshot": false,
+            "tags": [],
+            "likes_count": 0,
+            "comments_count": 0,
+            "is_liked": false,
+            "created_at": "2026-02-12T10:26:22.490000"
+          },
+          {
+            "id": "1abb88e2-f6a5-419c-866d-846de7e751d5",
+            "author_id": "30e24740-0575-47d4-85ec-6e2005915c67",
+            "author_name": "Test Trader",
+            "author_level": "intermediate",
+            "title": "Test Community Post",
+            "content": "This is a test post for the trading community. Sharing my experience with EUR/USD trading.",
+            "category": "experience",
+            "has_screenshot": false,
+            "tags": [
+              "EURUSD",
+              "day-trading"
+            ],
+            "likes_count": 0,
+            "comments_count": 1,
+            "is_liked": false,
+            "created_at": "2026-02-12T10:22:29.227000"
+          }
+        ]
+      }
     },
     {
       "test": "Get Post Detail",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913546",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.375755",
+      "status_code": 200,
+      "response_data": {
+        "id": "03459fa1-1576-449a-bcf8-e5427b085199",
+        "author_id": "9db7ef92-f63a-4f1d-926a-93694d9cdc15",
+        "author_name": "Test Trader",
+        "author_level": "intermediate",
+        "title": "Test Community Post",
+        "content": "This is a test post for the trading community. Sharing my experience with EUR/USD trading.",
+        "category": "experience",
+        "screenshot": null,
+        "tags": [
+          "EURUSD",
+          "day-trading"
+        ],
+        "likes_count": 0,
+        "comments_count": 0,
+        "is_liked": false,
+        "comments": [],
+        "created_at": "2026-02-12T10:51:41.367000"
+      }
     },
     {
       "test": "Add Comment to Post",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913551",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.378807",
+      "status_code": 200,
+      "response_data": {
+        "id": "b8355f39-0877-44a6-9f8c-3ae0a759c279",
+        "message": "Commentaire ajout\u00e9"
+      }
     },
     {
       "test": "Like Post",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913556",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.381589",
+      "status_code": 200,
+      "response_data": {
+        "liked": true,
+        "message": "Post lik\u00e9"
+      }
     },
     {
       "test": "Unlike Post",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913561",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.384195",
+      "status_code": 200,
+      "response_data": {
+        "liked": false,
+        "message": "Like retir\u00e9"
+      }
     },
     {
       "test": "Delete Post",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913566",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.386995",
+      "status_code": 200,
+      "response_data": {
+        "message": "Post supprim\u00e9"
+      }
     },
     {
       "test": "Get Notifications",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913573",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.389696",
+      "status_code": 200,
+      "response_data": {
+        "notifications": [],
+        "unread_count": 0
+      }
     },
     {
       "test": "Mark Notifications Read",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913578",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.392157",
+      "status_code": 200,
+      "response_data": {
+        "message": "Notifications marqu\u00e9es comme lues"
+      }
     },
     {
       "test": "Get Current Season",
       "success": false,
-      "timestamp": "2026-02-12T10:51:16.913585",
-      "error": "No auth token"
+      "timestamp": "2026-02-12T10:51:41.394586"
     },
     {
       "test": "Get Themes",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913592",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.423439",
+      "status_code": 200,
+      "response_data": {
+        "themes": [
+          {
+            "id": "default",
+            "name": "Classique",
+            "primary": "#3B82F6",
+            "accent": "#06B6D4",
+            "required_level": 1,
+            "unlocked": true,
+            "active": true,
+            "special": false
+          },
+          {
+            "id": "bronze",
+            "name": "Bronze",
+            "primary": "#CD7F32",
+            "accent": "#8B4513",
+            "required_level": 2,
+            "unlocked": true,
+            "active": false,
+            "special": false
+          },
+          {
+            "id": "silver",
+            "name": "Argent",
+            "primary": "#C0C0C0",
+            "accent": "#708090",
+            "required_level": 4,
+            "unlocked": false,
+            "active": false,
+            "special": false
+          },
+          {
+            "id": "gold",
+            "name": "Or",
+            "primary": "#FFD700",
+            "accent": "#FFA500",
+            "required_level": 6,
+            "unlocked": false,
+            "active": false,
+            "special": false
+          },
+          {
+            "id": "platinum",
+            "name": "Platine",
+            "primary": "#E5E4E2",
+            "accent": "#9CA3AF",
+            "required_level": 8,
+            "unlocked": false,
+            "active": false,
+            "special": false
+          },
+          {
+            "id": "diamond",
+            "name": "Diamant",
+            "primary": "#B9F2FF",
+            "accent": "#00CED1",
+            "required_level": 10,
+            "unlocked": false,
+            "active": false,
+            "special": false
+          },
+          {
+            "id": "neon",
+            "name": "N\u00e9on",
+            "primary": "#FF00FF",
+            "accent": "#00FF00",
+            "required_level": 5,
+            "unlocked": false,
+            "active": false,
+            "special": false
+          },
+          {
+            "id": "fire",
+            "name": "Feu",
+            "primary": "#FF4500",
+            "accent": "#FF6347",
+            "required_level": 7,
+            "unlocked": false,
+            "active": false,
+            "special": false
+          },
+          {
+            "id": "ice",
+            "name": "Glace",
+            "primary": "#00BFFF",
+            "accent": "#87CEEB",
+            "required_level": 7,
+            "unlocked": false,
+            "active": false,
+            "special": false
+          },
+          {
+            "id": "champion",
+            "name": "Champion",
+            "primary": "#FFD700",
+            "accent": "#FF4500",
+            "required_level": 10,
+            "unlocked": false,
+            "active": false,
+            "special": true
+          }
+        ],
+        "active_theme": "default"
+      }
     },
     {
       "test": "Activate Theme",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913597",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.426315",
+      "status_code": 200,
+      "response_data": {
+        "message": "Th\u00e8me Classique activ\u00e9 !",
+        "theme": {
+          "name": "Classique",
+          "primary": "#3B82F6",
+          "accent": "#06B6D4",
+          "required_level": 1
+        }
+      }
     },
     {
       "test": "Get Level Perks",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913606",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.428844",
+      "status_code": 200,
+      "response_data": {
+        "user_level": 2,
+        "current_title": "Apprenti",
+        "current_perks": [
+          "custom_avatar_border"
+        ],
+        "all_levels": [
+          {
+            "level": 1,
+            "title": "Novice",
+            "theme": "default",
+            "perks": [],
+            "unlocked": true
+          },
+          {
+            "level": 2,
+            "title": "Apprenti",
+            "theme": "bronze",
+            "perks": [
+              "custom_avatar_border"
+            ],
+            "unlocked": true
+          },
+          {
+            "level": 3,
+            "title": "Trader",
+            "theme": "bronze",
+            "perks": [
+              "custom_avatar_border",
+              "profile_badge"
+            ],
+            "unlocked": false
+          },
+          {
+            "level": 4,
+            "title": "Trader Confirm\u00e9",
+            "theme": "silver",
+            "perks": [
+              "custom_avatar_border",
+              "profile_badge",
+              "priority_support"
+            ],
+            "unlocked": false
+          },
+          {
+            "level": 5,
+            "title": "Expert",
+            "theme": "silver",
+            "perks": [
+              "custom_avatar_border",
+              "profile_badge",
+              "priority_support",
+              "exclusive_emojis"
+            ],
+            "unlocked": false
+          },
+          {
+            "level": 6,
+            "title": "Expert Senior",
+            "theme": "gold",
+            "perks": [
+              "custom_avatar_border",
+              "profile_badge",
+              "priority_support",
+              "exclusive_emojis",
+              "webinar_access"
+            ],
+            "unlocked": false
+          },
+          {
+            "level": 7,
+            "title": "Ma\u00eetre",
+            "theme": "gold",
+            "perks": [
+              "custom_avatar_border",
+              "profile_badge",
+              "priority_support",
+              "exclusive_emojis",
+              "webinar_access",
+              "mentoring_discount_10"
+            ],
+            "unlocked": false
+          },
+          {
+            "level": 8,
+            "title": "Grand Ma\u00eetre",
+            "theme": "platinum",
+            "perks": [
+              "custom_avatar_border",
+              "profile_badge",
+              "priority_support",
+              "exclusive_emojis",
+              "webinar_access",
+              "mentoring_discount_20",
+              "early_access"
+            ],
+            "unlocked": false
+          },
+          {
+            "level": 9,
+            "title": "L\u00e9gende",
+            "theme": "platinum",
+            "perks": [
+              "custom_avatar_border",
+              "profile_badge",
+              "priority_support",
+              "exclusive_emojis",
+              "webinar_access",
+              "mentoring_discount_30",
+              "early_access",
+              "vip_chat"
+            ],
+            "unlocked": false
+          },
+          {
+            "level": 10,
+            "title": "\u00c9lite",
+            "theme": "diamond",
+            "perks": [
+              "all_perks",
+              "subscription_discount_10",
+              "free_mentoring_session"
+            ],
+            "unlocked": false
+          }
+        ]
+      }
     },
     {
       "test": "Get Top Performer Rewards",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913611",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:41.431793",
+      "status_code": 200,
+      "response_data": {
+        "current_rank": 1,
+        "total_participants": 5,
+        "eligible_reward": {
+          "name": "Champion",
+          "perks": [
+            "free_month_subscription",
+            "exclusive_webinar",
+            "1on1_mentoring",
+            "champion_badge"
+          ],
+          "discount": 50,
+          "rank": 1
+        },
+        "all_rewards": {
+          "1": {
+            "name": "Champion",
+            "perks": [
+              "free_month_subscription",
+              "exclusive_webinar",
+              "1on1_mentoring",
+              "champion_badge"
+            ],
+            "discount": 50
+          },
+          "2": {
+            "name": "Vice-Champion",
+            "perks": [
+              "exclusive_webinar",
+              "mentoring_discount_50",
+              "silver_badge"
+            ],
+            "discount": 30
+          },
+          "3": {
+            "name": "Bronze",
+            "perks": [
+              "exclusive_webinar",
+              "mentoring_discount_30",
+              "bronze_badge"
+            ],
+            "discount": 20
+          },
+          "top10": {
+            "name": "Top 10",
+            "perks": [
+              "exclusive_webinar",
+              "mentoring_discount_10"
+            ],
+            "discount": 10
+          }
+        },
+        "season_name": "Saison February 2026"
+      }
     },
     {
       "test": "AI Setup Analysis",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913618",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:51:51.817061",
+      "status_code": 200,
+      "response_data": {
+        "analysis": "Je peux l\u2019analyser, mais il me manque le **setup** lui\u2011m\u00eame : je n\u2019ai ni **capture du graphique** ni **d\u00e9tails chiffr\u00e9s** (prix, niveaux, contexte). Envoie l\u2019un des deux \u00e9l\u00e9ments ci-dessous et je te retourne l\u2019analyse compl\u00e8te selon tes 6 points.\n\n### Option A \u2014 le plus simple\n- **Upload une capture d\u2019\u00e9cran** du EURUSD en **1H** (avec les niveaux trac\u00e9s si possible).\n\n### Option B \u2014 si tu n\u2019as pas d\u2019image, copie/colle ces infos\n1) **Tendance HTF** (4H / Daily) : haussi\u00e8re / baissi\u00e8re / range  \n2) Dernier **BOS / CHOCH** sur 1H : niveau cass\u00e9 + bougie de cl\u00f4ture (approx)  \n3) Zones cl\u00e9s :  \n   - **Supply/Demand / OB** : (prix de la zone)  \n   - **FVG/Imbalance** : (prix de la zone)  \n   - **Liquidit\u00e9** : equal highs/lows, swing high/low, range high/low (niveaux)  \n4) **Prix actuel** + o\u00f9 tu veux entrer (market/limit)  \n5) **Stop loss** envisag\u00e9 + **take profit** (ou RR vis\u00e9)  \n6) Timing : tu vises **London/NY** ? (oui/non)\n\nD\u00e8s que tu m\u2019envoies la capture ou ces niveaux, je te r\u00e9ponds directement avec :  \n1) setup identifi\u00e9 (BOS/CHOCH/FVG/liquidit\u00e9\u2026)  \n2) points forts  \n3) risques  \n4) **ACHETER / VENDRE / ATTENDRE**  \n5) confiance 1\u201310  \n6) conseils anti\u2011FOMO/anti\u2011overtrading adapt\u00e9s \u00e0 ton day trading."
+      }
     },
     {
       "test": "AI Coaching",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913623",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:52:21.011356",
+      "status_code": 200,
+      "response_data": {
+        "response": "Tu as d\u00e9j\u00e0 une base solide (plan respect\u00e9 \u00e0 100%). Pour \u201cam\u00e9liorer ta discipline\u201d \u00e0 ton niveau, l\u2019objectif n\u2019est pas de te forcer davantage, mais de **rendre la discipline automatique** et **robuste quand \u00e7a se d\u00e9grade** (fatigue, s\u00e9rie de trades, FOMO, journ\u00e9e lente). Voici un cadre actionnable.\n\n## 1) Formalise ton \u201cplan\u201d en check-list binaire (z\u00e9ro interpr\u00e9tation)\nTransforme tes r\u00e8gles en **OUI/NON** avant chaque trade. Exemple (\u00e0 adapter \u00e0 ta strat\u00e9gie) :\n- Session Londres ? (oui/non)  \n- Contexte du jour valid\u00e9 (tendance/range/news) ?  \n- Setup A/B/C identifi\u00e9 ?  \n- Niveau cl\u00e9 + point d\u2019invalidation clair ?  \n- RR minimum (ex: \u2265 1.5) ?  \n- Risque fixe (ex: 0.5\u20131% ou X$) ?  \n- Stop d\u00e9j\u00e0 plac\u00e9 ?  \n- Taille calcul\u00e9e ?  \n- \u00c9tat mental OK (stress < 6/10) ?\n\n**R\u00e8gle de discipline :** si un seul \u201cnon\u201d \u2192 pas de trade. Point.\n\n## 2) Mets des \u201cgarde-fous\u201d chiffr\u00e9s (discipline = limites)\nLa plupart des \u00e9carts viennent des journ\u00e9es o\u00f9 on \u201cinsiste\u201d. Mets des limites m\u00e9caniques :\n- **Max trades/jour** (ex: 3\u20135).  \n- **Max perte/jour** (ex: -2R) \u2192 arr\u00eat obligatoire.  \n- **Max perte par trade** (toujours identique).  \n- **Stop apr\u00e8s 2 pertes d\u2019affil\u00e9e** : pause 20 minutes + revalidation du plan.  \n- **Heure de fin** (Londres) : apr\u00e8s X heure, tu coupes, m\u00eame si \u201c\u00e7a bouge\u201d.\n\n\u00c7a prot\u00e8ge ta discipline quand l\u2019\u00e9motion prend le relais.\n\n## 3) Standardise ton ex\u00e9cution (moins de d\u00e9cisions = plus de discipline)\nCr\u00e9e un \u201cprocess\u201d identique \u00e0 chaque trade :\n1) Rep\u00e9rage (top-down si tu le fais)  \n2) Niveau + invalidation  \n3) Calcul taille + placement stop/TP  \n4) Entr\u00e9e  \n5) Gestion (r\u00e8gles fix\u00e9es \u00e0 l\u2019avance)  \n6) Journal\n\n**Astuce :** tu veux pouvoir ex\u00e9cuter en \u201cmode pilote automatique\u201d. Si tu h\u00e9sites trop, c\u2019est souvent que la r\u00e8gle n\u2019est pas assez pr\u00e9cise.\n\n## 4) Ajoute une routine mentale courte (anti-FOMO)\nAvant la session Londres (2\u20133 minutes) :\n- 5 respirations lentes\n- R\u00e9p\u00e8te une phrase simple : **\u201cJe ne trade que mon setup. Le reste est du bruit.\u201d**\n- Visualise 1 sc\u00e9nario : tu laisses passer une opportunit\u00e9 non conforme et tu es satisfait.\n\nApr\u00e8s un trade :\n- Si tu sens l\u2019excitation/col\u00e8re \u2192 **pause 5 minutes** (interdiction de re-rentrer direct).\n\n## 5) Journal de discipline (pas seulement PnL)\nTu as 100% de respect du plan aujourd\u2019hui, mais pour le maintenir, mesure-le :\nApr\u00e8s chaque trade, note :\n- Trade \u201cA\u201d (parfait), \u201cB\u201d (ok), \u201cC\u201d (limite)  \n- Respect check-list (oui/non)  \n- \u00c9motion (0\u201310)  \n- Une phrase : \u201cPourquoi ce trade m\u00e9rite d\u2019exister ?\u201d\n\nObjectif : **augmenter le % de trades A**, pas le nombre de trades.\n\n## 6) Mets en place un \u201cprotocole de d\u00e9rapage\u201d\nLa discipline se juge surtout quand \u00e7a va mal. \u00c9cris \u00e0 l\u2019avance :\n- Si je casse une r\u00e8gle \u2192 **j\u2019arr\u00eate la session** (ou je passe en mode simulation).  \n- Si je d\u00e9place un stop sans r\u00e8gle \u2192 arr\u00eat imm\u00e9diat + capture \u00e9cran + review.  \n- Si je suis en sur-trading \u2192 je r\u00e9duis la taille de moiti\u00e9 pendant 1 semaine.\n\nZ\u00e9ro d\u00e9bat sur le moment.\n\n## 7) Sp\u00e9cifique day trading Londres : \u00e9vite la discipline \u201cfragile\u201d\nLa session Londres peut pousser \u00e0 courir apr\u00e8s la volatilit\u00e9. Deux r\u00e8gles utiles :\n- **Pas de trade pendant les minutes de news \u00e0 fort impact** (fen\u00eatre d\u00e9finie).  \n- **Pas de poursuite apr\u00e8s un mouvement impulsif** : tu n\u2019entreras que sur ton pattern (pullback/retour niveau) selon tes r\u00e8gles.\n\n---\n\n### Mini plan d\u2019action (d\u00e8s demain)\n1) \u00c9cris ta check-list en 7\u201310 points OUI/NON.  \n2) Fixe 3 limites : max trades/jour, max perte/jour, stop apr\u00e8s 2 pertes.  \n3) Journal : score A/B/C + \u00e9motion + capture \u00e9cran de chaque trade.\n\nSi tu me donnes :\n- ton march\u00e9 (FX/indices/crypto),  \n- tes setups (en 2\u20133 lignes),  \n- ton risque par trade (en $ ou en R),  \nje te construis une **check-list sur-mesure** + des limites adapt\u00e9es \u00e0 ton style Londres."
+      }
     },
     {
       "test": "Daily Briefing",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.913628",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:52:30.463125",
+      "status_code": 200,
+      "response_data": {
+        "briefing": "### Briefing du jour \u2014 Test Trader (Day Trading)  \n**Sessions focus : Londres + New York | Trades hier : 1 | Winrate : 100%**\n\n#### 1) Rappel du plan de trading (\u00e0 ex\u00e9cuter, pas \u00e0 \u201cdeviner\u201d)\n- **Focus setups A+ uniquement** : si ce n\u2019est pas \u00e9vident en 10 secondes \u2192 **no trade**.  \n- **Risque fixe par trade** (inchang\u00e9) + **stop pos\u00e9 \u00e0 l\u2019entr\u00e9e** (non n\u00e9gociable).  \n- **1 id\u00e9e = 1 ex\u00e9cution** : pas de revenge, pas d\u2019ajout impulsif.  \n- **Timing** : privil\u00e9gie les fen\u00eatres actives **Open Londres** et **Open NY** ; \u00e9viter le milieu de session si \u00e7a s\u2019endort.\n\n#### 2) Points d\u2019attention (bas\u00e9s sur tes erreurs r\u00e9centes)\n- **Aucune erreur signal\u00e9e** \u2192 ton risque principal aujourd\u2019hui : **surconfiance** apr\u00e8s la perf.  \n  - Antidote : **checklist avant chaque trade** + accepter de finir la journ\u00e9e \u00e0 0 trade si rien de propre.\n\n#### 3) Objectifs du jour (max 3)\n1. **Qualit\u00e9 > quantit\u00e9** : maximum **1\u20133 trades**, seulement A+.  \n2. **Ex\u00e9cution parfaite** : entr\u00e9e selon plan + stop/TP d\u00e9finis **avant** le clic.  \n3. **Journal express** : apr\u00e8s chaque trade, note en 30s *setup / raison / respect du plan (oui/non)*.\n\n#### 4) Motivation personnalis\u00e9e\nTu n\u2019as rien \u00e0 \u201cprouver\u201d avec 100% : ton job, c\u2019est **r\u00e9p\u00e9ter une ex\u00e9cution propre**. Aujourd\u2019hui, la victoire c\u2019est **discipline + patience** \u2014 l\u2019argent suit."
+      }
     },
     {
       "test": "Payment Plans",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.915178"
+      "success": true,
+      "timestamp": "2026-02-12T10:52:30.465058",
+      "status_code": 200,
+      "response_data": {
+        "plans": {
+          "starter": {
+            "price": 29.0,
+            "name": "Starter",
+            "features": [
+              "Dashboard",
+              "Journal",
+              "Stats de base"
+            ]
+          },
+          "pro": {
+            "price": 79.0,
+            "name": "Pro",
+            "features": [
+              "Tout Starter",
+              "Analyse IA illimit\u00e9e",
+              "Coaching quotidien"
+            ]
+          },
+          "elite": {
+            "price": 149.0,
+            "name": "Elite",
+            "features": [
+              "Tout Pro",
+              "Syst\u00e8me \u00e9ducatif",
+              "Support prioritaire"
+            ]
+          }
+        }
+      }
     },
     {
       "test": "Create Checkout",
-      "success": false,
-      "timestamp": "2026-02-12T10:51:16.915187",
-      "error": "No auth token"
+      "success": true,
+      "timestamp": "2026-02-12T10:52:30.978588",
+      "status_code": 200,
+      "response_data": {
+        "url": "https://checkout.stripe.com/c/pay/cs_test_a1FvxZucu8hWp7yAXNgQjUIBSWx6pqxSobVrLMqDWFwyYc9G2NPqciJZms#fidnandhYHdWcXxpYCc%2FJ2FgY2RwaXEnKSdkdWxOYHwnPyd1blpxYHZxWjA0V2xNT25GMUpjXTRCPFZWf11pVVxyM0NdNmZHN193MkNLVTJLRGlBTUldTDRNQFFITE81QEBmRG5LUWl2UW8yQkdgQVNxV1RMPGBUMzJuYWs2TmFhMEhQNTVSYmNqMEZQYycpJ2N3amhWYHdzYHcnP3F3cGApJ2dkZm5id2pwa2FGamlqdyc%2FJyZjY2NjY2MnKSdpZHxqcHFRfHVgJz8ndmxrYmlgWmxxYGgnKSdga2RnaWBVaWRmYG1qaWFgd3YnP3F3cGB4JSUl",
+        "session_id": "cs_test_a1FvxZucu8hWp7yAXNgQjUIBSWx6pqxSobVrLMqDWFwyYc9G2NPqciJZms"
+      }
     }
   ]
 }
