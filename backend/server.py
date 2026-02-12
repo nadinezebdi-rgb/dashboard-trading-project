@@ -44,6 +44,11 @@ economic_events_collection = db["economic_events"]
 community_posts_collection = db["community_posts"]
 community_comments_collection = db["community_comments"]
 community_likes_collection = db["community_likes"]
+challenges_collection = db["challenges"]
+user_challenges_collection = db["user_challenges"]
+achievements_collection = db["achievements"]
+user_achievements_collection = db["user_achievements"]
+streaks_collection = db["streaks"]
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
