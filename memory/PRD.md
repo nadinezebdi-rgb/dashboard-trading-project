@@ -1,7 +1,7 @@
 # Trading AI Platform - PRD
 
 ## Problem Statement
-Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching personnalisé, communauté et système de gamification.
+Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching personnalisé, communauté et système de gamification complet avec récompenses.
 
 ## User Personas
 1. **Trader Débutant** - Cherche à apprendre et éviter les erreurs communes
@@ -15,7 +15,7 @@ Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching per
 - Coaching personnalisé quotidien
 - Mode sombre/clair
 - Interface en français
-- Système de gamification pour fidélisation
+- Système de gamification complet pour fidélisation
 
 ## Architecture
 - **Frontend**: Next.js 14 + React 18 + Tailwind CSS + Recharts
@@ -44,12 +44,23 @@ Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching per
 - [x] Système de tickets pour consultations experts
 - [x] **Communauté** (posts, commentaires, likes, profils)
 - [x] **Challenges** (quotidiens, hebdomadaires, mensuels)
-- [x] **Leaderboard** (classements par période)
+- [x] **Leaderboard** (classements par période + saison)
 - [x] **Hall of Fame** (Top Niveaux, PnL, Winrate)
-- [x] **Badges/Achievements** (15 badges débloquables)
-- [x] **Système XP/Niveaux** (progression avec récompenses)
+- [x] **Badges/Achievements** (18 badges débloquables)
+- [x] **Système XP/Niveaux** (10 niveaux avec progression)
 - [x] **Streaks** (jours de connexion consécutifs)
 - [x] **Check-in quotidien** avec bonus XP
+
+### Système de Récompenses ✅ (NOUVEAU)
+- [x] **Notifications** (niveau, badges, saison)
+- [x] **10 Thèmes** débloquables par niveau (Classique, Bronze, Argent, Or, Platine, Diamant, Néon, Feu, Glace, Champion)
+- [x] **Perks par niveau** (support prioritaire, accès webinaires, réductions mentoring)
+- [x] **Système de Saisons** (mensuel avec reset leaderboard)
+- [x] **Récompenses Top Performers**:
+  - Top 1: Mois gratuit, webinaire exclusif, mentoring 1-on-1, badge Champion, -50% abo
+  - Top 2: Webinaire, -50% mentoring, badge Argent, -30% abo
+  - Top 3: Webinaire, -30% mentoring, badge Bronze, -20% abo
+  - Top 10: Webinaire exclusif, -10% mentoring, -10% abo
 
 ### Intégrations ✅
 - GPT-5.2 (analyse setup, coaching, briefing, analyse économique)
@@ -59,7 +70,7 @@ Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching per
 ## Prioritized Backlog
 
 ### P0 - Critical
-- [ ] Notification push pour événements économiques
+- [ ] Notification push navigateur (Web Push)
 - [ ] Export des données de trading (CSV/PDF)
 
 ### P1 - Important
@@ -73,28 +84,21 @@ Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching per
 - [ ] Mode social trading (copie de trades)
 - [ ] Application mobile (React Native)
 
-## Gamification System Details
+## Technical Details
 
-### Challenges
-- **Daily**: Trader du Jour (3 trades), Journée Verte (profit)
-- **Weekly**: Série Gagnante (5 wins), Discipline (100% plan), Membre Actif (3 posts)
-- **Monthly**: Trader Régulier (20 trades), Mois Profitable, Sniper (60% WR)
+### Gamification System
+- **Levels**: 1-10+ avec XP: 0, 100, 250, 500, 1000, 2000, 3500, 5500, 8000, 12000, 20000
+- **Challenges**: 8 actifs (2 daily, 3 weekly, 3 monthly)
+- **Achievements**: 18 badges débloquables
+- **Themes**: 10 thèmes avec couleurs personnalisées
+- **Seasons**: Mensuelles avec récompenses automatiques
 
-### Achievements (15 badges)
-- First Trade, First Win, First Post
-- Streak 7, Streak 30
-- Trades 10, 50, 100
-- Hot Streak, Disciplined, Consistent
-- Profitable Month, Sniper
-- Helper, Popular, Elite Trader
-
-### XP System
-- Levels 1-10+ avec seuils progressifs
-- XP gagnés via: check-in, challenges, trades, posts
-- Récompenses: badges, reconnaissance, features exclusives
+### Level Titles
+1. Novice → 2. Apprenti → 3. Trader → 4. Trader Confirmé → 5. Expert
+6. Expert Senior → 7. Maître → 8. Grand Maître → 9. Légende → 10. Élite
 
 ## Next Steps
-1. Implémenter les notifications push
+1. Implémenter Web Push notifications
 2. Créer le système éducatif avec modules progressifs
 3. Ajouter le backtesting assisté
 4. Dashboard admin pour les experts
