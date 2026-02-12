@@ -1,0 +1,162 @@
+{
+  "identity": {
+    "persona": "E1 - The Performance Pro",
+    "tone": "Elite, Analytical, Focused, High-Voltage",
+    "mission": "Create a trading environment that feels like a tactical command center. Speed, clarity, and edge are paramount.",
+    "language": "French (fr-FR)"
+  },
+  "typography": {
+    "font_family": {
+      "headings": "Barlow Condensed, sans-serif",
+      "body": "Inter, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "scale": {
+      "h1": "text-5xl md:text-7xl font-bold tracking-tight uppercase",
+      "h2": "text-3xl md:text-5xl font-bold tracking-tight uppercase",
+      "h3": "text-2xl md:text-3xl font-semibold tracking-tight",
+      "p": "text-base leading-relaxed text-zinc-400",
+      "small": "text-sm font-medium tracking-wide text-zinc-500 uppercase",
+      "mono": "font-mono text-sm tracking-tight"
+    },
+    "weights": {
+      "light": 300,
+      "regular": 400,
+      "medium": 500,
+      "bold": 700,
+      "black": 900
+    }
+  },
+  "colors": {
+    "theme": "dark",
+    "palette": {
+      "background": "#09090B",
+      "foreground": "#FAFAFA",
+      "card": "#18181B",
+      "card_foreground": "#FAFAFA",
+      "popover": "#09090B",
+      "popover_foreground": "#FAFAFA",
+      "primary": "#3B82F6",
+      "primary_foreground": "#FFFFFF",
+      "secondary": "#27272A",
+      "secondary_foreground": "#FAFAFA",
+      "muted": "#27272A",
+      "muted_foreground": "#A1A1AA",
+      "accent": "#27272A",
+      "accent_foreground": "#FAFAFA",
+      "destructive": "#EF4444",
+      "destructive_foreground": "#FAFAFA",
+      "border": "#27272A",
+      "input": "#27272A",
+      "ring": "#3B82F6",
+      "chart_1": "#3B82F6",
+      "chart_2": "#10B981",
+      "chart_3": "#F59E0B",
+      "chart_4": "#8B5CF6",
+      "chart_5": "#EC4899",
+      "profit": "#10B981",
+      "loss": "#EF4444"
+    },
+    "gradients": {
+      "glow": "bg-gradient-to-r from-blue-600/20 to-cyan-400/20 blur-xl",
+      "surface": "bg-gradient-to-b from-zinc-800/50 to-zinc-900/50"
+    }
+  },
+  "layout_strategy": {
+    "spacing": {
+      "container_padding": "p-6 md:p-8",
+      "section_gap": "gap-8 md:gap-12",
+      "component_gap": "gap-4"
+    },
+    "grid_system": {
+      "dashboard": "grid grid-cols-1 md:grid-cols-12 gap-4 auto-rows-[minmax(180px,auto)]",
+      "marketing": "grid grid-cols-1 md:grid-cols-12 gap-8"
+    },
+    "border_radius": {
+      "default": "rounded-none",
+      "card": "rounded-sm",
+      "button": "rounded-sm",
+      "input": "rounded-none"
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": "backdrop-blur-xl bg-black/40 border border-white/10",
+    "neon_glow": "shadow-[0_0_15px_rgba(59,130,246,0.5)]",
+    "grid_lines": "bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]",
+    "noise": "opacity-20 mix-blend-overlay pointer-events-none fixed inset-0 z-50 bg-[url('/noise.png')]"
+  },
+  "component_guidelines": {
+    "buttons": {
+      "primary": "bg-blue-600 hover:bg-blue-500 text-white font-bold uppercase tracking-wider text-xs px-6 py-3 rounded-none border border-blue-400/20 shadow-[0_0_10px_rgba(37,99,235,0.3)] transition-all active:scale-95",
+      "secondary": "bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-700 font-medium uppercase tracking-wide text-xs px-6 py-3 rounded-none transition-all",
+      "outline": "bg-transparent border border-zinc-700 hover:border-zinc-500 text-zinc-300 hover:text-white uppercase tracking-wide text-xs px-6 py-3 transition-all",
+      "ghost": "hover:bg-zinc-800/50 text-zinc-400 hover:text-white transition-all"
+    },
+    "cards": {
+      "base": "bg-zinc-900/50 border border-zinc-800/60 p-6 backdrop-blur-sm relative overflow-hidden group",
+      "hover_effect": "hover:border-blue-500/30 transition-colors duration-300",
+      "header": "flex items-center justify-between mb-4 border-b border-zinc-800/50 pb-2"
+    },
+    "inputs": {
+      "base": "bg-zinc-950 border-zinc-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-none h-10 px-3 text-sm placeholder:text-zinc-600 transition-all"
+    }
+  },
+  "image_urls": {
+    "charts_and_data": [
+      {
+        "url": "https://images.unsplash.com/photo-1639825752750-5061ded5503b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODR8MHwxfHNlYXJjaHwxfHxzdG9jayUyMG1hcmtldCUyMGNoYXJ0JTIwZGFyayUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzcwODg4NjM5fDA&ixlib=rb-4.1.0&q=85",
+        "description": "High contrast stock chart on dark background, useful for hero section or feature showcase."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1538806932492-b6ac36ccfa28?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzJ8MHwxfHNlYXJjaHwyfHxhYnN0cmFjdCUyMGRpZ2l0YWwlMjBmaW5hbmNlJTIwbmV0d29yayUyMGRhcmslMjBibHVlfGVufDB8fHx8MTc3MDg4ODY1MHww&ixlib=rb-4.1.0&q=85",
+        "description": "Abstract blue digital network, good for AI/Technology background."
+      }
+    ],
+    "traders_and_lifestyle": [
+      {
+        "url": "https://images.unsplash.com/photo-1626440854808-97dbf23ae7a1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHw0fHx0cmFkZXIlMjBsb29raW5nJTIwYXQlMjBtb25pdG9yc3xlbnwwfHx8fDE3NzA4ODg2NDB8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Trader focused on monitors, suitable for 'Who is this for' section."
+      },
+      {
+        "url": "https://images.pexels.com/photos/5831347/pexels-photo-5831347.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Trader celebrating success, good for testimonials or success stories."
+      }
+    ],
+    "abstract_tech": [
+      {
+        "url": "https://images.unsplash.com/photo-1770520216375-28ff9063bd10?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzJ8MHwxfHNlYXJjaHwzfHxhYnN0cmFjdCUyMGRpZ2l0YWwlMjBmaW5hbmNlJTIwbmV0d29yayUyMGRhcmslMjBibHVlfGVufDB8fHx8MTc3MDg4ODY1MHww&ixlib=rb-4.1.0&q=85",
+        "description": "Dark blue wavy pattern, suitable for footer or section dividers."
+      }
+    ]
+  },
+  "feature_specific_guidelines": {
+    "dashboard": {
+      "layout": "Use Bento Grid Mode B (High Density). No wasted space.",
+      "charts": "Use Recharts with custom tooltips. Axis lines should be subtle (zinc-800). Gradient fills for area charts.",
+      "widgets": "Cards with sharp corners. Header uppercase mono font. Value prominent (text-3xl+)."
+    },
+    "journal": {
+      "layout": "Split view: List on left, Detail/Screenshot on right.",
+      "typography": "Use Serif for personal notes to distinguish from market data."
+    },
+    "ai_features": {
+      "visuals": "Use 'Tracing Beam' effect on AI insight cards. Subtle pulsing glow for active analysis.",
+      "icons": "Use Phosphor Icons (Duotone) for AI actions."
+    },
+    "calendar": {
+      "layout": "List view with 'Impact' tags (High/Medium/Low) colored Red/Orange/Yellow.",
+      "filtering": "prominent toggle filters at top."
+    }
+  },
+  "universal_guidelines": [
+    "ALL TEXT MUST BE IN FRENCH (fr-FR).",
+    "Dark Mode ONLY. Do not implement a light mode toggle unless explicitly asked later.",
+    "Use 'sonner' for all notifications.",
+    "Use 'lucide-react' for general icons, 'phosphor-icons' for feature highlights.",
+    "Add 'data-testid' to all interactive elements.",
+    "Ensure 3:1 contrast ratio for all text.",
+    "Avoid 'Inter' for headings. Use 'Barlow Condensed'.",
+    "No rounded buttons. Sharp edges suggest precision."
+  ],
+  "instructions_to_main_agent": "You are building a high-performance trading tool. The user expects a 'Bloomberg Terminal' meeting 'Cyberpunk' aesthetic. Do not make it look like a generic SaaS. Use the provided colors and typography strictly. Ensure all user-facing text is in French."
+}
