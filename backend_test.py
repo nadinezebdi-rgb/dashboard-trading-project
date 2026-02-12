@@ -322,6 +322,118 @@ class TradingPlatformTester:
                 return self.log_result("Create Checkout", False, response, "Stripe may be misconfigured")
         return self.log_result("Create Checkout", False, response)
 
+    # ============== GAMIFICATION TESTS ==============
+    
+    def test_get_gamification_profile(self):
+        """Test getting user's gamification profile"""
+        if not self.token:
+            return self.log_result("Get Gamification Profile", False, error="No auth token")
+            
+        response = self.make_request('GET', 'gamification/profile')
+        if response and response.status_code == 200:
+            data = response.json()
+            required_fields = ['level', 'xp', 'achievements', 'current_streak']
+            if all(field in data for field in required_fields):
+                return self.log_result("Get Gamification Profile", True, response)
+        return self.log_result("Get Gamification Profile", False, response)
+
+    def test_daily_checkin(self):
+        """Test daily check-in functionality"""
+        if not self.token:
+            return self.log_result("Daily Check-in", False, error="No auth token")
+            
+        response = self.make_request('POST', 'gamification/checkin')
+        if response and response.status_code == 200:
+            data = response.json()
+            required_fields = ['message', 'streak', 'xp_earned']
+            if all(field in data for field in required_fields):
+                return self.log_result("Daily Check-in", True, response)
+        return self.log_result("Daily Check-in", False, response)
+
+    def test_get_challenges(self):
+        """Test getting active challenges"""
+        if not self.token:
+            return self.log_result("Get Challenges", False, error="No auth token")
+            
+        response = self.make_request('GET', 'gamification/challenges')
+        if response and response.status_code == 200:
+            data = response.json()
+            if 'challenges' in data:
+                # Check if challenges have required fields
+                if data['challenges']:
+                    challenge = data['challenges'][0]
+                    required_fields = ['id', 'title', 'description', 'progress', 'xp_reward']
+                    if all(field in challenge for field in required_fields):
+                        self.challenge_id = challenge['id']
+                        return self.log_result("Get Challenges", True, response)
+                else:
+                    # No challenges available but response is valid
+                    return self.log_result("Get Challenges", True, response)
+        return self.log_result("Get Challenges", False, response)
+
+    def test_get_leaderboard(self):
+        """Test getting leaderboard data"""
+        if not self.token:
+            return self.log_result("Get Leaderboard", False, error="No auth token")
+            
+        # Test different periods
+        for period in ['daily', 'weekly', 'monthly']:
+            response = self.make_request('GET', f'gamification/leaderboard?period={period}')
+            if response and response.status_code == 200:
+                data = response.json()
+                if 'leaderboard' in data:
+                    success = self.log_result(f"Get Leaderboard ({period})", True, response)
+                    if period == 'weekly':  # Just check one period for main test
+                        return success
+                else:
+                    return self.log_result(f"Get Leaderboard ({period})", False, response)
+            else:
+                return self.log_result(f"Get Leaderboard ({period})", False, response)
+        return True
+
+    def test_get_hall_of_fame(self):
+        """Test getting hall of fame data"""
+        if not self.token:
+            return self.log_result("Get Hall of Fame", False, error="No auth token")
+            
+        response = self.make_request('GET', 'gamification/hall-of-fame')
+        if response and response.status_code == 200:
+            data = response.json()
+            expected_categories = ['top_levels', 'top_pnl', 'top_winrate']
+            if all(category in data for category in expected_categories):
+                return self.log_result("Get Hall of Fame", True, response)
+        return self.log_result("Get Hall of Fame", False, response)
+
+    def test_get_achievements(self):
+        """Test getting all achievements"""
+        if not self.token:
+            return self.log_result("Get Achievements", False, error="No auth token")
+            
+        response = self.make_request('GET', 'gamification/achievements')
+        if response and response.status_code == 200:
+            data = response.json()
+            if 'achievements' in data:
+                return self.log_result("Get Achievements", True, response)
+        return self.log_result("Get Achievements", False, response)
+
+    def test_claim_challenge_reward(self):
+        """Test claiming a challenge reward (may fail if no completed challenges)"""
+        if not self.token:
+            return self.log_result("Claim Challenge Reward", False, error="No auth token")
+        if not hasattr(self, 'challenge_id'):
+            return self.log_result("Claim Challenge Reward", False, error="No challenge ID available")
+            
+        response = self.make_request('POST', f'gamification/challenges/{self.challenge_id}/claim')
+        if response:
+            if response.status_code == 200:
+                data = response.json()
+                if 'message' in data and 'xp_earned' in data:
+                    return self.log_result("Claim Challenge Reward", True, response)
+            elif response.status_code == 400:
+                # Expected if challenge is not completed or already claimed
+                return self.log_result("Claim Challenge Reward", False, response, "Challenge not completed or already claimed")
+        return self.log_result("Claim Challenge Reward", False, response)
+
     # ============== COMMUNITY TESTS ==============
     
     def test_create_community_post(self):
