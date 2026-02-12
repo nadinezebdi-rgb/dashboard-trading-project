@@ -953,6 +953,262 @@ async def close_ticket(ticket_id: str, user: dict = Depends(get_current_user)):
         raise HTTPException(404, "Ticket non trouvé")
     return {"message": "Ticket fermé"}
 
+# ============== COMMUNITY ENDPOINTS ==============
+
+@app.post("/api/community/posts")
+async def create_post(data: CommunityPost, user: dict = Depends(get_current_user)):
+    """Create a new community post"""
+    post_id = str(uuid.uuid4())
+    post = {
+        "_id": post_id,
+        "author_id": user["id"],
+        "author_name": user.get("name", "Trader"),
+        "author_level": user.get("experience_level", "beginner"),
+        "title": data.title,
+        "content": data.content,
+        "category": data.category,
+        "screenshot": data.screenshot_base64,
+        "tags": data.tags or [],
+        "likes_count": 0,
+        "comments_count": 0,
+        "created_at": datetime.now(timezone.utc),
+        "updated_at": datetime.now(timezone.utc)
+    }
+    community_posts_collection.insert_one(post)
+    return {"id": post_id, "message": "Post créé avec succès"}
+
+@app.get("/api/community/posts")
+async def get_community_posts(
+    category: Optional[str] = None,
+    limit: int = 20,
+    skip: int = 0,
+    user: dict = Depends(get_current_user)
+):
+    """Get community posts with optional category filter"""
+    query = {}
+    if category and category != "all":
+        query["category"] = category
+    
+    posts = list(community_posts_collection.find(query)
+                 .sort("created_at", -1)
+                 .skip(skip)
+                 .limit(limit))
+    
+    # Get user's likes
+    user_likes = set()
+    likes = community_likes_collection.find({"user_id": user["id"], "type": "post"})
+    for like in likes:
+        user_likes.add(like["target_id"])
+    
+    result = []
+    for post in posts:
+        result.append({
+            "id": str(post["_id"]),
+            "author_id": post["author_id"],
+            "author_name": post["author_name"],
+            "author_level": post.get("author_level", "beginner"),
+            "title": post["title"],
+            "content": post["content"],
+            "category": post["category"],
+            "has_screenshot": post.get("screenshot") is not None,
+            "tags": post.get("tags", []),
+            "likes_count": post.get("likes_count", 0),
+            "comments_count": post.get("comments_count", 0),
+            "is_liked": str(post["_id"]) in user_likes,
+            "created_at": post["created_at"].isoformat() if isinstance(post["created_at"], datetime) else post["created_at"]
+        })
+    
+    return {"posts": result}
+
+@app.get("/api/community/posts/{post_id}")
+async def get_post_detail(post_id: str, user: dict = Depends(get_current_user)):
+    """Get a specific post with comments"""
+    post = community_posts_collection.find_one({"_id": post_id})
+    if not post:
+        raise HTTPException(404, "Post non trouvé")
+    
+    # Get comments
+    comments = list(community_comments_collection.find({"post_id": post_id}).sort("created_at", 1))
+    
+    # Check if user liked this post
+    user_like = community_likes_collection.find_one({"user_id": user["id"], "target_id": post_id, "type": "post"})
+    
+    # Get user's comment likes
+    comment_likes = set()
+    c_likes = community_likes_collection.find({"user_id": user["id"], "type": "comment"})
+    for cl in c_likes:
+        comment_likes.add(cl["target_id"])
+    
+    formatted_comments = []
+    for c in comments:
+        formatted_comments.append({
+            "id": str(c["_id"]),
+            "author_id": c["author_id"],
+            "author_name": c["author_name"],
+            "content": c["content"],
+            "likes_count": c.get("likes_count", 0),
+            "is_liked": str(c["_id"]) in comment_likes,
+            "created_at": c["created_at"].isoformat() if isinstance(c["created_at"], datetime) else c["created_at"]
+        })
+    
+    return {
+        "id": str(post["_id"]),
+        "author_id": post["author_id"],
+        "author_name": post["author_name"],
+        "author_level": post.get("author_level", "beginner"),
+        "title": post["title"],
+        "content": post["content"],
+        "category": post["category"],
+        "screenshot": post.get("screenshot"),
+        "tags": post.get("tags", []),
+        "likes_count": post.get("likes_count", 0),
+        "comments_count": post.get("comments_count", 0),
+        "is_liked": user_like is not None,
+        "comments": formatted_comments,
+        "created_at": post["created_at"].isoformat() if isinstance(post["created_at"], datetime) else post["created_at"]
+    }
+
+@app.post("/api/community/posts/{post_id}/comments")
+async def add_comment(post_id: str, data: CommunityComment, user: dict = Depends(get_current_user)):
+    """Add a comment to a post"""
+    post = community_posts_collection.find_one({"_id": post_id})
+    if not post:
+        raise HTTPException(404, "Post non trouvé")
+    
+    comment_id = str(uuid.uuid4())
+    comment = {
+        "_id": comment_id,
+        "post_id": post_id,
+        "author_id": user["id"],
+        "author_name": user.get("name", "Trader"),
+        "content": data.content,
+        "likes_count": 0,
+        "created_at": datetime.now(timezone.utc)
+    }
+    community_comments_collection.insert_one(comment)
+    
+    # Update post comments count
+    community_posts_collection.update_one(
+        {"_id": post_id},
+        {"$inc": {"comments_count": 1}, "$set": {"updated_at": datetime.now(timezone.utc)}}
+    )
+    
+    return {"id": comment_id, "message": "Commentaire ajouté"}
+
+@app.post("/api/community/posts/{post_id}/like")
+async def toggle_post_like(post_id: str, user: dict = Depends(get_current_user)):
+    """Toggle like on a post"""
+    post = community_posts_collection.find_one({"_id": post_id})
+    if not post:
+        raise HTTPException(404, "Post non trouvé")
+    
+    existing_like = community_likes_collection.find_one({
+        "user_id": user["id"],
+        "target_id": post_id,
+        "type": "post"
+    })
+    
+    if existing_like:
+        # Unlike
+        community_likes_collection.delete_one({"_id": existing_like["_id"]})
+        community_posts_collection.update_one({"_id": post_id}, {"$inc": {"likes_count": -1}})
+        return {"liked": False, "message": "Like retiré"}
+    else:
+        # Like
+        community_likes_collection.insert_one({
+            "_id": str(uuid.uuid4()),
+            "user_id": user["id"],
+            "target_id": post_id,
+            "type": "post",
+            "created_at": datetime.now(timezone.utc)
+        })
+        community_posts_collection.update_one({"_id": post_id}, {"$inc": {"likes_count": 1}})
+        return {"liked": True, "message": "Post liké"}
+
+@app.post("/api/community/comments/{comment_id}/like")
+async def toggle_comment_like(comment_id: str, user: dict = Depends(get_current_user)):
+    """Toggle like on a comment"""
+    comment = community_comments_collection.find_one({"_id": comment_id})
+    if not comment:
+        raise HTTPException(404, "Commentaire non trouvé")
+    
+    existing_like = community_likes_collection.find_one({
+        "user_id": user["id"],
+        "target_id": comment_id,
+        "type": "comment"
+    })
+    
+    if existing_like:
+        community_likes_collection.delete_one({"_id": existing_like["_id"]})
+        community_comments_collection.update_one({"_id": comment_id}, {"$inc": {"likes_count": -1}})
+        return {"liked": False}
+    else:
+        community_likes_collection.insert_one({
+            "_id": str(uuid.uuid4()),
+            "user_id": user["id"],
+            "target_id": comment_id,
+            "type": "comment",
+            "created_at": datetime.now(timezone.utc)
+        })
+        community_comments_collection.update_one({"_id": comment_id}, {"$inc": {"likes_count": 1}})
+        return {"liked": True}
+
+@app.delete("/api/community/posts/{post_id}")
+async def delete_post(post_id: str, user: dict = Depends(get_current_user)):
+    """Delete own post"""
+    post = community_posts_collection.find_one({"_id": post_id, "author_id": user["id"]})
+    if not post:
+        raise HTTPException(404, "Post non trouvé ou non autorisé")
+    
+    # Delete post, comments and likes
+    community_posts_collection.delete_one({"_id": post_id})
+    community_comments_collection.delete_many({"post_id": post_id})
+    community_likes_collection.delete_many({"target_id": post_id})
+    
+    return {"message": "Post supprimé"}
+
+@app.get("/api/community/user/{user_id}")
+async def get_user_profile(user_id: str, user: dict = Depends(get_current_user)):
+    """Get public user profile and their posts"""
+    target_user = users_collection.find_one({"_id": user_id}, {"password": 0})
+    if not target_user:
+        raise HTTPException(404, "Utilisateur non trouvé")
+    
+    # Get user's posts
+    posts = list(community_posts_collection.find({"author_id": user_id})
+                 .sort("created_at", -1)
+                 .limit(10))
+    
+    # Get user's trade stats
+    trades = list(trades_collection.find({"user_id": user_id}, {"pnl": 1}))
+    total_trades = len(trades)
+    winning_trades = len([t for t in trades if (t.get("pnl") or 0) > 0])
+    winrate = round((winning_trades / total_trades * 100) if total_trades > 0 else 0, 1)
+    
+    formatted_posts = []
+    for post in posts:
+        formatted_posts.append({
+            "id": str(post["_id"]),
+            "title": post["title"],
+            "category": post["category"],
+            "likes_count": post.get("likes_count", 0),
+            "comments_count": post.get("comments_count", 0),
+            "created_at": post["created_at"].isoformat() if isinstance(post["created_at"], datetime) else post["created_at"]
+        })
+    
+    return {
+        "id": user_id,
+        "name": target_user.get("name", "Trader"),
+        "trading_style": target_user.get("trading_style"),
+        "experience_level": target_user.get("experience_level"),
+        "preferred_markets": target_user.get("preferred_markets", []),
+        "total_trades": total_trades,
+        "winrate": winrate,
+        "posts_count": len(formatted_posts),
+        "posts": formatted_posts,
+        "member_since": target_user["created_at"].isoformat() if isinstance(target_user.get("created_at"), datetime) else None
+    }
+
 # ============== HEALTH CHECK ==============
 
 @app.get("/api/health")
