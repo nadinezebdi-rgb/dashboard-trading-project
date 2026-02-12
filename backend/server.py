@@ -39,6 +39,8 @@ setups_collection = db["setups"]
 ai_conversations_collection = db["ai_conversations"]
 payment_transactions_collection = db["payment_transactions"]
 questionnaires_collection = db["questionnaires"]
+tickets_collection = db["tickets"]
+economic_events_collection = db["economic_events"]
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
