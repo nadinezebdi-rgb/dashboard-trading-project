@@ -1,420 +1,186 @@
 {
   "summary": {
-    "tests_run": 23,
-    "tests_passed": 23,
-    "success_rate": 100.0
+    "tests_run": 30,
+    "tests_passed": 0,
+    "success_rate": 0.0
   },
   "results": [
     {
       "test": "Health Check",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.393961",
-      "status_code": 200,
-      "response_data": {
-        "status": "healthy",
-        "timestamp": "2026-02-12T10:23:16.393344+00:00"
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.034620"
     },
     {
       "test": "User Registration",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.625279",
-      "status_code": 200,
-      "response_data": {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNWJmYzJiNi0yNDU5LTQ5OGUtYjA2NS04OTU3ZTUzMzNkMGYiLCJlbWFpbCI6InRlc3RfZWJjZWY5ZjRAZXhhbXBsZS5jb20iLCJleHAiOjE3NzE0OTY1OTZ9.Af9SlPq8nuvSAUFqeeWeummlcgkboAs0-qLtmotg26I",
-        "user": {
-          "id": "15bfc2b6-2459-498e-b065-8957e5333d0f",
-          "email": "test_ebcef9f4@example.com",
-          "name": "Test Trader"
-        }
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036642"
     },
     {
       "test": "User Login",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.857963",
-      "status_code": 200,
-      "response_data": {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNWJmYzJiNi0yNDU5LTQ5OGUtYjA2NS04OTU3ZTUzMzNkMGYiLCJlbWFpbCI6InRlc3RfZWJjZWY5ZjRAZXhhbXBsZS5jb20iLCJleHAiOjE3NzE0OTY1OTZ9.Af9SlPq8nuvSAUFqeeWeummlcgkboAs0-qLtmotg26I",
-        "user": {
-          "id": "15bfc2b6-2459-498e-b065-8957e5333d0f",
-          "email": "test_ebcef9f4@example.com",
-          "name": "Test Trader",
-          "subscription": "free",
-          "onboarding_completed": false
-        }
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036656",
+      "error": "No registered user to test login"
     },
     {
       "test": "Get Current User",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.861306",
-      "status_code": 200,
-      "response_data": {
-        "user": {
-          "email": "test_ebcef9f4@example.com",
-          "name": "Test Trader",
-          "created_at": "2026-02-12T10:23:16.623000",
-          "subscription": "free",
-          "subscription_expires": null,
-          "onboarding_completed": false,
-          "trading_style": null,
-          "experience_level": null,
-          "preferred_markets": [],
-          "id": "15bfc2b6-2459-498e-b065-8957e5333d0f"
-        }
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036663",
+      "error": "No auth token"
     },
     {
       "test": "Save Questionnaire",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.870434",
-      "status_code": 200,
-      "response_data": {
-        "message": "Questionnaire enregistr\u00e9"
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036670",
+      "error": "No auth token"
     },
     {
       "test": "Get Questionnaires",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.874407",
-      "status_code": 200,
-      "response_data": {
-        "questionnaires": [
-          {
-            "type": "assistant",
-            "answers": {
-              "trading_style": "day_trading",
-              "experience_level": "intermediate",
-              "markets": [
-                "crypto",
-                "forex"
-              ],
-              "sessions": [
-                "london",
-                "new_york"
-              ],
-              "difficulties": [
-                "fomo",
-                "overtrading"
-              ]
-            },
-            "created_at": "2026-02-12T10:23:16.863000"
-          }
-        ]
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036675",
+      "error": "No auth token"
     },
     {
       "test": "Create Trade",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.877685",
-      "status_code": 200,
-      "response_data": {
-        "id": "6be4f404-e312-4290-a5ae-75e525597411",
-        "message": "Trade enregistr\u00e9"
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036680",
+      "error": "No auth token"
     },
     {
       "test": "Get Trades",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.881425",
-      "status_code": 200,
-      "response_data": {
-        "trades": [
-          {
-            "symbol": "EURUSD",
-            "direction": "LONG",
-            "entry_price": 1.085,
-            "exit_price": 1.092,
-            "quantity": 1.0,
-            "pnl": 70.0,
-            "setup_type": "Support/Resistance",
-            "notes": "Test trade entry",
-            "session": "london",
-            "respected_plan": true,
-            "emotions": "Calm and focused",
-            "errors": [],
-            "created_at": "2026-02-12T10:23:16.876000"
-          }
-        ]
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036687",
+      "error": "No auth token"
     },
     {
       "test": "Get Trade Stats",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.884329",
-      "status_code": 200,
-      "response_data": {
-        "total_trades": 1,
-        "winning_trades": 1,
-        "losing_trades": 0,
-        "winrate": 100.0,
-        "total_pnl": 70.0,
-        "average_pnl": 70.0,
-        "plan_adherence": 100.0,
-        "best_session": "london",
-        "common_errors": [],
-        "sessions": {
-          "london": {
-            "pnl": 70.0,
-            "count": 1
-          }
-        }
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036693",
+      "error": "No auth token"
     },
     {
       "test": "Get Heatmap Data",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.887026",
-      "status_code": 200,
-      "response_data": {
-        "trades": [
-          {
-            "pnl": 70.0,
-            "created_at": "2026-02-12T10:23:16.876000"
-          }
-        ]
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036700",
+      "error": "No auth token"
+    },
+    {
+      "test": "Get Gamification Profile",
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036707",
+      "error": "No auth token"
+    },
+    {
+      "test": "Daily Check-in",
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036713",
+      "error": "No auth token"
+    },
+    {
+      "test": "Get Challenges",
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036718",
+      "error": "No auth token"
+    },
+    {
+      "test": "Get Leaderboard",
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036723",
+      "error": "No auth token"
+    },
+    {
+      "test": "Get Hall of Fame",
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036728",
+      "error": "No auth token"
+    },
+    {
+      "test": "Get Achievements",
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036733",
+      "error": "No auth token"
+    },
+    {
+      "test": "Claim Challenge Reward",
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036739",
+      "error": "No auth token"
     },
     {
       "test": "Create Community Post",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.890208",
-      "status_code": 200,
-      "response_data": {
-        "id": "9b761c88-26c7-475b-96b1-8ede37df6b97",
-        "message": "Post cr\u00e9\u00e9 avec succ\u00e8s"
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036745",
+      "error": "No auth token"
     },
     {
       "test": "Get Community Posts",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.893716",
-      "status_code": 200,
-      "response_data": {
-        "posts": [
-          {
-            "id": "9b761c88-26c7-475b-96b1-8ede37df6b97",
-            "author_id": "15bfc2b6-2459-498e-b065-8957e5333d0f",
-            "author_name": "Test Trader",
-            "author_level": "intermediate",
-            "title": "Test Community Post",
-            "content": "This is a test post for the trading community. Sharing my experience with EUR/USD trading.",
-            "category": "experience",
-            "has_screenshot": false,
-            "tags": [
-              "EURUSD",
-              "day-trading"
-            ],
-            "likes_count": 0,
-            "comments_count": 0,
-            "is_liked": false,
-            "created_at": "2026-02-12T10:23:16.889000"
-          },
-          {
-            "id": "1abb88e2-f6a5-419c-866d-846de7e751d5",
-            "author_id": "30e24740-0575-47d4-85ec-6e2005915c67",
-            "author_name": "Test Trader",
-            "author_level": "intermediate",
-            "title": "Test Community Post",
-            "content": "This is a test post for the trading community. Sharing my experience with EUR/USD trading.",
-            "category": "experience",
-            "has_screenshot": false,
-            "tags": [
-              "EURUSD",
-              "day-trading"
-            ],
-            "likes_count": 0,
-            "comments_count": 1,
-            "is_liked": false,
-            "created_at": "2026-02-12T10:22:29.227000"
-          }
-        ]
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036750",
+      "error": "No auth token"
     },
     {
       "test": "Get Community Posts by Category",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.897153",
-      "status_code": 200,
-      "response_data": {
-        "posts": [
-          {
-            "id": "9b761c88-26c7-475b-96b1-8ede37df6b97",
-            "author_id": "15bfc2b6-2459-498e-b065-8957e5333d0f",
-            "author_name": "Test Trader",
-            "author_level": "intermediate",
-            "title": "Test Community Post",
-            "content": "This is a test post for the trading community. Sharing my experience with EUR/USD trading.",
-            "category": "experience",
-            "has_screenshot": false,
-            "tags": [
-              "EURUSD",
-              "day-trading"
-            ],
-            "likes_count": 0,
-            "comments_count": 0,
-            "is_liked": false,
-            "created_at": "2026-02-12T10:23:16.889000"
-          },
-          {
-            "id": "1abb88e2-f6a5-419c-866d-846de7e751d5",
-            "author_id": "30e24740-0575-47d4-85ec-6e2005915c67",
-            "author_name": "Test Trader",
-            "author_level": "intermediate",
-            "title": "Test Community Post",
-            "content": "This is a test post for the trading community. Sharing my experience with EUR/USD trading.",
-            "category": "experience",
-            "has_screenshot": false,
-            "tags": [
-              "EURUSD",
-              "day-trading"
-            ],
-            "likes_count": 0,
-            "comments_count": 1,
-            "is_liked": false,
-            "created_at": "2026-02-12T10:22:29.227000"
-          }
-        ]
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036756",
+      "error": "No auth token"
     },
     {
       "test": "Get Post Detail",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.901850",
-      "status_code": 200,
-      "response_data": {
-        "id": "9b761c88-26c7-475b-96b1-8ede37df6b97",
-        "author_id": "15bfc2b6-2459-498e-b065-8957e5333d0f",
-        "author_name": "Test Trader",
-        "author_level": "intermediate",
-        "title": "Test Community Post",
-        "content": "This is a test post for the trading community. Sharing my experience with EUR/USD trading.",
-        "category": "experience",
-        "screenshot": null,
-        "tags": [
-          "EURUSD",
-          "day-trading"
-        ],
-        "likes_count": 0,
-        "comments_count": 0,
-        "is_liked": false,
-        "comments": [],
-        "created_at": "2026-02-12T10:23:16.889000"
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036761",
+      "error": "No auth token"
     },
     {
       "test": "Add Comment to Post",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.905461",
-      "status_code": 200,
-      "response_data": {
-        "id": "753b515c-7c18-4a8d-a4ca-25f6c272a991",
-        "message": "Commentaire ajout\u00e9"
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036766",
+      "error": "No auth token"
     },
     {
       "test": "Like Post",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.909178",
-      "status_code": 200,
-      "response_data": {
-        "liked": true,
-        "message": "Post lik\u00e9"
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036771",
+      "error": "No auth token"
     },
     {
       "test": "Unlike Post",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.912909",
-      "status_code": 200,
-      "response_data": {
-        "liked": false,
-        "message": "Like retir\u00e9"
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036778",
+      "error": "No auth token"
     },
     {
       "test": "Delete Post",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:16.916621",
-      "status_code": 200,
-      "response_data": {
-        "message": "Post supprim\u00e9"
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036783",
+      "error": "No auth token"
     },
     {
       "test": "AI Setup Analysis",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:23.666789",
-      "status_code": 200,
-      "response_data": {
-        "analysis": "Je peux l\u2019analyser, mais il me manque le **setup** lui\u2011m\u00eame. Pour une analyse 1H EURUSD (BOS/CHOCH/FVG/liquidit\u00e9), j\u2019ai besoin d\u2019au moins l\u2019un de ces \u00e9l\u00e9ments :\n\n- **Capture d\u2019\u00e9cran du graphique 1H** (id\u00e9alement avec tes trac\u00e9s : zones, trendlines, niveaux)\nou\n- Les infos cl\u00e9s en texte :\n  - **Prix actuel**\n  - Dernier **swing high** et **swing low** (niveaux)\n  - O\u00f9 tu vois le **BOS/CHOCH** (niveau cass\u00e9 + cl\u00f4ture ou m\u00e8che)\n  - \u00c9ventuelle **FVG/imbalance** (borne haute/basse)\n  - Zones de **liquidit\u00e9** (equal highs/lows, stops probables)\n  - Ton **plan** (entr\u00e9e, SL, TP) si tu en as un\n\nD\u00e8s que tu envoies la capture ou ces niveaux, je te rends l\u2019analyse structur\u00e9e avec :\n1) Type de setup identifi\u00e9  \n2) Points forts  \n3) Points faibles/risques  \n4) Reco (ACHETER / VENDRE / ATTENDRE)  \n5) Confiance (1\u201310)  \n6) Conseils anti\u2011FOMO/anti\u2011overtrading adapt\u00e9s \u00e0 ton profil day trading.\n\nEnvoie la capture 1H (et si possible le contexte M15/H4) et je m\u2019y mets."
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036789",
+      "error": "No auth token"
     },
     {
       "test": "AI Coaching",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:44.308590",
-      "status_code": 200,
-      "response_data": {
-        "response": "Avec 100% de respect du plan (et un winrate \u00e0 100%), ton enjeu n\u2019est probablement pas \u201cla discipline\u201d au sens classique, mais **la capacit\u00e9 \u00e0 la maintenir quand la variance va revenir** (s\u00e9rie de pertes, boredom, FOMO). L\u2019objectif : rendre ta discipline **automatique** et **anti-ego**.\n\n## 1) Mets ta discipline dans un syst\u00e8me (checklists non n\u00e9gociables)\n**Avant la session Londres (2\u20133 min)**\n- Sommeil/\u00e9nergie not\u00e9 sur 10 (si <6 \u2192 journ\u00e9e \u201clight\u201d ou pas de trade).\n- Niveau de stress not\u00e9 sur 10 (si >7 \u2192 r\u00e9duire taille ou stop apr\u00e8s 1 trade).\n- \u00c9v\u00e9nements macro du jour identifi\u00e9s (si news rouge pendant ton setup \u2192 r\u00e8gles sp\u00e9cifiques).\n\n**Avant chaque trade (checklist 10 secondes)**\n- Setup A/B/C ? (si \u201caucun\u201d \u2192 pas de trade)\n- Confluence minimale atteinte ? (ex : structure + niveau + signal)\n- Stop plac\u00e9 au bon endroit \u201cstructurel\u201d (pas \u00e9motionnel)\n- RR minimum respect\u00e9 (ex : \u2265 1.5R)\n- Taille conforme au risque fixe (ex : 0,5% ou 1% max)\n\nSi un item manque \u2192 **trade interdit**. Z\u00e9ro d\u00e9bat.\n\n## 2) Standardise ton risque (c\u2019est la base de la discipline)\nLa discipline casse souvent \u00e0 cause de la taille de position.  \nChoisis une r\u00e8gle simple :\n- **Risque fixe par trade** (ex : 0,5% du capital)  \n- **Max pertes/jour** : -2R (ou -3R si tu es tr\u00e8s stable)\n- **Max trades/jour** : 2\u20133 (surtout en day trading Londres)\n\nQuand tu atteins l\u2019une des limites \u2192 **fin de journ\u00e9e**, m\u00eame si \u201ctu sens un bon trade\u201d. C\u2019est pr\u00e9cis\u00e9ment l\u00e0 que la discipline se construit.\n\n## 3) Ajoute des \u201ccircuit breakers\u201d anti-tilt\nD\u00e9finis des d\u00e9clencheurs automatiques :\n- **Apr\u00e8s 1 perte** : pause 10 minutes + re-check march\u00e9\n- **Apr\u00e8s 2 pertes** : stop trading (ou passer en micro-lot uniquement)\n- **Apr\u00e8s un gros gain** : stop 15 minutes (\u00e9vite l\u2019euphorie \u2192 overtrade)\n\nCes r\u00e8gles prot\u00e8gent ton PnL et ton mental.\n\n## 4) Combat le pi\u00e8ge n\u00b01 du day trader : l\u2019overtrading (surtout Londres)\nTu as une meilleure session Londres \u2192 excellente, mais c\u2019est aussi l\u00e0 qu\u2019on force des trades.\nStrat\u00e9gie simple :\n- D\u00e9finis **une fen\u00eatre de trading** (ex : 8h00\u201310h30 UK)\n- En dehors : tu observes, tu notes, tu ne touches pas\n- Objectif : **qualit\u00e9** (A+ setups) > quantit\u00e9\n\n## 5) Journal \u201cdiscipline\u201d (pas juste performance)\nChaque trade doit avoir 3 scores (0/1) :\n- J\u2019ai suivi le plan ?  \n- J\u2019ai respect\u00e9 le risque ?  \n- J\u2019ai respect\u00e9 le process (checklist + ex\u00e9cution) ?\n\nTon KPI discipline = % de \u201c1\u201d sur ces items.  \nLe PnL devient secondaire : tu optimises le process.\n\n## 6) Entra\u00eene la discipline comme un muscle (exercices concrets)\n- **Semaine 1** : r\u00e9duire le nombre de trades de 30\u201350% (uniquement les A+)\n- **Semaine 2** : m\u00eame chose + \u201cmax 1 trade par impulsion\u201d (pas de revenge)\n- **Semaine 3** : ajoute une r\u00e8gle : \u201csi je doute \u2192 je passe\u201d\n\nTu vas te surprendre : moins de trades, plus de clart\u00e9, moins de fatigue mentale.\n\n## 7) Pr\u00e9pare-toi au retour de la variance (important avec 100% winrate)\nUn winrate \u00e0 100% n\u2019est pas durable. Le danger : **quand la premi\u00e8re s\u00e9rie de pertes arrive**, tu changes quelque chose.\nR\u00e8gle : **tu ne modifies pas ta strat\u00e9gie pendant une s\u00e9rie**.  \nTu fais un **review hebdo**, pas intraday.\n\n---\n\n### Action imm\u00e9diate (\u00e0 faire aujourd\u2019hui)\n1) \u00c9cris tes **3 setups autoris\u00e9s** (m\u00eame si c\u2019est simple).  \n2) Fixe : **risque/trade + max pertes/jour + max trades/jour**.  \n3) Imprime/colle ta **checklist 10 secondes**.\n\nSi tu me donnes :\n- ton march\u00e9 (FX, indices, crypto\u2026),\n- tes 1\u20133 setups actuels,\n- ton risque par trade actuel,\nje te construis une checklist exacte + des r\u00e8gles de session Londres adapt\u00e9es \u00e0 ton style."
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036795",
+      "error": "No auth token"
     },
     {
       "test": "Daily Briefing",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:53.511764",
-      "status_code": 200,
-      "response_data": {
-        "briefing": "## Briefing quotidien \u2014 Test Trader (Day Trading) \u2014 Sessions London & New York\n\n### 1) Rappel du plan de trading\n- **Priorit\u00e9** : setups A+ uniquement (pas de \u201ctrade pour trader\u201d).  \n- **Timing** : London pour l\u2019impulsion + NY pour la continuation / faux mouvements (attendre la confirmation).  \n- **Risque** : risque fixe par trade, **1 id\u00e9e = 1 invalidation**, stop en place d\u00e8s l\u2019entr\u00e9e.  \n- **Gestion** : si le plan est respect\u00e9, laisse respirer; si invalid\u00e9, sortie imm\u00e9diate. Pas de \u201cmoyennage\u201d.\n\n### 2) Points d\u2019attention (bas\u00e9s sur tes erreurs r\u00e9centes)\n- **Aucune erreur r\u00e9currente d\u00e9tect\u00e9e** \u2192 ton pi\u00e8ge du jour = **surconfiance** (winrate \u00e9lev\u00e9).  \n- Checklist rapide avant chaque entr\u00e9e : **contexte \u2192 niveau cl\u00e9 \u2192 signal \u2192 RR \u2265 2:1 \u2192 invalidation claire**.  \n- Apr\u00e8s un trade gagnant : **pause 5 minutes** (\u00e9vite le revenge/overtrade version \u201ceuphorie\u201d).\n\n### 3) Objectifs du jour (max 3)\n1. **1 \u00e0 3 trades max**, uniquement si tous les crit\u00e8res sont coch\u00e9s.  \n2. **Ex\u00e9cution parfaite** : stop pos\u00e9, pas de modification \u00e9motionnelle, respect du plan de sortie.  \n3. **Journal de trade** : note en 3 lignes \u201cPourquoi j\u2019entre / O\u00f9 j\u2019ai tort / Comment j\u2019ai g\u00e9r\u00e9\u201d.\n\n### 4) Motivation personnalis\u00e9e\nTu n\u2019as pas besoin de prouver quoi que ce soit au march\u00e9. **Ta force aujourd\u2019hui, c\u2019est la discipline** : m\u00eame process, m\u00eames r\u00e8gles, et tu laisses les probabilit\u00e9s faire le boulot."
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.036800",
+      "error": "No auth token"
     },
     {
       "test": "Payment Plans",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:53.513563",
-      "status_code": 200,
-      "response_data": {
-        "plans": {
-          "starter": {
-            "price": 29.0,
-            "name": "Starter",
-            "features": [
-              "Dashboard",
-              "Journal",
-              "Stats de base"
-            ]
-          },
-          "pro": {
-            "price": 79.0,
-            "name": "Pro",
-            "features": [
-              "Tout Starter",
-              "Analyse IA illimit\u00e9e",
-              "Coaching quotidien"
-            ]
-          },
-          "elite": {
-            "price": 149.0,
-            "name": "Elite",
-            "features": [
-              "Tout Pro",
-              "Syst\u00e8me \u00e9ducatif",
-              "Support prioritaire"
-            ]
-          }
-        }
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.038323"
     },
     {
       "test": "Create Checkout",
-      "success": true,
-      "timestamp": "2026-02-12T10:23:53.918908",
-      "status_code": 200,
-      "response_data": {
-        "url": "https://checkout.stripe.com/c/pay/cs_test_a1O9aFRSPu8gRCAekRjBmOq7Z3zRgO5cjVy1xD0z99topLJ0RKXQoDsjsH#fidnandhYHdWcXxpYCc%2FJ2FgY2RwaXEnKSdkdWxOYHwnPyd1blpxYHZxWjA0V2xNT25GMUpjXTRCPFZWf11pVVxyM0NdNmZHN193MkNLVTJLRGlBTUldTDRNQFFITE81QEBmRG5LUWl2UW8yQkdgQVNxV1RMPGBUMzJuYWs2TmFhMEhQNTVSYmNqMEZQYycpJ2N3amhWYHdzYHcnP3F3cGApJ2dkZm5id2pwa2FGamlqdyc%2FJyZjY2NjY2MnKSdpZHxqcHFRfHVgJz8ndmxrYmlgWmxxYGgnKSdga2RnaWBVaWRmYG1qaWFgd3YnP3F3cGB4JSUl",
-        "session_id": "cs_test_a1O9aFRSPu8gRCAekRjBmOq7Z3zRgO5cjVy1xD0z99topLJ0RKXQoDsjsH"
-      }
+      "success": false,
+      "timestamp": "2026-02-12T10:37:29.038333",
+      "error": "No auth token"
     }
   ]
 }
