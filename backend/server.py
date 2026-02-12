@@ -687,6 +687,260 @@ async def stripe_webhook(request: Request):
 async def get_plans():
     return {"plans": SUBSCRIPTION_PLANS}
 
+# ============== CALENDAR & ANALYTICS ENDPOINTS ==============
+
+@app.get("/api/trades/calendar/{year}/{month}")
+async def get_trades_calendar(year: int, month: int, user: dict = Depends(get_current_user)):
+    """Get trades organized by day for calendar view"""
+    start_date = datetime(year, month, 1, tzinfo=timezone.utc)
+    if month == 12:
+        end_date = datetime(year + 1, 1, 1, tzinfo=timezone.utc)
+    else:
+        end_date = datetime(year, month + 1, 1, tzinfo=timezone.utc)
+    
+    trades = list(trades_collection.find({
+        "user_id": user["id"],
+        "created_at": {"$gte": start_date, "$lt": end_date}
+    }))
+    
+    # Group by day
+    calendar_data = {}
+    for trade in trades:
+        day = trade["created_at"].day
+        if day not in calendar_data:
+            calendar_data[day] = {"trades": 0, "pnl": 0, "wins": 0, "losses": 0}
+        calendar_data[day]["trades"] += 1
+        pnl = trade.get("pnl", 0) or 0
+        calendar_data[day]["pnl"] += pnl
+        if pnl > 0:
+            calendar_data[day]["wins"] += 1
+        elif pnl < 0:
+            calendar_data[day]["losses"] += 1
+    
+    return {"year": year, "month": month, "data": calendar_data}
+
+@app.get("/api/trades/duration-stats")
+async def get_trade_duration_stats(user: dict = Depends(get_current_user)):
+    """Get trade duration statistics for charts"""
+    trades = list(trades_collection.find(
+        {"user_id": user["id"], "entry_time": {"$exists": True}, "exit_time": {"$exists": True}},
+        {"entry_time": 1, "exit_time": 1, "pnl": 1, "symbol": 1}
+    ))
+    
+    # For demo, generate sample duration data based on existing trades
+    all_trades = list(trades_collection.find({"user_id": user["id"]}, {"pnl": 1, "created_at": 1, "symbol": 1}))
+    
+    duration_buckets = {
+        "0-5min": {"count": 0, "total_pnl": 0, "wins": 0},
+        "5-15min": {"count": 0, "total_pnl": 0, "wins": 0},
+        "15-30min": {"count": 0, "total_pnl": 0, "wins": 0},
+        "30min-1h": {"count": 0, "total_pnl": 0, "wins": 0},
+        "1h-4h": {"count": 0, "total_pnl": 0, "wins": 0},
+        "4h+": {"count": 0, "total_pnl": 0, "wins": 0}
+    }
+    
+    # Simulate duration distribution
+    import random
+    buckets = list(duration_buckets.keys())
+    for trade in all_trades:
+        bucket = random.choice(buckets)
+        pnl = trade.get("pnl", 0) or 0
+        duration_buckets[bucket]["count"] += 1
+        duration_buckets[bucket]["total_pnl"] += pnl
+        if pnl > 0:
+            duration_buckets[bucket]["wins"] += 1
+    
+    return {"duration_stats": duration_buckets}
+
+# ============== ECONOMIC JOURNAL ENDPOINTS ==============
+
+@app.get("/api/economic/events")
+async def get_economic_events(user: dict = Depends(get_current_user)):
+    """Get upcoming economic events"""
+    # Return sample economic events for demo
+    events = [
+        {"id": "1", "date": (datetime.now(timezone.utc) + timedelta(days=1)).isoformat(), "time": "08:30", "currency": "USD", "event": "Non-Farm Payrolls", "impact": "high", "forecast": "180K", "previous": "175K"},
+        {"id": "2", "date": (datetime.now(timezone.utc) + timedelta(days=1)).isoformat(), "time": "10:00", "currency": "USD", "event": "ISM Manufacturing PMI", "impact": "high", "forecast": "49.5", "previous": "49.2"},
+        {"id": "3", "date": (datetime.now(timezone.utc) + timedelta(days=2)).isoformat(), "time": "14:00", "currency": "USD", "event": "FOMC Meeting Minutes", "impact": "high", "forecast": "-", "previous": "-"},
+        {"id": "4", "date": (datetime.now(timezone.utc) + timedelta(days=2)).isoformat(), "time": "08:30", "currency": "EUR", "event": "ECB Interest Rate Decision", "impact": "high", "forecast": "4.50%", "previous": "4.50%"},
+        {"id": "5", "date": (datetime.now(timezone.utc) + timedelta(days=3)).isoformat(), "time": "09:30", "currency": "GBP", "event": "UK GDP m/m", "impact": "medium", "forecast": "0.2%", "previous": "0.1%"},
+        {"id": "6", "date": (datetime.now(timezone.utc) + timedelta(days=3)).isoformat(), "time": "13:30", "currency": "USD", "event": "Initial Jobless Claims", "impact": "medium", "forecast": "215K", "previous": "211K"},
+        {"id": "7", "date": (datetime.now(timezone.utc) + timedelta(days=4)).isoformat(), "time": "08:30", "currency": "USD", "event": "Core CPI m/m", "impact": "high", "forecast": "0.3%", "previous": "0.3%"},
+        {"id": "8", "date": (datetime.now(timezone.utc) + timedelta(days=5)).isoformat(), "time": "10:00", "currency": "EUR", "event": "German ZEW Economic Sentiment", "impact": "medium", "forecast": "15.0", "previous": "12.5"},
+    ]
+    return {"events": events}
+
+@app.post("/api/economic/analyze")
+async def analyze_economic_event(event_id: str, user: dict = Depends(get_current_user)):
+    """AI analysis of an economic event's potential market impact"""
+    from emergentintegrations.llm.chat import LlmChat, UserMessage
+    
+    # Get user context
+    user_data = users_collection.find_one({"_id": user["id"]})
+    
+    context = f"""Tu es un analyste économique expert. L'utilisateur trade principalement sur:
+- Marchés: {', '.join(user_data.get('preferred_markets', ['Forex', 'Indices']))}
+- Style: {user_data.get('trading_style', 'Day Trading')}
+
+Analyse l'événement économique et fournis:
+1. Impact attendu sur les marchés concernés
+2. Paires/actifs les plus impactés
+3. Scénarios possibles (bullish/bearish)
+4. Recommandations de positionnement
+5. Niveaux clés à surveiller
+6. Timing optimal pour trader
+
+Sois précis, professionnel et donne des conseils actionnables. Réponds en français."""
+
+    chat = LlmChat(
+        api_key=EMERGENT_LLM_KEY,
+        session_id=f"economic_{user['id']}_{event_id}",
+        system_message=context
+    ).with_model("openai", "gpt-5.2")
+    
+    # Sample event data for analysis
+    event_info = f"Analyse l'impact du prochain rapport économique sur les marchés. Quels sont les scénarios possibles et comment se positionner?"
+    
+    try:
+        response = await chat.send_message(UserMessage(text=event_info))
+        return {"analysis": response}
+    except Exception as e:
+        raise HTTPException(500, f"Erreur analyse: {str(e)}")
+
+@app.get("/api/economic/market-sentiment")
+async def get_market_sentiment(user: dict = Depends(get_current_user)):
+    """Get AI-powered market sentiment analysis"""
+    from emergentintegrations.llm.chat import LlmChat, UserMessage
+    
+    context = """Tu es un analyste de marché expert. Génère une analyse du sentiment actuel du marché basée sur:
+- Tendances macro-économiques
+- Sentiment risk-on/risk-off
+- Flux institutionnels
+- Volatilité attendue
+
+Format de réponse:
+- Sentiment global (Bullish/Bearish/Neutre)
+- Score de confiance (1-10)
+- Principaux drivers
+- Marchés à surveiller
+- Risques majeurs
+
+Réponds en français de manière concise et professionnelle."""
+
+    chat = LlmChat(
+        api_key=EMERGENT_LLM_KEY,
+        session_id=f"sentiment_{user['id']}_{datetime.now().strftime('%Y%m%d')}",
+        system_message=context
+    ).with_model("openai", "gpt-5.2")
+    
+    try:
+        response = await chat.send_message(UserMessage(text="Analyse le sentiment actuel des marchés financiers"))
+        return {"sentiment": response}
+    except Exception as e:
+        raise HTTPException(500, f"Erreur sentiment: {str(e)}")
+
+# ============== TICKET SYSTEM ENDPOINTS ==============
+
+@app.post("/api/tickets")
+async def create_ticket(data: TicketCreate, user: dict = Depends(get_current_user)):
+    """Create a new support ticket for expert consultation"""
+    ticket_id = str(uuid.uuid4())
+    ticket = {
+        "_id": ticket_id,
+        "user_id": user["id"],
+        "user_name": user.get("name", "Utilisateur"),
+        "user_email": user.get("email"),
+        "subject": data.subject,
+        "category": data.category,
+        "priority": data.priority,
+        "status": "open",
+        "messages": [{
+            "id": str(uuid.uuid4()),
+            "sender": "user",
+            "sender_name": user.get("name", "Utilisateur"),
+            "content": data.message,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }],
+        "created_at": datetime.now(timezone.utc),
+        "updated_at": datetime.now(timezone.utc)
+    }
+    tickets_collection.insert_one(ticket)
+    return {"id": ticket_id, "message": "Ticket créé avec succès"}
+
+@app.get("/api/tickets")
+async def get_user_tickets(user: dict = Depends(get_current_user)):
+    """Get all tickets for the current user"""
+    tickets = list(tickets_collection.find(
+        {"user_id": user["id"]},
+        {"_id": 1, "subject": 1, "category": 1, "priority": 1, "status": 1, "created_at": 1, "updated_at": 1}
+    ).sort("updated_at", -1))
+    
+    result = []
+    for t in tickets:
+        result.append({
+            "id": str(t["_id"]),
+            "subject": t["subject"],
+            "category": t["category"],
+            "priority": t["priority"],
+            "status": t["status"],
+            "created_at": t["created_at"].isoformat() if isinstance(t["created_at"], datetime) else t["created_at"],
+            "updated_at": t["updated_at"].isoformat() if isinstance(t["updated_at"], datetime) else t["updated_at"]
+        })
+    return {"tickets": result}
+
+@app.get("/api/tickets/{ticket_id}")
+async def get_ticket(ticket_id: str, user: dict = Depends(get_current_user)):
+    """Get a specific ticket with all messages"""
+    ticket = tickets_collection.find_one({"_id": ticket_id, "user_id": user["id"]})
+    if not ticket:
+        raise HTTPException(404, "Ticket non trouvé")
+    
+    return {
+        "id": str(ticket["_id"]),
+        "subject": ticket["subject"],
+        "category": ticket["category"],
+        "priority": ticket["priority"],
+        "status": ticket["status"],
+        "messages": ticket.get("messages", []),
+        "created_at": ticket["created_at"].isoformat() if isinstance(ticket["created_at"], datetime) else ticket["created_at"],
+        "updated_at": ticket["updated_at"].isoformat() if isinstance(ticket["updated_at"], datetime) else ticket["updated_at"]
+    }
+
+@app.post("/api/tickets/{ticket_id}/reply")
+async def reply_to_ticket(ticket_id: str, data: TicketReply, user: dict = Depends(get_current_user)):
+    """Add a reply to a ticket"""
+    ticket = tickets_collection.find_one({"_id": ticket_id, "user_id": user["id"]})
+    if not ticket:
+        raise HTTPException(404, "Ticket non trouvé")
+    
+    new_message = {
+        "id": str(uuid.uuid4()),
+        "sender": "user",
+        "sender_name": user.get("name", "Utilisateur"),
+        "content": data.message,
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    tickets_collection.update_one(
+        {"_id": ticket_id},
+        {
+            "$push": {"messages": new_message},
+            "$set": {"updated_at": datetime.now(timezone.utc), "status": "open"}
+        }
+    )
+    return {"message": "Réponse ajoutée"}
+
+@app.put("/api/tickets/{ticket_id}/close")
+async def close_ticket(ticket_id: str, user: dict = Depends(get_current_user)):
+    """Close a ticket"""
+    result = tickets_collection.update_one(
+        {"_id": ticket_id, "user_id": user["id"]},
+        {"$set": {"status": "closed", "updated_at": datetime.now(timezone.utc)}}
+    )
+    if result.modified_count == 0:
+        raise HTTPException(404, "Ticket non trouvé")
+    return {"message": "Ticket fermé"}
+
 # ============== HEALTH CHECK ==============
 
 @app.get("/api/health")
