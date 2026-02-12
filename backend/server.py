@@ -150,6 +150,9 @@ class CommunityPost(BaseModel):
 class CommunityComment(BaseModel):
     content: str
 
+class ChallengeJoin(BaseModel):
+    challenge_id: str
+
 class CheckoutRequest(BaseModel):
     plan: str  # "starter", "pro", "elite"
     origin_url: str
