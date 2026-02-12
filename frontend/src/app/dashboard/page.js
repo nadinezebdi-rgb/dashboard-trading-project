@@ -18,9 +18,15 @@ import {
   ChevronRight,
   AlertCircle,
   Menu,
-  X
+  X,
+  Newspaper,
+  MessageSquare,
+  Sun,
+  Moon,
+  Clock
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
+import { useTheme } from '@/lib/theme-context';
 import { api } from '@/lib/api';
 import { formatCurrency, formatPercent } from '@/lib/utils';
 import { 
@@ -32,6 +38,7 @@ import {
   parseISO 
 } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 // Heatmap Component
 function TradingHeatmap({ trades = [] }) {
