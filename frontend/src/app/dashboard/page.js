@@ -23,7 +23,8 @@ import {
   MessageSquare,
   Sun,
   Moon,
-  Clock
+  Clock,
+  Users
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { useTheme } from '@/lib/theme-context';
