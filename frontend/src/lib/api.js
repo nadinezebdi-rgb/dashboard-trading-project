@@ -238,6 +238,39 @@ class ApiClient {
   async getUserProfile(userId) {
     return this.request(`/api/community/user/${userId}`);
   }
+
+  // Gamification
+  async getGamificationProfile() {
+    return this.request('/api/gamification/profile');
+  }
+
+  async dailyCheckin() {
+    return this.request('/api/gamification/checkin', {
+      method: 'POST'
+    });
+  }
+
+  async getChallenges() {
+    return this.request('/api/gamification/challenges');
+  }
+
+  async claimChallengeReward(challengeId) {
+    return this.request(`/api/gamification/challenges/${challengeId}/claim`, {
+      method: 'POST'
+    });
+  }
+
+  async getLeaderboard(period = 'weekly') {
+    return this.request(`/api/gamification/leaderboard?period=${period}`);
+  }
+
+  async getHallOfFame() {
+    return this.request('/api/gamification/hall-of-fame');
+  }
+
+  async getAllAchievements() {
+    return this.request('/api/gamification/achievements');
+  }
 }
 
 export const api = new ApiClient();
