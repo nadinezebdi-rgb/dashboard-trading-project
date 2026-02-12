@@ -135,6 +135,60 @@ class ApiClient {
   async getPaymentStatus(sessionId) {
     return this.request(`/api/payments/status/${sessionId}`);
   }
+
+  // Calendar & Analytics
+  async getCalendarData(year, month) {
+    return this.request(`/api/trades/calendar/${year}/${month}`);
+  }
+
+  async getDurationStats() {
+    return this.request('/api/trades/duration-stats');
+  }
+
+  // Economic Journal
+  async getEconomicEvents() {
+    return this.request('/api/economic/events');
+  }
+
+  async analyzeEconomicEvent(eventId) {
+    return this.request('/api/economic/analyze', {
+      method: 'POST',
+      body: JSON.stringify({ event_id: eventId })
+    });
+  }
+
+  async getMarketSentiment() {
+    return this.request('/api/economic/market-sentiment');
+  }
+
+  // Tickets
+  async getTickets() {
+    return this.request('/api/tickets');
+  }
+
+  async getTicket(ticketId) {
+    return this.request(`/api/tickets/${ticketId}`);
+  }
+
+  async createTicket(data) {
+    return this.request('/api/tickets', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  }
+
+  async replyToTicket(ticketId, message) {
+    return this.request(`/api/tickets/${ticketId}/reply`, {
+      method: 'POST',
+      body: JSON.stringify({ message })
+    });
+  }
+
+  async closeTicket(ticketId) {
+    return this.request(`/api/tickets/${ticketId}/close`, {
+      method: 'PUT'
+    });
+  }
 }
 
 export const api = new ApiClient();
