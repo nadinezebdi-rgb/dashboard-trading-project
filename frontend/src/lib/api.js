@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || process.env.REACT_APP_BACKEND_URL || 'https://e127-stage-preview.emergentagent.com';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
 class ApiClient {
   constructor() {
