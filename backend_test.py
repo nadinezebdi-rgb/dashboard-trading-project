@@ -701,6 +701,22 @@ class TradingPlatformTester:
         self.test_unlike_post()
         self.test_delete_post()
         
+        # Notifications feature tests
+        print("\n--- Notifications Feature Tests ---")
+        self.test_get_notifications()
+        self.test_mark_notifications_read()
+        
+        # Seasons feature tests
+        print("\n--- Seasons Feature Tests ---")
+        self.test_get_current_season()
+        
+        # Rewards feature tests
+        print("\n--- Rewards Feature Tests ---")
+        self.test_get_themes()
+        self.test_activate_theme()
+        self.test_get_level_perks()
+        self.test_get_top_performer_rewards()
+        
         # AI features tests (may fail if service unavailable)
         print("\n--- AI Feature Tests ---")
         self.test_ai_setup_analysis()
