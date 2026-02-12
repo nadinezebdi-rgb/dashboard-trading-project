@@ -1718,6 +1718,10 @@ async def claim_challenge_reward(challenge_id: str, user: dict = Depends(get_cur
     if existing:
         raise HTTPException(400, "Récompense déjà réclamée")
     
+    # Get old XP for level up check
+    user_data = users_collection.find_one({"_id": user["id"]})
+    old_xp = user_data.get("xp", 0)
+    
     # Record claim
     user_challenges_collection.insert_one({
         "_id": str(uuid.uuid4()),
@@ -1729,6 +1733,10 @@ async def claim_challenge_reward(challenge_id: str, user: dict = Depends(get_cur
     
     # Award XP
     users_collection.update_one({"_id": user["id"]}, {"$inc": {"xp": template["xp_reward"]}})
+    new_xp = old_xp + template["xp_reward"]
+    
+    # Check for level up
+    leveled_up = check_level_up(user["id"], old_xp, new_xp)
     
     # Award badge if applicable
     badge_awarded = None
