@@ -49,6 +49,10 @@ user_challenges_collection = db["user_challenges"]
 achievements_collection = db["achievements"]
 user_achievements_collection = db["user_achievements"]
 streaks_collection = db["streaks"]
+notifications_collection = db["notifications"]
+seasons_collection = db["seasons"]
+rewards_collection = db["rewards"]
+user_rewards_collection = db["user_rewards"]
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
