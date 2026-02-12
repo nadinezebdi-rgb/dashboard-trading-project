@@ -37,11 +37,13 @@ import { useAuth } from '@/lib/auth-context';
 import { useTheme } from '@/lib/theme-context';
 import { api } from '@/lib/api';
 import { formatCurrency } from '@/lib/utils';
+import NotificationBell from '@/components/NotificationBell';
 
 const PERIOD_LABELS = {
   daily: 'Aujourd\'hui',
   weekly: 'Cette semaine',
-  monthly: 'Ce mois'
+  monthly: 'Ce mois',
+  season: 'Saison'
 };
 
 const CHALLENGE_TYPE_COLORS = {
