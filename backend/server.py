@@ -1333,6 +1333,45 @@ ACHIEVEMENTS = {
     "helper": {"name": "Mentor", "description": "10 commentaires utiles", "icon": "🤝", "xp": 200},
     "popular": {"name": "Influenceur", "description": "50 likes reçus", "icon": "⭐", "xp": 300},
     "elite_trader": {"name": "Trader Élite", "description": "Atteins le niveau 10", "icon": "👑", "xp": 1000},
+    "season_champion": {"name": "Champion de Saison", "description": "Top 1 d'une saison", "icon": "🏅", "xp": 2000},
+    "season_podium": {"name": "Podium", "description": "Top 3 d'une saison", "icon": "🥇", "xp": 1000},
+    "season_top10": {"name": "Top 10", "description": "Top 10 d'une saison", "icon": "🌟", "xp": 500},
+}
+
+# Level rewards and perks
+LEVEL_REWARDS = {
+    1: {"theme": "default", "perks": [], "title": "Novice"},
+    2: {"theme": "bronze", "perks": ["custom_avatar_border"], "title": "Apprenti"},
+    3: {"theme": "bronze", "perks": ["custom_avatar_border", "profile_badge"], "title": "Trader"},
+    4: {"theme": "silver", "perks": ["custom_avatar_border", "profile_badge", "priority_support"], "title": "Trader Confirmé"},
+    5: {"theme": "silver", "perks": ["custom_avatar_border", "profile_badge", "priority_support", "exclusive_emojis"], "title": "Expert"},
+    6: {"theme": "gold", "perks": ["custom_avatar_border", "profile_badge", "priority_support", "exclusive_emojis", "webinar_access"], "title": "Expert Senior"},
+    7: {"theme": "gold", "perks": ["custom_avatar_border", "profile_badge", "priority_support", "exclusive_emojis", "webinar_access", "mentoring_discount_10"], "title": "Maître"},
+    8: {"theme": "platinum", "perks": ["custom_avatar_border", "profile_badge", "priority_support", "exclusive_emojis", "webinar_access", "mentoring_discount_20", "early_access"], "title": "Grand Maître"},
+    9: {"theme": "platinum", "perks": ["custom_avatar_border", "profile_badge", "priority_support", "exclusive_emojis", "webinar_access", "mentoring_discount_30", "early_access", "vip_chat"], "title": "Légende"},
+    10: {"theme": "diamond", "perks": ["all_perks", "subscription_discount_10", "free_mentoring_session"], "title": "Élite"},
+}
+
+# Top performer rewards
+TOP_PERFORMER_REWARDS = {
+    1: {"name": "Champion", "perks": ["free_month_subscription", "exclusive_webinar", "1on1_mentoring", "champion_badge"], "discount": 50},
+    2: {"name": "Vice-Champion", "perks": ["exclusive_webinar", "mentoring_discount_50", "silver_badge"], "discount": 30},
+    3: {"name": "Bronze", "perks": ["exclusive_webinar", "mentoring_discount_30", "bronze_badge"], "discount": 20},
+    "top10": {"name": "Top 10", "perks": ["exclusive_webinar", "mentoring_discount_10"], "discount": 10},
+}
+
+# Available themes
+THEMES = {
+    "default": {"name": "Classique", "primary": "#3B82F6", "accent": "#06B6D4", "required_level": 1},
+    "bronze": {"name": "Bronze", "primary": "#CD7F32", "accent": "#8B4513", "required_level": 2},
+    "silver": {"name": "Argent", "primary": "#C0C0C0", "accent": "#708090", "required_level": 4},
+    "gold": {"name": "Or", "primary": "#FFD700", "accent": "#FFA500", "required_level": 6},
+    "platinum": {"name": "Platine", "primary": "#E5E4E2", "accent": "#9CA3AF", "required_level": 8},
+    "diamond": {"name": "Diamant", "primary": "#B9F2FF", "accent": "#00CED1", "required_level": 10},
+    "neon": {"name": "Néon", "primary": "#FF00FF", "accent": "#00FF00", "required_level": 5},
+    "fire": {"name": "Feu", "primary": "#FF4500", "accent": "#FF6347", "required_level": 7},
+    "ice": {"name": "Glace", "primary": "#00BFFF", "accent": "#87CEEB", "required_level": 7},
+    "champion": {"name": "Champion", "primary": "#FFD700", "accent": "#FF4500", "required_level": 10, "special": True},
 }
 
 def calculate_level(xp: int) -> dict:
