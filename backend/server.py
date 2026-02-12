@@ -1396,6 +1396,86 @@ def calculate_level(xp: int) -> dict:
         "progress": round(progress, 1)
     }
 
+def create_notification(user_id: str, notif_type: str, title: str, message: str, data: dict = None):
+    """Create a notification for a user"""
+    notifications_collection.insert_one({
+        "_id": str(uuid.uuid4()),
+        "user_id": user_id,
+        "type": notif_type,
+        "title": title,
+        "message": message,
+        "data": data or {},
+        "read": False,
+        "created_at": datetime.now(timezone.utc)
+    })
+
+def check_level_up(user_id: str, old_xp: int, new_xp: int):
+    """Check if user leveled up and create notification"""
+    old_level = calculate_level(old_xp)["level"]
+    new_level = calculate_level(new_xp)["level"]
+    
+    if new_level > old_level:
+        # User leveled up!
+        rewards = LEVEL_REWARDS.get(new_level, LEVEL_REWARDS[1])
+        
+        # Create notification
+        create_notification(
+            user_id,
+            "level_up",
+            f"🎉 Niveau {new_level} atteint !",
+            f"Félicitations ! Tu es maintenant {rewards['title']}. De nouvelles récompenses t'attendent !",
+            {"level": new_level, "title": rewards["title"], "theme": rewards["theme"], "perks": rewards["perks"]}
+        )
+        
+        # Unlock theme
+        users_collection.update_one(
+            {"_id": user_id},
+            {"$addToSet": {"unlocked_themes": rewards["theme"]}}
+        )
+        
+        # Award elite_trader badge at level 10
+        if new_level >= 10:
+            existing = user_achievements_collection.find_one({"user_id": user_id, "achievement_id": "elite_trader"})
+            if not existing:
+                user_achievements_collection.insert_one({
+                    "_id": str(uuid.uuid4()),
+                    "user_id": user_id,
+                    "achievement_id": "elite_trader",
+                    "earned_at": datetime.now(timezone.utc)
+                })
+                create_notification(
+                    user_id,
+                    "achievement",
+                    "🏆 Badge Débloqué: Trader Élite",
+                    "Tu as atteint le niveau 10 ! Le badge Trader Élite est maintenant tien.",
+                    {"achievement_id": "elite_trader"}
+                )
+        
+        return True
+    return False
+
+def get_current_season():
+    """Get or create current season"""
+    now = datetime.now(timezone.utc)
+    # Seasons are monthly
+    season_id = now.strftime("%Y-%m")
+    season_name = now.strftime("%B %Y")
+    
+    season = seasons_collection.find_one({"_id": season_id})
+    if not season:
+        # Create new season
+        season = {
+            "_id": season_id,
+            "name": f"Saison {season_name}",
+            "start_date": now.replace(day=1, hour=0, minute=0, second=0, microsecond=0),
+            "end_date": (now.replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(seconds=1),
+            "status": "active",
+            "rewards_distributed": False
+        }
+        seasons_collection.insert_one(season)
+    
+    return season
+
 def check_and_award_achievements(user_id: str):
     """Check and award achievements based on user activity"""
     user = users_collection.find_one({"_id": user_id})
