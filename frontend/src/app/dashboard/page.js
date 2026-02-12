@@ -547,31 +547,42 @@ export default function DashboardPage() {
               </div>
               <div className="flex-1">
                 <h3 className="font-bold">Journal</h3>
-                <p className="text-sm text-muted-foreground">Voir tous tes trades</p>
+                <p className="text-sm" style={{ color: 'var(--muted-foreground)' }}>Voir tous tes trades</p>
               </div>
-              <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+              <ChevronRight className="w-5 h-5 group-hover:text-primary transition-colors" style={{ color: 'var(--muted-foreground)' }} />
             </Link>
 
-            <Link href="/analysis" className="card flex items-center gap-4 hover:border-primary/30 transition-colors group" data-testid="quick-analysis">
+            <Link href="/calendar" className="card flex items-center gap-4 hover:border-primary/30 transition-colors group" data-testid="quick-calendar">
               <div className="w-12 h-12 rounded-sm bg-primary/10 flex items-center justify-center">
-                <Brain className="w-6 h-6 text-primary" />
+                <Calendar className="w-6 h-6 text-primary" />
               </div>
               <div className="flex-1">
-                <h3 className="font-bold">Analyse IA</h3>
-                <p className="text-sm text-muted-foreground">Analyser un setup</p>
+                <h3 className="font-bold">Calendrier</h3>
+                <p className="text-sm" style={{ color: 'var(--muted-foreground)' }}>Vue mensuelle</p>
               </div>
-              <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+              <ChevronRight className="w-5 h-5 group-hover:text-primary transition-colors" style={{ color: 'var(--muted-foreground)' }} />
             </Link>
 
-            <Link href="/coaching" className="card flex items-center gap-4 hover:border-primary/30 transition-colors group" data-testid="quick-coaching">
+            <Link href="/economic" className="card flex items-center gap-4 hover:border-primary/30 transition-colors group" data-testid="quick-economic">
               <div className="w-12 h-12 rounded-sm bg-primary/10 flex items-center justify-center">
-                <Target className="w-6 h-6 text-primary" />
+                <Newspaper className="w-6 h-6 text-primary" />
               </div>
               <div className="flex-1">
-                <h3 className="font-bold">Coaching</h3>
-                <p className="text-sm text-muted-foreground">Parler à ton coach</p>
+                <h3 className="font-bold">Économie</h3>
+                <p className="text-sm" style={{ color: 'var(--muted-foreground)' }}>Journal économique</p>
               </div>
-              <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+              <ChevronRight className="w-5 h-5 group-hover:text-primary transition-colors" style={{ color: 'var(--muted-foreground)' }} />
+            </Link>
+
+            <Link href="/tickets" className="card flex items-center gap-4 hover:border-primary/30 transition-colors group" data-testid="quick-experts">
+              <div className="w-12 h-12 rounded-sm bg-primary/10 flex items-center justify-center">
+                <MessageSquare className="w-6 h-6 text-primary" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold">Experts</h3>
+                <p className="text-sm" style={{ color: 'var(--muted-foreground)' }}>Consultations</p>
+              </div>
+              <ChevronRight className="w-5 h-5 group-hover:text-primary transition-colors" style={{ color: 'var(--muted-foreground)' }} />
             </Link>
           </div>
         </div>
