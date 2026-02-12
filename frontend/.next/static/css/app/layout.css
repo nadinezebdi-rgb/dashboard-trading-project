@@ -743,6 +743,9 @@ video {
 .h-60{
   height: 15rem;
 }
+.h-64{
+  height: 16rem;
+}
 .max-h-\[150px\]{
   max-height: 150px;
 }
@@ -2153,6 +2156,10 @@ body {
 
   .sm\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-4{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .sm\:flex-row{
