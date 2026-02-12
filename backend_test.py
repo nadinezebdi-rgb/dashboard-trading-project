@@ -578,6 +578,16 @@ class TradingPlatformTester:
         self.test_get_trade_stats()
         self.test_get_heatmap_data()
         
+        # Gamification feature tests
+        print("\n--- Gamification Feature Tests ---")
+        self.test_get_gamification_profile()
+        self.test_daily_checkin()
+        self.test_get_challenges()
+        self.test_get_leaderboard()
+        self.test_get_hall_of_fame()
+        self.test_get_achievements()
+        self.test_claim_challenge_reward()
+        
         # Community feature tests
         print("\n--- Community Feature Tests ---")
         self.test_create_community_post()
