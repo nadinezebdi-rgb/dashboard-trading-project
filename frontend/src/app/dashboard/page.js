@@ -366,22 +366,16 @@ export default function DashboardPage() {
           ))}
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-zinc-800">
-          <div className="flex items-center gap-3 mb-4 px-2">
-            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-              <span className="font-bold text-primary">{user?.name?.charAt(0).toUpperCase()}</span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-medium truncate">{user?.name}</p>
-              <p className="text-xs text-muted-foreground truncate">{user?.subscription || 'Free'}</p>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <Link href="/settings" className="btn-secondary flex-1 flex items-center justify-center gap-2 py-2" data-testid="nav-settings">
-              <Settings className="w-4 h-4" />
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t" style={{ borderColor: 'var(--border)' }}>
+          <div className="flex items-center justify-between mb-4">
+            <button onClick={toggleTheme} className="p-2 rounded-sm hover:bg-secondary">
+              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+            <Link href="/settings" className="p-2 rounded-sm hover:bg-secondary" data-testid="nav-settings">
+              <Settings className="w-5 h-5" />
             </Link>
-            <button onClick={handleLogout} className="btn-secondary flex-1 flex items-center justify-center gap-2 py-2" data-testid="logout-btn">
-              <LogOut className="w-4 h-4" />
+            <button onClick={handleLogout} className="p-2 rounded-sm hover:bg-secondary" data-testid="logout-btn">
+              <LogOut className="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -396,7 +390,7 @@ export default function DashboardPage() {
               <h1 className="font-heading text-3xl font-bold uppercase tracking-tight">
                 Bonjour, {user?.name}
               </h1>
-              <p className="text-muted-foreground">Voici ta performance de trading</p>
+              <p style={{ color: 'var(--muted-foreground)' }}>Voici ta performance de trading</p>
             </div>
             <Link href="/journal/new" className="btn-primary flex items-center gap-2" data-testid="add-trade-btn">
               <Plus className="w-4 h-4" />
