@@ -158,6 +158,7 @@ export default function ChallengesPage() {
     { href: '/calendar', label: 'Calendrier', icon: CalendarIcon },
     { href: '/community', label: 'Communauté', icon: Users },
     { href: '/challenges', label: 'Challenges', icon: Trophy, active: true },
+    { href: '/rewards', label: 'Récompenses', icon: Gift },
     { href: '/economic', label: 'Économie', icon: Newspaper },
     { href: '/analysis', label: 'Analyse IA', icon: Brain },
     { href: '/coaching', label: 'Coaching', icon: Target },
