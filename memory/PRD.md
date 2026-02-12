@@ -1,7 +1,7 @@
 # Trading AI Platform - PRD
 
 ## Problem Statement
-Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching personnalisé et système de communauté.
+Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching personnalisé, communauté et système de gamification.
 
 ## User Personas
 1. **Trader Débutant** - Cherche à apprendre et éviter les erreurs communes
@@ -15,6 +15,7 @@ Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching per
 - Coaching personnalisé quotidien
 - Mode sombre/clair
 - Interface en français
+- Système de gamification pour fidélisation
 
 ## Architecture
 - **Frontend**: Next.js 14 + React 18 + Tailwind CSS + Recharts
@@ -34,20 +35,21 @@ Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching per
 - [x] Journal de trading (entrée manuelle + screenshots)
 - [x] Analyse de setup IA avec vision GPT-5.2
 
-### Nouvelles Features ✅
+### Analytiques ✅
 - [x] Calendrier mensuel des trades
 - [x] Graphique durée des trades (Recharts)
 - [x] Journal économique avec analyse IA des événements
+
+### Engagement & Fidélisation ✅
 - [x] Système de tickets pour consultations experts
 - [x] **Communauté** (posts, commentaires, likes, profils)
-
-### Communauté Features ✅
-- Posts avec 6 catégories (Setup, Win, Loss, Experience, Question, Education)
-- Commentaires sur les posts
-- Système de likes (posts et commentaires)
-- Upload d'images dans les posts
-- Filtrage par catégorie
-- Profils utilisateurs publics
+- [x] **Challenges** (quotidiens, hebdomadaires, mensuels)
+- [x] **Leaderboard** (classements par période)
+- [x] **Hall of Fame** (Top Niveaux, PnL, Winrate)
+- [x] **Badges/Achievements** (15 badges débloquables)
+- [x] **Système XP/Niveaux** (progression avec récompenses)
+- [x] **Streaks** (jours de connexion consécutifs)
+- [x] **Check-in quotidien** avec bonus XP
 
 ### Intégrations ✅
 - GPT-5.2 (analyse setup, coaching, briefing, analyse économique)
@@ -70,6 +72,26 @@ Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching per
 - [ ] Alertes de trading personnalisées
 - [ ] Mode social trading (copie de trades)
 - [ ] Application mobile (React Native)
+
+## Gamification System Details
+
+### Challenges
+- **Daily**: Trader du Jour (3 trades), Journée Verte (profit)
+- **Weekly**: Série Gagnante (5 wins), Discipline (100% plan), Membre Actif (3 posts)
+- **Monthly**: Trader Régulier (20 trades), Mois Profitable, Sniper (60% WR)
+
+### Achievements (15 badges)
+- First Trade, First Win, First Post
+- Streak 7, Streak 30
+- Trades 10, 50, 100
+- Hot Streak, Disciplined, Consistent
+- Profitable Month, Sniper
+- Helper, Popular, Elite Trader
+
+### XP System
+- Levels 1-10+ avec seuils progressifs
+- XP gagnés via: check-in, challenges, trades, posts
+- Récompenses: badges, reconnaissance, features exclusives
 
 ## Next Steps
 1. Implémenter les notifications push
