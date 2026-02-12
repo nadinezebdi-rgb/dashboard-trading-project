@@ -1903,6 +1903,253 @@ async def get_all_achievements(user: dict = Depends(get_current_user)):
     
     return {"achievements": achievements}
 
+# ============== NOTIFICATIONS ENDPOINTS ==============
+
+@app.get("/api/notifications")
+async def get_notifications(limit: int = 20, user: dict = Depends(get_current_user)):
+    """Get user notifications"""
+    notifications = list(notifications_collection.find(
+        {"user_id": user["id"]},
+        {"user_id": 0}
+    ).sort("created_at", -1).limit(limit))
+    
+    unread_count = notifications_collection.count_documents({"user_id": user["id"], "read": False})
+    
+    result = []
+    for n in notifications:
+        result.append({
+            "id": str(n["_id"]),
+            "type": n["type"],
+            "title": n["title"],
+            "message": n["message"],
+            "data": n.get("data", {}),
+            "read": n["read"],
+            "created_at": n["created_at"].isoformat() if isinstance(n["created_at"], datetime) else n["created_at"]
+        })
+    
+    return {"notifications": result, "unread_count": unread_count}
+
+@app.post("/api/notifications/read")
+async def mark_notifications_read(notification_ids: List[str] = None, user: dict = Depends(get_current_user)):
+    """Mark notifications as read"""
+    if notification_ids:
+        notifications_collection.update_many(
+            {"_id": {"$in": notification_ids}, "user_id": user["id"]},
+            {"$set": {"read": True}}
+        )
+    else:
+        # Mark all as read
+        notifications_collection.update_many(
+            {"user_id": user["id"]},
+            {"$set": {"read": True}}
+        )
+    return {"message": "Notifications marquées comme lues"}
+
+# ============== SEASONS ENDPOINTS ==============
+
+@app.get("/api/seasons/current")
+async def get_current_season_info(user: dict = Depends(get_current_user)):
+    """Get current season info and user ranking"""
+    season = get_current_season()
+    
+    # Calculate days remaining
+    now = datetime.now(timezone.utc)
+    end_date = season["end_date"]
+    if isinstance(end_date, str):
+        end_date = datetime.fromisoformat(end_date.replace('Z', '+00:00'))
+    days_remaining = (end_date - now).days
+    
+    # Get user's season stats
+    start_date = season["start_date"]
+    if isinstance(start_date, str):
+        start_date = datetime.fromisoformat(start_date.replace('Z', '+00:00'))
+    
+    user_trades = list(trades_collection.find({
+        "user_id": user["id"],
+        "created_at": {"$gte": start_date}
+    }))
+    
+    total_pnl = sum(t.get("pnl", 0) or 0 for t in user_trades)
+    winning = len([t for t in user_trades if (t.get("pnl") or 0) > 0])
+    winrate = round((winning / len(user_trades)) * 100, 1) if user_trades else 0
+    
+    # Get user's rank in season
+    pipeline = [
+        {"$match": {"created_at": {"$gte": start_date}}},
+        {"$group": {
+            "_id": "$user_id",
+            "total_pnl": {"$sum": {"$ifNull": ["$pnl", 0]}}
+        }},
+        {"$sort": {"total_pnl": -1}}
+    ]
+    all_rankings = list(trades_collection.aggregate(pipeline))
+    user_rank = next((i+1 for i, r in enumerate(all_rankings) if r["_id"] == user["id"]), None)
+    
+    return {
+        "season": {
+            "id": season["_id"],
+            "name": season["name"],
+            "start_date": start_date.isoformat() if isinstance(start_date, datetime) else start_date,
+            "end_date": end_date.isoformat() if isinstance(end_date, datetime) else end_date,
+            "days_remaining": max(0, days_remaining),
+            "status": season["status"]
+        },
+        "user_stats": {
+            "total_pnl": round(total_pnl, 2),
+            "trades_count": len(user_trades),
+            "winrate": winrate,
+            "rank": user_rank,
+            "total_participants": len(all_rankings)
+        },
+        "rewards": TOP_PERFORMER_REWARDS
+    }
+
+@app.get("/api/seasons/history")
+async def get_seasons_history(user: dict = Depends(get_current_user)):
+    """Get past seasons with results"""
+    past_seasons = list(seasons_collection.find(
+        {"status": "completed"}
+    ).sort("start_date", -1).limit(12))
+    
+    result = []
+    for season in past_seasons:
+        # Get user's rank in that season
+        start_date = season["start_date"]
+        end_date = season["end_date"]
+        
+        pipeline = [
+            {"$match": {"created_at": {"$gte": start_date, "$lte": end_date}}},
+            {"$group": {
+                "_id": "$user_id",
+                "total_pnl": {"$sum": {"$ifNull": ["$pnl", 0]}}
+            }},
+            {"$sort": {"total_pnl": -1}}
+        ]
+        rankings = list(trades_collection.aggregate(pipeline))
+        user_rank = next((i+1 for i, r in enumerate(rankings) if r["_id"] == user["id"]), None)
+        user_pnl = next((r["total_pnl"] for r in rankings if r["_id"] == user["id"]), 0)
+        
+        result.append({
+            "id": season["_id"],
+            "name": season["name"],
+            "user_rank": user_rank,
+            "user_pnl": round(user_pnl, 2),
+            "total_participants": len(rankings),
+            "winner": rankings[0]["_id"] if rankings else None
+        })
+    
+    return {"seasons": result}
+
+# ============== THEMES & REWARDS ENDPOINTS ==============
+
+@app.get("/api/rewards/themes")
+async def get_available_themes(user: dict = Depends(get_current_user)):
+    """Get all themes with unlock status"""
+    user_data = users_collection.find_one({"_id": user["id"]})
+    user_level = calculate_level(user_data.get("xp", 0))["level"]
+    unlocked = set(user_data.get("unlocked_themes", ["default"]))
+    active_theme = user_data.get("active_theme", "default")
+    
+    themes = []
+    for theme_id, theme in THEMES.items():
+        can_use = theme["required_level"] <= user_level or theme_id in unlocked
+        themes.append({
+            "id": theme_id,
+            "name": theme["name"],
+            "primary": theme["primary"],
+            "accent": theme["accent"],
+            "required_level": theme["required_level"],
+            "unlocked": can_use,
+            "active": theme_id == active_theme,
+            "special": theme.get("special", False)
+        })
+    
+    return {"themes": themes, "active_theme": active_theme}
+
+@app.post("/api/rewards/themes/{theme_id}/activate")
+async def activate_theme(theme_id: str, user: dict = Depends(get_current_user)):
+    """Activate a theme"""
+    if theme_id not in THEMES:
+        raise HTTPException(404, "Thème non trouvé")
+    
+    user_data = users_collection.find_one({"_id": user["id"]})
+    user_level = calculate_level(user_data.get("xp", 0))["level"]
+    unlocked = set(user_data.get("unlocked_themes", ["default"]))
+    
+    theme = THEMES[theme_id]
+    if theme["required_level"] > user_level and theme_id not in unlocked:
+        raise HTTPException(403, f"Niveau {theme['required_level']} requis")
+    
+    users_collection.update_one(
+        {"_id": user["id"]},
+        {"$set": {"active_theme": theme_id}}
+    )
+    
+    return {"message": f"Thème {theme['name']} activé !", "theme": theme}
+
+@app.get("/api/rewards/level-perks")
+async def get_level_perks(user: dict = Depends(get_current_user)):
+    """Get all level perks and user's unlocked ones"""
+    user_data = users_collection.find_one({"_id": user["id"]})
+    user_level = calculate_level(user_data.get("xp", 0))["level"]
+    
+    all_perks = []
+    for level, rewards in LEVEL_REWARDS.items():
+        all_perks.append({
+            "level": level,
+            "title": rewards["title"],
+            "theme": rewards["theme"],
+            "perks": rewards["perks"],
+            "unlocked": level <= user_level
+        })
+    
+    # Current user perks
+    current_rewards = LEVEL_REWARDS.get(user_level, LEVEL_REWARDS[1])
+    
+    return {
+        "user_level": user_level,
+        "current_title": current_rewards["title"],
+        "current_perks": current_rewards["perks"],
+        "all_levels": all_perks
+    }
+
+@app.get("/api/rewards/top-performer")
+async def get_top_performer_rewards(user: dict = Depends(get_current_user)):
+    """Get current season top performer rewards and eligibility"""
+    season = get_current_season()
+    start_date = season["start_date"]
+    
+    # Get rankings
+    pipeline = [
+        {"$match": {"created_at": {"$gte": start_date}}},
+        {"$group": {
+            "_id": "$user_id",
+            "total_pnl": {"$sum": {"$ifNull": ["$pnl", 0]}}
+        }},
+        {"$sort": {"total_pnl": -1}}
+    ]
+    rankings = list(trades_collection.aggregate(pipeline))
+    user_rank = next((i+1 for i, r in enumerate(rankings) if r["_id"] == user["id"]), None)
+    
+    # Determine eligible rewards
+    eligible_reward = None
+    if user_rank == 1:
+        eligible_reward = {**TOP_PERFORMER_REWARDS[1], "rank": 1}
+    elif user_rank == 2:
+        eligible_reward = {**TOP_PERFORMER_REWARDS[2], "rank": 2}
+    elif user_rank == 3:
+        eligible_reward = {**TOP_PERFORMER_REWARDS[3], "rank": 3}
+    elif user_rank and user_rank <= 10:
+        eligible_reward = {**TOP_PERFORMER_REWARDS["top10"], "rank": user_rank}
+    
+    return {
+        "current_rank": user_rank,
+        "total_participants": len(rankings),
+        "eligible_reward": eligible_reward,
+        "all_rewards": TOP_PERFORMER_REWARDS,
+        "season_name": season["name"]
+    }
+
 # ============== HEALTH CHECK ==============
 
 @app.get("/api/health")
