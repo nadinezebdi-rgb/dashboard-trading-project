@@ -313,6 +313,7 @@ export default function DashboardPage() {
     { href: '/dashboard', label: 'Dashboard', icon: BarChart3, active: true },
     { href: '/journal', label: 'Journal', icon: BookOpen },
     { href: '/calendar', label: 'Calendrier', icon: Calendar },
+    { href: '/community', label: 'Communauté', icon: Users },
     { href: '/economic', label: 'Économie', icon: Newspaper },
     { href: '/analysis', label: 'Analyse IA', icon: Brain },
     { href: '/coaching', label: 'Coaching', icon: Target },
