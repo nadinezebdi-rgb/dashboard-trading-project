@@ -557,6 +557,108 @@ class TradingPlatformTester:
                 return self.log_result("Delete Post", True, response)
         return self.log_result("Delete Post", False, response)
 
+    # ============== NOTIFICATIONS TESTS ==============
+    
+    def test_get_notifications(self):
+        """Test getting user notifications"""
+        if not self.token:
+            return self.log_result("Get Notifications", False, error="No auth token")
+            
+        response = self.make_request('GET', 'notifications?limit=10')
+        if response and response.status_code == 200:
+            data = response.json()
+            required_fields = ['notifications', 'unread_count']
+            if all(field in data for field in required_fields):
+                return self.log_result("Get Notifications", True, response)
+        return self.log_result("Get Notifications", False, response)
+
+    def test_mark_notifications_read(self):
+        """Test marking notifications as read"""
+        if not self.token:
+            return self.log_result("Mark Notifications Read", False, error="No auth token")
+            
+        response = self.make_request('POST', 'notifications/read')
+        if response and response.status_code == 200:
+            data = response.json()
+            if data.get('message'):
+                return self.log_result("Mark Notifications Read", True, response)
+        return self.log_result("Mark Notifications Read", False, response)
+
+    # ============== SEASONS TESTS ==============
+    
+    def test_get_current_season(self):
+        """Test getting current season information"""
+        if not self.token:
+            return self.log_result("Get Current Season", False, error="No auth token")
+            
+        response = self.make_request('GET', 'seasons/current')
+        if response and response.status_code == 200:
+            data = response.json()
+            required_fields = ['season', 'user_stats', 'leaderboard_position']
+            if all(field in data for field in required_fields):
+                return self.log_result("Get Current Season", True, response)
+        return self.log_result("Get Current Season", False, response)
+
+    # ============== REWARDS TESTS ==============
+    
+    def test_get_themes(self):
+        """Test getting available themes"""
+        if not self.token:
+            return self.log_result("Get Themes", False, error="No auth token")
+            
+        response = self.make_request('GET', 'rewards/themes')
+        if response and response.status_code == 200:
+            data = response.json()
+            if 'themes' in data:
+                # Store first theme ID for activation test
+                if data['themes']:
+                    for theme in data['themes']:
+                        if theme.get('unlocked'):
+                            self.theme_id = theme['id']
+                            break
+                return self.log_result("Get Themes", True, response)
+        return self.log_result("Get Themes", False, response)
+
+    def test_activate_theme(self):
+        """Test activating a theme"""
+        if not self.token:
+            return self.log_result("Activate Theme", False, error="No auth token")
+        if not hasattr(self, 'theme_id'):
+            return self.log_result("Activate Theme", False, error="No unlocked theme available")
+            
+        response = self.make_request('POST', f'rewards/themes/{self.theme_id}/activate')
+        if response and response.status_code == 200:
+            data = response.json()
+            if data.get('message'):
+                return self.log_result("Activate Theme", True, response)
+        return self.log_result("Activate Theme", False, response)
+
+    def test_get_level_perks(self):
+        """Test getting level-based perks"""
+        if not self.token:
+            return self.log_result("Get Level Perks", False, error="No auth token")
+            
+        response = self.make_request('GET', 'rewards/level-perks')
+        if response and response.status_code == 200:
+            data = response.json()
+            required_fields = ['user_level', 'current_title', 'current_perks', 'all_levels']
+            if all(field in data for field in required_fields):
+                return self.log_result("Get Level Perks", True, response)
+        return self.log_result("Get Level Perks", False, response)
+
+    def test_get_top_performer_rewards(self):
+        """Test getting top performer rewards"""
+        if not self.token:
+            return self.log_result("Get Top Performer Rewards", False, error="No auth token")
+            
+        response = self.make_request('GET', 'rewards/top-performer')
+        if response and response.status_code == 200:
+            data = response.json()
+            required_fields = ['all_rewards', 'eligible_reward', 'current_rank']
+            if all(field in data for field in required_fields):
+                return self.log_result("Get Top Performer Rewards", True, response)
+        return self.log_result("Get Top Performer Rewards", False, response)
+
     def run_all_tests(self):
         """Run all tests in sequence"""
         print("🚀 Starting Backend API Tests for French Trading Platform")
