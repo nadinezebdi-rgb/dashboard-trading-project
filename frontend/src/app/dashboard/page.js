@@ -316,25 +316,31 @@ export default function DashboardPage() {
     { href: '/economic', label: 'Économie', icon: Newspaper },
     { href: '/analysis', label: 'Analyse IA', icon: Brain },
     { href: '/coaching', label: 'Coaching', icon: Target },
+    { href: '/tickets', label: 'Experts', icon: MessageSquare },
     { href: '/subscription', label: 'Abonnement', icon: Sparkles },
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
       {/* Mobile header */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 glass border-b border-white/5 h-16 flex items-center justify-between px-4">
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 glass border-b h-16 flex items-center justify-between px-4" style={{ borderColor: 'var(--border)' }}>
         <div className="flex items-center gap-2">
           <TrendingUp className="w-6 h-6 text-primary" />
           <span className="font-heading font-bold tracking-tight uppercase">Trading AI</span>
         </div>
-        <button onClick={() => setSidebarOpen(!sidebarOpen)} data-testid="mobile-sidebar-toggle">
-          {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <button onClick={toggleTheme} className="p-2">
+            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </button>
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} data-testid="mobile-sidebar-toggle">
+            {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </header>
 
       {/* Sidebar */}
-      <aside className={`fixed top-0 left-0 h-full w-64 bg-zinc-950 border-r border-zinc-800 z-40 transform transition-transform lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="p-6 border-b border-zinc-800">
+      <aside className={`fixed top-0 left-0 h-full w-64 z-40 transform transition-transform lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`} style={{ backgroundColor: 'var(--card)', borderRight: '1px solid var(--border)' }}>
+        <div className="p-6 border-b" style={{ borderColor: 'var(--border)' }}>
           <div className="flex items-center gap-2">
             <TrendingUp className="w-8 h-8 text-primary" />
             <span className="font-heading font-bold text-lg tracking-tight uppercase">Trading AI</span>
@@ -349,8 +355,9 @@ export default function DashboardPage() {
               className={`flex items-center gap-3 px-4 py-3 rounded-sm transition-all ${
                 item.active 
                   ? 'bg-primary/10 text-primary border-l-2 border-primary' 
-                  : 'text-muted-foreground hover:text-white hover:bg-zinc-900'
+                  : 'hover:bg-secondary'
               }`}
+              style={{ color: item.active ? 'var(--primary)' : 'var(--muted-foreground)' }}
               data-testid={`nav-${item.label.toLowerCase()}`}
             >
               <item.icon className="w-5 h-5" />
