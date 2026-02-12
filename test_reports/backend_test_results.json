@@ -8,88 +8,88 @@
     {
       "test": "Health Check",
       "success": false,
-      "timestamp": "2026-02-12T09:44:25.520223"
+      "timestamp": "2026-02-12T10:04:37.881994"
     },
     {
       "test": "User Registration",
       "success": false,
-      "timestamp": "2026-02-12T09:44:25.521891"
+      "timestamp": "2026-02-12T10:04:37.883589"
     },
     {
       "test": "User Login",
       "success": false,
-      "timestamp": "2026-02-12T09:44:25.521903",
+      "timestamp": "2026-02-12T10:04:37.883599",
       "error": "No registered user to test login"
     },
     {
       "test": "Get Current User",
       "success": false,
-      "timestamp": "2026-02-12T09:44:25.521910",
+      "timestamp": "2026-02-12T10:04:37.883605",
       "error": "No auth token"
     },
     {
       "test": "Save Questionnaire",
       "success": false,
-      "timestamp": "2026-02-12T09:44:25.521915",
+      "timestamp": "2026-02-12T10:04:37.883611",
       "error": "No auth token"
     },
     {
       "test": "Get Questionnaires",
       "success": false,
-      "timestamp": "2026-02-12T09:44:25.521920",
+      "timestamp": "2026-02-12T10:04:37.883616",
       "error": "No auth token"
     },
     {
       "test": "Create Trade",
       "success": false,
-      "timestamp": "2026-02-12T09:44:25.521925",
+      "timestamp": "2026-02-12T10:04:37.883621",
       "error": "No auth token"
     },
     {
       "test": "Get Trades",
       "success": false,
-      "timestamp": "2026-02-12T09:44:25.521931",
+      "timestamp": "2026-02-12T10:04:37.883628",
       "error": "No auth token"
     },
     {
       "test": "Get Trade Stats",
       "success": false,
-      "timestamp": "2026-02-12T09:44:25.521938",
+      "timestamp": "2026-02-12T10:04:37.883634",
       "error": "No auth token"
     },
     {
       "test": "Get Heatmap Data",
       "success": false,
-      "timestamp": "2026-02-12T09:44:25.521943",
+      "timestamp": "2026-02-12T10:04:37.883639",
       "error": "No auth token"
     },
     {
       "test": "AI Setup Analysis",
       "success": false,
-      "timestamp": "2026-02-12T09:44:25.521948",
+      "timestamp": "2026-02-12T10:04:37.883644",
       "error": "No auth token"
     },
     {
       "test": "AI Coaching",
       "success": false,
-      "timestamp": "2026-02-12T09:44:25.521953",
+      "timestamp": "2026-02-12T10:04:37.883649",
       "error": "No auth token"
     },
     {
       "test": "Daily Briefing",
       "success": false,
-      "timestamp": "2026-02-12T09:44:25.521958",
+      "timestamp": "2026-02-12T10:04:37.883654",
       "error": "No auth token"
     },
     {
       "test": "Payment Plans",
       "success": false,
-      "timestamp": "2026-02-12T09:44:25.523194"
+      "timestamp": "2026-02-12T10:04:37.884752"
     },
     {
       "test": "Create Checkout",
       "success": false,
-      "timestamp": "2026-02-12T09:44:25.523206",
+      "timestamp": "2026-02-12T10:04:37.884760",
       "error": "No auth token"
     }
   ]
