@@ -464,12 +464,25 @@ class TradingPlatformTester:
         self.test_get_trade_stats()
         self.test_get_heatmap_data()
         
+        # Community feature tests
+        print("\n--- Community Feature Tests ---")
+        self.test_create_community_post()
+        self.test_get_community_posts()
+        self.test_get_community_posts_by_category()
+        self.test_get_post_detail()
+        self.test_add_comment_to_post()
+        self.test_like_post()
+        self.test_unlike_post()
+        self.test_delete_post()
+        
         # AI features tests (may fail if service unavailable)
+        print("\n--- AI Feature Tests ---")
         self.test_ai_setup_analysis()
         self.test_ai_coaching()
         self.test_daily_briefing()
         
         # Payment tests
+        print("\n--- Payment System Tests ---")
         self.test_payment_plans()
         self.test_create_checkout()
         
