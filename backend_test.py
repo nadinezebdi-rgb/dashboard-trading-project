@@ -320,6 +320,129 @@ class TradingPlatformTester:
                 return self.log_result("Create Checkout", False, response, "Stripe may be misconfigured")
         return self.log_result("Create Checkout", False, response)
 
+    # ============== COMMUNITY TESTS ==============
+    
+    def test_create_community_post(self):
+        """Test creating a community post"""
+        if not self.token:
+            return self.log_result("Create Community Post", False, error="No auth token")
+            
+        post_data = {
+            "title": "Test Community Post",
+            "content": "This is a test post for the trading community. Sharing my experience with EUR/USD trading.",
+            "category": "experience",
+            "tags": ["EURUSD", "day-trading"],
+            "screenshot_base64": None
+        }
+        
+        response = self.make_request('POST', 'community/posts', post_data)
+        if response and response.status_code == 200:
+            data = response.json()
+            if data.get('id'):
+                self.post_id = data['id']
+                return self.log_result("Create Community Post", True, response)
+        return self.log_result("Create Community Post", False, response)
+
+    def test_get_community_posts(self):
+        """Test getting community posts"""
+        if not self.token:
+            return self.log_result("Get Community Posts", False, error="No auth token")
+            
+        response = self.make_request('GET', 'community/posts')
+        if response and response.status_code == 200:
+            data = response.json()
+            if 'posts' in data:
+                return self.log_result("Get Community Posts", True, response)
+        return self.log_result("Get Community Posts", False, response)
+
+    def test_get_community_posts_by_category(self):
+        """Test getting community posts filtered by category"""
+        if not self.token:
+            return self.log_result("Get Community Posts by Category", False, error="No auth token")
+            
+        response = self.make_request('GET', 'community/posts?category=experience')
+        if response and response.status_code == 200:
+            data = response.json()
+            if 'posts' in data:
+                return self.log_result("Get Community Posts by Category", True, response)
+        return self.log_result("Get Community Posts by Category", False, response)
+
+    def test_get_post_detail(self):
+        """Test getting a specific post detail"""
+        if not self.token:
+            return self.log_result("Get Post Detail", False, error="No auth token")
+        if not hasattr(self, 'post_id'):
+            return self.log_result("Get Post Detail", False, error="No post created to test detail")
+            
+        response = self.make_request('GET', f'community/posts/{self.post_id}')
+        if response and response.status_code == 200:
+            data = response.json()
+            required_fields = ['id', 'title', 'content', 'author_name', 'category', 'likes_count', 'comments_count']
+            if all(field in data for field in required_fields):
+                return self.log_result("Get Post Detail", True, response)
+        return self.log_result("Get Post Detail", False, response)
+
+    def test_add_comment_to_post(self):
+        """Test adding a comment to a post"""
+        if not self.token:
+            return self.log_result("Add Comment to Post", False, error="No auth token")
+        if not hasattr(self, 'post_id'):
+            return self.log_result("Add Comment to Post", False, error="No post created to test comment")
+            
+        comment_data = {
+            "content": "Great post! Thanks for sharing your experience."
+        }
+        
+        response = self.make_request('POST', f'community/posts/{self.post_id}/comments', comment_data)
+        if response and response.status_code == 200:
+            data = response.json()
+            if data.get('id'):
+                self.comment_id = data['id']
+                return self.log_result("Add Comment to Post", True, response)
+        return self.log_result("Add Comment to Post", False, response)
+
+    def test_like_post(self):
+        """Test liking a post"""
+        if not self.token:
+            return self.log_result("Like Post", False, error="No auth token")
+        if not hasattr(self, 'post_id'):
+            return self.log_result("Like Post", False, error="No post created to test like")
+            
+        response = self.make_request('POST', f'community/posts/{self.post_id}/like')
+        if response and response.status_code == 200:
+            data = response.json()
+            if 'liked' in data and 'message' in data:
+                return self.log_result("Like Post", True, response)
+        return self.log_result("Like Post", False, response)
+
+    def test_unlike_post(self):
+        """Test unliking a post (toggle off)"""
+        if not self.token:
+            return self.log_result("Unlike Post", False, error="No auth token")
+        if not hasattr(self, 'post_id'):
+            return self.log_result("Unlike Post", False, error="No post created to test unlike")
+            
+        response = self.make_request('POST', f'community/posts/{self.post_id}/like')
+        if response and response.status_code == 200:
+            data = response.json()
+            if 'liked' in data and data['liked'] == False:
+                return self.log_result("Unlike Post", True, response)
+        return self.log_result("Unlike Post", False, response)
+
+    def test_delete_post(self):
+        """Test deleting own post"""
+        if not self.token:
+            return self.log_result("Delete Post", False, error="No auth token")
+        if not hasattr(self, 'post_id'):
+            return self.log_result("Delete Post", False, error="No post created to test delete")
+            
+        response = self.make_request('DELETE', f'community/posts/{self.post_id}')
+        if response and response.status_code == 200:
+            data = response.json()
+            if data.get('message'):
+                return self.log_result("Delete Post", True, response)
+        return self.log_result("Delete Post", False, response)
+
     def run_all_tests(self):
         """Run all tests in sequence"""
         print("🚀 Starting Backend API Tests for French Trading Platform")
