@@ -135,6 +135,15 @@ class EconomicEventQuery(BaseModel):
     end_date: Optional[str] = None
     impact: Optional[str] = None  # "high", "medium", "low"
 
+class CommunityPost(BaseModel):
+    title: str
+    content: str
+    category: str  # "setup", "experience", "win", "loss", "question", "education"
+    screenshot_base64: Optional[str] = None
+    tags: Optional[List[str]] = None
+
+class CommunityComment(BaseModel):
+    content: str
 
 class CheckoutRequest(BaseModel):
     plan: str  # "starter", "pro", "elite"
