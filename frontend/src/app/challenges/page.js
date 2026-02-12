@@ -126,6 +126,9 @@ export default function ChallengesPage() {
       if (result.badge_awarded) {
         toast.success(`🏆 Badge débloqué: ${result.badge_awarded.name}`);
       }
+      if (result.leveled_up) {
+        toast.success(`🎉 Niveau supérieur atteint !`);
+      }
       loadData();
     } catch (error) {
       toast.error(error.message || 'Erreur lors de la réclamation');
