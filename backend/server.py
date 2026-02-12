@@ -1957,6 +1957,8 @@ async def get_current_season_info(user: dict = Depends(get_current_user)):
     end_date = season["end_date"]
     if isinstance(end_date, str):
         end_date = datetime.fromisoformat(end_date.replace('Z', '+00:00'))
+    elif not end_date.tzinfo:
+        end_date = end_date.replace(tzinfo=timezone.utc)
     days_remaining = (end_date - now).days
     
     # Get user's season stats
