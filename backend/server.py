@@ -1757,7 +1757,8 @@ async def claim_challenge_reward(challenge_id: str, user: dict = Depends(get_cur
     return {
         "message": "Récompense réclamée !",
         "xp_earned": template["xp_reward"],
-        "badge_awarded": badge_awarded
+        "badge_awarded": badge_awarded,
+        "leveled_up": leveled_up
     }
 
 @app.get("/api/gamification/leaderboard")
@@ -1766,11 +1767,16 @@ async def get_leaderboard(period: str = "weekly", user: dict = Depends(get_curre
     now = datetime.now(timezone.utc)
     today = now.date()
     
+    # Get current season
+    season = get_current_season()
+    
     if period == "daily":
         start_date = datetime.combine(today, datetime.min.time()).replace(tzinfo=timezone.utc)
     elif period == "weekly":
         week_start = today - timedelta(days=today.weekday())
         start_date = datetime.combine(week_start, datetime.min.time()).replace(tzinfo=timezone.utc)
+    elif period == "season":
+        start_date = season["start_date"]
     else:  # monthly
         month_start = today.replace(day=1)
         start_date = datetime.combine(month_start, datetime.min.time()).replace(tzinfo=timezone.utc)
