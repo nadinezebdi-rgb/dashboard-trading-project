@@ -52,6 +52,7 @@ app.include_router(community.router)
 app.include_router(gamification.router)
 app.include_router(backtest.router)
 app.include_router(tickets.router)
+app.include_router(push.router)
 
 # ============== HEALTH CHECK ==============
 
