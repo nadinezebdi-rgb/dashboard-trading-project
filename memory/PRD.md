@@ -34,7 +34,8 @@ Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching per
 - [x] Dashboard avec stats et heatmap PnL 365 jours
 - [x] Journal de trading (entrée manuelle + screenshots)
 - [x] Analyse de setup IA avec vision GPT-5.2
-- [x] **Widget TradingView EURUSD** intégré sur dashboard (Feb 13, 2026)
+- [x] **Widget TradingView** intégré sur dashboard (Feb 13, 2026)
+- [x] **Sélecteur multi-symboles**: Forex, Crypto, Indices, Commodités (Feb 13, 2026)
 
 ### Analytiques ✅
 - [x] Calendrier mensuel des trades
