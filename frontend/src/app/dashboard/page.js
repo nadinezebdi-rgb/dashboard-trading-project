@@ -25,12 +25,14 @@ import {
   Moon,
   Clock,
   Users,
-  Trophy
+  Trophy,
+  Bell
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { useTheme } from '@/lib/theme-context';
 import { api } from '@/lib/api';
 import { formatCurrency, formatPercent } from '@/lib/utils';
+import PushNotificationManager from '@/components/PushNotificationManager';
 import { 
   subDays, 
   startOfDay, 
