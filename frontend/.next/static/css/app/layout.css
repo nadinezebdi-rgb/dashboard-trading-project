@@ -943,6 +943,9 @@ video {
 .min-w-0{
   min-width: 0px;
 }
+.min-w-\[180px\]{
+  min-width: 180px;
+}
 .max-w-2xl{
   max-width: 42rem;
 }
@@ -2323,6 +2326,10 @@ body {
 }
 
 @media (min-width: 640px){
+
+  .sm\:block{
+    display: block;
+  }
 
   .sm\:grid-cols-2{
     grid-template-columns: repeat(2, minmax(0, 1fr));
