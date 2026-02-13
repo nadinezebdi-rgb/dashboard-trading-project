@@ -1,137 +1,133 @@
-# Trading AI Platform - PRD
+# Trading AI Platform - Product Requirements Document
 
-## Problem Statement
-Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching personnalisé, communauté et système de gamification complet avec récompenses.
+## Original Problem Statement
+Build a SaaS platform for traders, migrated from Supabase/Netlify. Full-stack application with AI assistance for trading analysis, journaling, and community features.
 
 ## User Personas
-1. **Trader Débutant** - Cherche à apprendre et éviter les erreurs communes
-2. **Trader Intermédiaire** - Veut analyser ses trades et améliorer sa rentabilité
-3. **Trader Avancé** - Recherche des outils IA pour optimiser ses stratégies
+- **Traders**: Primary users who log trades, analyze performance, receive AI coaching
+- **Administrators**: Manage users and support tickets
 
 ## Core Requirements
-- Assistant IA basé sur GPT-5.2
-- Journal de trading avec screenshots
-- Dashboard intelligent avec statistiques
-- Coaching personnalisé quotidien
-- Mode sombre/clair
-- Interface en français
-- Système de gamification complet pour fidélisation
+
+### Authentication
+- JWT-based email/password authentication ✅ DONE
+
+### Dashboard
+- Interactive TradingView chart with symbol selector ✅ DONE
+- Performance heatmap (pending)
+
+### Trading Journal
+- Log trades with screenshots and manual entries (scaffolded)
+- Calendar view of trades (pending)
+- Trade duration charts (pending)
+
+### AI Features
+- Daily briefings (scaffolded)
+- AI Coaching (scaffolded)
+- Setup Analysis (scaffolded)
+- AI-Assisted Backtesting ✅ DONE
+
+### Payments
+- Stripe integration (scaffolded, needs completion)
+
+### Community
+- Social feed for traders (scaffolded)
+- Comments and likes (scaffolded)
+- Trader profiles (scaffolded)
+
+### Gamification
+- Daily/weekly/monthly challenges (scaffolded)
+- Leaderboard (scaffolded)
+- Badges and achievements (scaffolded)
+- Web Push Notifications (scaffolded, needs trigger logic)
+
+### Data Export
+- CSV/PDF export (pending)
+
+### Admin
+- Admin dashboard (pending)
+
+### Education
+- AI-powered educational system (pending)
+
+---
+
+## What's Been Implemented
+
+### 2026-02-13
+- ✅ Fixed deployment blocker - `/api/health` endpoint verified working
+- ✅ Added `/health` endpoint for additional compatibility
+
+### Previous Session
+- ✅ JWT Authentication fixed and working
+- ✅ TradingView interactive chart with symbol selector
+- ✅ AI-Assisted Backtesting complete (GPT-5.2)
+- ✅ Major backend refactoring (modular architecture with routers)
+- ✅ Web Push Notifications scaffolding
+
+---
 
 ## Architecture
-- **Frontend**: Next.js 14 + React 18 + Tailwind CSS + Recharts
-- **Backend**: FastAPI (Python) modulaire + MongoDB
-- **IA**: GPT-5.2 via Emergent LLM Key
-- **Paiements**: Stripe (Starter/Pro/Elite)
+
+```
+/app/
+├── backend/
+│   ├── server.py         # Main FastAPI app
+│   ├── models.py         # Pydantic models
+│   ├── routers/          # Modular API logic
+│   │   ├── auth.py, trades.py, ai.py
+│   │   ├── community.py, gamification.py
+│   │   ├── backtest.py, tickets.py, push.py
+│   └── utils/
+│       ├── database.py, security.py
+├── frontend/
+│   ├── src/app/          # Next.js pages
+│   ├── src/components/   # React components
+│   └── public/worker.js  # Service worker
+```
+
+## Tech Stack
+- **Frontend**: Next.js 14, React, Tailwind CSS
+- **Backend**: FastAPI, Pydantic
+- **Database**: MongoDB
 - **Auth**: JWT
-- **Push Notifications**: Web Push API + VAPID
+- **Integrations**: Stripe, OpenAI GPT-5.2, TradingView, Web Push
 
-## Backend Structure (Refactorisé Feb 13, 2026)
-```
-/app/backend/
-├── server.py (70 lignes - point d'entrée)
-├── routers/
-│   ├── auth.py - Authentification
-│   ├── trades.py - Journal de trading
-│   ├── ai.py - Modules IA (GPT-5.2)
-│   ├── community.py - Communauté
-│   ├── gamification.py - Challenges, leaderboard
-│   ├── backtest.py - Backtesting IA
-│   ├── tickets.py - Support expert
-│   └── push.py - Web Push notifications
-└── utils/
-    ├── database.py - Config MongoDB
-    ├── auth.py - JWT utilities
-    └── models.py - Pydantic models
-```
-
-## What's Been Implemented (Feb 2026)
-
-### Core Features ✅
-- [x] Landing page avec design percutant
-- [x] Mode Sombre/Clair avec toggle
-- [x] Authentification JWT (register/login)
-- [x] Onboarding questionnaire multi-étapes
-- [x] Dashboard avec stats et heatmap PnL 365 jours
-- [x] Journal de trading (entrée manuelle + screenshots)
-- [x] Analyse de setup IA avec vision GPT-5.2
-- [x] **Widget TradingView** intégré sur dashboard (Feb 13, 2026)
-- [x] **Sélecteur multi-symboles**: Forex, Crypto, Indices, Commodités (Feb 13, 2026)
-- [x] **Backtesting IA**: Analyse de stratégies avec GPT-5.2 (Feb 13, 2026)
-- [x] **Web Push Notifications**: Level-ups, badges, challenges (Feb 13, 2026)
-
-### Analytiques ✅
-- [x] Calendrier mensuel des trades
-- [x] Graphique durée des trades (Recharts)
-- [x] Journal économique avec analyse IA des événements
-
-### Engagement & Fidélisation ✅
-- [x] Système de tickets pour consultations experts
-- [x] **Communauté** (posts, commentaires, likes, profils)
-- [x] **Challenges** (quotidiens, hebdomadaires, mensuels)
-- [x] **Leaderboard** (classements par période + saison)
-- [x] **Hall of Fame** (Top Niveaux, PnL, Winrate)
-- [x] **Badges/Achievements** (18 badges débloquables)
-- [x] **Système XP/Niveaux** (10 niveaux avec progression)
-- [x] **Streaks** (jours de connexion consécutifs)
-- [x] **Check-in quotidien** avec bonus XP
-
-### Système de Récompenses ✅ (NOUVEAU)
-- [x] **Notifications** (niveau, badges, saison)
-- [x] **10 Thèmes** débloquables par niveau (Classique, Bronze, Argent, Or, Platine, Diamant, Néon, Feu, Glace, Champion)
-- [x] **Perks par niveau** (support prioritaire, accès webinaires, réductions mentoring)
-- [x] **Système de Saisons** (mensuel avec reset leaderboard)
-- [x] **Récompenses Top Performers**:
-  - Top 1: Mois gratuit, webinaire exclusif, mentoring 1-on-1, badge Champion, -50% abo
-  - Top 2: Webinaire, -50% mentoring, badge Argent, -30% abo
-  - Top 3: Webinaire, -30% mentoring, badge Bronze, -20% abo
-  - Top 10: Webinaire exclusif, -10% mentoring, -10% abo
-
-### Intégrations ✅
-- GPT-5.2 (analyse setup, coaching, briefing, analyse économique)
-- Stripe (checkout, webhooks, gestion abonnements)
-- MongoDB (toutes collections)
-- **TradingView** (graphique EURUSD interactif avec données FXCM)
-
-### Bugs Corrigés (Feb 13, 2026)
-- [x] **Bug Connexion Externe**: `NEXT_PUBLIC_API_URL` était vide, empêchant les appels API. Corrigé dans `/app/frontend/.env`
+---
 
 ## Prioritized Backlog
 
-### P0 - Critical
-- [ ] Notification push navigateur (Web Push)
-- [ ] Export des données de trading (CSV/PDF)
+### P0 (Critical)
+- ~~Deployment health check~~ ✅ DONE
 
-### P1 - Important
-- [ ] Système éducatif IA complet (modules d'apprentissage)
-- [ ] Backtesting assisté par IA
-- [ ] Dashboard admin pour gestion des tickets
+### P1 (High Priority)
+- Web Push Notifications - implement trigger logic
+- Stripe payment flow completion
 
-### P2 - Nice to Have
-- [ ] Intégration API courtiers (Binance, MT4)
-- [ ] Alertes de trading personnalisées
-- [ ] Mode social trading (copie de trades)
-- [ ] Application mobile (React Native)
+### P2 (Medium Priority)
+- CSV/PDF export
+- AI Educational System
+- Integrate AI modules in frontend UI
 
-## Technical Details
+### P3 (Lower Priority)
+- Admin Dashboard
+- Performance heatmap
+- Trade calendar view
 
-### Gamification System
-- **Levels**: 1-10+ avec XP: 0, 100, 250, 500, 1000, 2000, 3500, 5500, 8000, 12000, 20000
-- **Challenges**: 8 actifs (2 daily, 3 weekly, 3 monthly)
-- **Achievements**: 18 badges débloquables
-- **Themes**: 10 thèmes avec couleurs personnalisées
-- **Seasons**: Mensuelles avec récompenses automatiques
+---
 
-### Level Titles
-1. Novice → 2. Apprenti → 3. Trader → 4. Trader Confirmé → 5. Expert
-6. Expert Senior → 7. Maître → 8. Grand Maître → 9. Légende → 10. Élite
+## API Endpoints
+- `/api/health` - Health check ✅
+- `/api/auth/*` - Authentication
+- `/api/trades/*` - Trade management
+- `/api/ai/*` - AI features
+- `/api/backtest/*` - Backtesting
+- `/api/push/*` - Push notifications
+- `/api/community/*` - Social features
+- `/api/gamification/*` - Badges, challenges
 
-## Next Steps
-1. Implémenter Web Push notifications
-2. Créer le système éducatif avec modules progressifs
-3. Ajouter le backtesting assisté
-4. Dashboard admin pour les experts
-
-## Technical Debt
-- Optimiser les requêtes MongoDB avec indexes
-- Ajouter cache Redis pour les stats fréquentes
-- Tests unitaires et E2E complets
+## Third-Party Integrations
+- **OpenAI GPT-5.2**: Uses Emergent LLM Key
+- **Stripe**: Requires user API key
+- **TradingView**: Widget integrated
+- **Web Push**: pywebpush library
