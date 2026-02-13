@@ -103,10 +103,26 @@ async def get_trades(
 
 @router.get("/stats")
 async def get_trade_stats(user: dict = Depends(get_current_user)):
-    """Get trading statistics"""
-    trades = list(trades_collection.find({"user_id": user["id"], "status": "closed"}))
+    """Get trading statistics using aggregation"""
+    # Use aggregation pipeline to compute stats server-side
+    pipeline = [
+        {"$match": {"user_id": user["id"], "status": "closed"}},
+        {"$group": {
+            "_id": None,
+            "total_trades": {"$sum": 1},
+            "winning_trades": {"$sum": {"$cond": [{"$gt": [{"$ifNull": ["$pnl", 0]}, 0]}, 1, 0]}},
+            "losing_trades": {"$sum": {"$cond": [{"$lt": [{"$ifNull": ["$pnl", 0]}, 0]}, 1, 0]}},
+            "total_pnl": {"$sum": {"$ifNull": ["$pnl", 0]}},
+            "total_wins": {"$sum": {"$cond": [{"$gt": [{"$ifNull": ["$pnl", 0]}, 0]}, {"$ifNull": ["$pnl", 0]}, 0]}},
+            "total_losses": {"$sum": {"$cond": [{"$lt": [{"$ifNull": ["$pnl", 0]}, 0]}, {"$abs": {"$ifNull": ["$pnl", 0]}}, 0]}},
+            "best_trade": {"$max": {"$ifNull": ["$pnl", 0]}},
+            "worst_trade": {"$min": {"$ifNull": ["$pnl", 0]}}
+        }}
+    ]
     
-    if not trades:
+    result = list(trades_collection.aggregate(pipeline))
+    
+    if not result:
         return {
             "total_trades": 0,
             "winning_trades": 0,
@@ -120,24 +136,23 @@ async def get_trade_stats(user: dict = Depends(get_current_user)):
             "profit_factor": 0
         }
     
-    total = len(trades)
-    winners = [t for t in trades if (t.get("pnl") or 0) > 0]
-    losers = [t for t in trades if (t.get("pnl") or 0) < 0]
-    
-    total_pnl = sum(t.get("pnl") or 0 for t in trades)
-    total_wins = sum(t.get("pnl") or 0 for t in winners)
-    total_losses = abs(sum(t.get("pnl") or 0 for t in losers))
+    stats = result[0]
+    total = stats["total_trades"]
+    winners = stats["winning_trades"]
+    losers = stats["losing_trades"]
+    total_wins = stats["total_wins"]
+    total_losses = stats["total_losses"]
     
     return {
         "total_trades": total,
-        "winning_trades": len(winners),
-        "losing_trades": len(losers),
-        "winrate": round(len(winners) / total * 100, 2) if total > 0 else 0,
-        "total_pnl": round(total_pnl, 2),
-        "avg_win": round(total_wins / len(winners), 2) if winners else 0,
-        "avg_loss": round(total_losses / len(losers), 2) if losers else 0,
-        "best_trade": max((t.get("pnl") or 0) for t in trades) if trades else 0,
-        "worst_trade": min((t.get("pnl") or 0) for t in trades) if trades else 0,
+        "winning_trades": winners,
+        "losing_trades": losers,
+        "winrate": round(winners / total * 100, 2) if total > 0 else 0,
+        "total_pnl": round(stats["total_pnl"], 2),
+        "avg_win": round(total_wins / winners, 2) if winners > 0 else 0,
+        "avg_loss": round(total_losses / losers, 2) if losers > 0 else 0,
+        "best_trade": round(stats["best_trade"], 2) if stats["best_trade"] else 0,
+        "worst_trade": round(stats["worst_trade"], 2) if stats["worst_trade"] else 0,
         "profit_factor": round(total_wins / total_losses, 2) if total_losses > 0 else 0
     }
 
