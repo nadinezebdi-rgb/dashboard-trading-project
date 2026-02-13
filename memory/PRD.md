@@ -19,10 +19,30 @@ Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching per
 
 ## Architecture
 - **Frontend**: Next.js 14 + React 18 + Tailwind CSS + Recharts
-- **Backend**: FastAPI (Python) + MongoDB
+- **Backend**: FastAPI (Python) modulaire + MongoDB
 - **IA**: GPT-5.2 via Emergent LLM Key
 - **Paiements**: Stripe (Starter/Pro/Elite)
 - **Auth**: JWT
+- **Push Notifications**: Web Push API + VAPID
+
+## Backend Structure (Refactorisé Feb 13, 2026)
+```
+/app/backend/
+├── server.py (70 lignes - point d'entrée)
+├── routers/
+│   ├── auth.py - Authentification
+│   ├── trades.py - Journal de trading
+│   ├── ai.py - Modules IA (GPT-5.2)
+│   ├── community.py - Communauté
+│   ├── gamification.py - Challenges, leaderboard
+│   ├── backtest.py - Backtesting IA
+│   ├── tickets.py - Support expert
+│   └── push.py - Web Push notifications
+└── utils/
+    ├── database.py - Config MongoDB
+    ├── auth.py - JWT utilities
+    └── models.py - Pydantic models
+```
 
 ## What's Been Implemented (Feb 2026)
 
@@ -37,6 +57,7 @@ Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching per
 - [x] **Widget TradingView** intégré sur dashboard (Feb 13, 2026)
 - [x] **Sélecteur multi-symboles**: Forex, Crypto, Indices, Commodités (Feb 13, 2026)
 - [x] **Backtesting IA**: Analyse de stratégies avec GPT-5.2 (Feb 13, 2026)
+- [x] **Web Push Notifications**: Level-ups, badges, challenges (Feb 13, 2026)
 
 ### Analytiques ✅
 - [x] Calendrier mensuel des trades
