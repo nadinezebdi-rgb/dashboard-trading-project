@@ -41,6 +41,7 @@ import {
 } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import TradingViewWidget from '@/components/TradingViewWidget';
 
 // Heatmap Component
 function TradingHeatmap({ trades = [] }) {
