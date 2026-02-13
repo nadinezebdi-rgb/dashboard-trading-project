@@ -78,6 +78,7 @@ user_badges_collection = db["user_badges"]
 achievements_collection = db["achievements"]
 user_achievements_collection = db["user_achievements"]
 rewards_collection = db["rewards"]
+user_rewards_collection = db["user_rewards"]
 xp_transactions_collection = db["xp_transactions"]
 leaderboard_collection = db["leaderboard"]
 
