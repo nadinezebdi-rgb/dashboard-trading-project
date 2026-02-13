@@ -18,8 +18,17 @@ from utils.models import AIMessage, SetupAnalysis
 
 router = APIRouter(prefix="/api/ai", tags=["AI"])
 
-# Initialize OpenAI client
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+# OpenAI client - initialized lazily
+_client = None
+
+def get_openai_client():
+    global _client
+    if _client is None:
+        api_key = os.environ.get("OPENAI_API_KEY")
+        if not api_key:
+            raise HTTPException(500, "OpenAI API key not configured")
+        _client = OpenAI(api_key=api_key)
+    return _client
 
 # Model to use (gpt-4o for vision capabilities, gpt-4o-mini for text-only)
 VISION_MODEL = "gpt-4o"
@@ -53,6 +62,7 @@ Analyse le screenshot et fournis:
 Réponds en français de manière concise et actionnable."""
 
     try:
+        client = get_openai_client()
         # Prepare image for OpenAI Vision API
         image_data = data.screenshot_base64
         if not image_data.startswith("data:"):
