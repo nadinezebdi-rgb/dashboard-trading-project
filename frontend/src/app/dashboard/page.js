@@ -463,14 +463,33 @@ export default function DashboardPage() {
 
           {/* TradingView Chart */}
           <div className="card mb-8">
-            <div className="flex items-center justify-between mb-4 pb-2 border-b" style={{ borderColor: 'var(--border)' }}>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b" style={{ borderColor: 'var(--border)' }}>
               <div className="flex items-center gap-2">
                 <BarChart3 className="w-5 h-5 text-primary" />
-                <h2 className="font-heading text-lg font-bold uppercase tracking-tight">Graphique EURUSD</h2>
+                <h2 className="font-heading text-lg font-bold uppercase tracking-tight">Graphique Live</h2>
               </div>
-              <span className="text-xs" style={{ color: 'var(--muted-foreground)' }}>TradingView</span>
+              <div className="flex items-center gap-3">
+                <select
+                  value={selectedSymbol}
+                  onChange={(e) => setSelectedSymbol(e.target.value)}
+                  className="input py-2 px-3 text-sm min-w-[180px]"
+                  style={{ backgroundColor: 'var(--secondary)', borderColor: 'var(--border)' }}
+                  data-testid="symbol-selector"
+                >
+                  {TRADING_SYMBOLS.map((group) => (
+                    <optgroup key={group.category} label={group.category}>
+                      {group.symbols.map((symbol) => (
+                        <option key={symbol.value} value={symbol.value}>
+                          {symbol.label}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </select>
+                <span className="text-xs hidden sm:block" style={{ color: 'var(--muted-foreground)' }}>TradingView</span>
+              </div>
             </div>
-            <TradingViewWidget symbol="FX:EURUSD" height={450} />
+            <TradingViewWidget symbol={selectedSymbol} height={450} />
           </div>
 
           {/* Heatmap */}
