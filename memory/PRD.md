@@ -34,6 +34,7 @@ Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching per
 - [x] Dashboard avec stats et heatmap PnL 365 jours
 - [x] Journal de trading (entrée manuelle + screenshots)
 - [x] Analyse de setup IA avec vision GPT-5.2
+- [x] **Widget TradingView EURUSD** intégré sur dashboard (Feb 13, 2026)
 
 ### Analytiques ✅
 - [x] Calendrier mensuel des trades
@@ -66,6 +67,10 @@ Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching per
 - GPT-5.2 (analyse setup, coaching, briefing, analyse économique)
 - Stripe (checkout, webhooks, gestion abonnements)
 - MongoDB (toutes collections)
+- **TradingView** (graphique EURUSD interactif avec données FXCM)
+
+### Bugs Corrigés (Feb 13, 2026)
+- [x] **Bug Connexion Externe**: `NEXT_PUBLIC_API_URL` était vide, empêchant les appels API. Corrigé dans `/app/frontend/.env`
 
 ## Prioritized Backlog
 
