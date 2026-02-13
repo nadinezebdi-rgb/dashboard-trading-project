@@ -4,6 +4,13 @@ from pymongo import MongoClient
 from passlib.context import CryptContext
 
 # -----------------------------
+# JWT settings (required by utils/auth.py)
+# -----------------------------
+JWT_SECRET = os.environ.get("JWT_SECRET", "CHANGE_ME_IN_RENDER")
+JWT_ALGORITHM = os.environ.get("JWT_ALGORITHM", "HS256")
+JWT_EXPIRATION_HOURS = int(os.environ.get("JWT_EXPIRATION_HOURS", "24"))
+
+# -----------------------------
 # Password hashing helpers
 # -----------------------------
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
