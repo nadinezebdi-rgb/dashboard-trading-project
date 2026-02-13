@@ -53,6 +53,7 @@ notifications_collection = db["notifications"]
 seasons_collection = db["seasons"]
 rewards_collection = db["rewards"]
 user_rewards_collection = db["user_rewards"]
+backtests_collection = db["backtests"]
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
