@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Import routers
-from routers import auth, trades, ai, community, gamification, backtest, tickets
+from routers import auth, trades, ai, community, gamification, backtest, tickets, push
 
 # Import database for startup tasks
 from utils.database import (
