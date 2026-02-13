@@ -40,7 +40,8 @@ except Exception as e:
 
 db = client[DB_NAME]
 
+# Collections used by your app
 users_collection = db["users"]
 trades_collection = db["trades"]
 setups_collection = db["setups"]
-payment_transactions_collection = db["payment]()
+payment_transactions_collection = db["payment_transactions"]
