@@ -1,13 +1,28 @@
 import os
 import certifi
 from pymongo import MongoClient
+from passlib.context import CryptContext
 
-# Read env var set on Render
+# -----------------------------
+# Password hashing helpers
+# -----------------------------
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+def hash_password(password: str) -> str:
+    return pwd_context.hash(password)
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return pwd_context.verify(plain_password, hashed_password)
+
+# -----------------------------
+# MongoDB connection (Atlas)
+# -----------------------------
 MONGO_URI = os.environ.get("MONGO_URI")
 if not MONGO_URI:
     raise RuntimeError("MONGO_URI environment variable is missing")
 
-# Create secure Mongo client for Atlas (fixes TLS handshake issues on many hosts)
+DB_NAME = os.environ.get("MONGO_DB_NAME", "trading_ai")
+
 client = MongoClient(
     MONGO_URI,
     tls=True,
@@ -17,21 +32,15 @@ client = MongoClient(
     socketTimeoutMS=20000,
 )
 
-# Optional: force a connection test at import time (useful on Render logs)
 try:
     client.admin.command("ping")
     print("✅ MongoDB connected (ping ok)")
 except Exception as e:
-    # Do not crash import hard if you prefer app to still start
     print("⚠️ MongoDB ping failed:", repr(e))
-
-# Choose DB name
-DB_NAME = os.environ.get("MONGO_DB_NAME", "trading_ai")
 
 db = client[DB_NAME]
 
-# Collections used by your app
 users_collection = db["users"]
 trades_collection = db["trades"]
 setups_collection = db["setups"]
-payment_transactions_collection = db["payment_transactions"]
+payment_transactions_collection = db["payment]()
