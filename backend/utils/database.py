@@ -65,6 +65,15 @@ payment_transactions_collection = db["payment_transactions"]
 community_posts_collection = db["community_posts"]
 community_comments_collection = db["community_comments"]
 community_likes_collection = db["community_likes"]
+# =========================
+# COLLECTIONS (Gamification)
+# =========================
+challenges_collection = db["challenges"]
+user_challenges_collection = db["user_challenges"]
+badges_collection = db["badges"]
+user_badges_collection = db["user_badges"]
+xp_transactions_collection = db["xp_transactions"]
+leaderboard_collection = db["leaderboard"]
 
 # (Optionnel) utilitaire timestamp
 def now_utc():
