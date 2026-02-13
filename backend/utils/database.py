@@ -83,7 +83,7 @@ leaderboard_collection = db["leaderboard"]
 
 # ✅ NEW: streaks (fix current error)
 streaks_collection = db["streaks"]
-
+seasons_collection = db["seasons"]
 # =========================
 # COLLECTIONS (Other / optional)
 # (safe to declare even if not used yet)
