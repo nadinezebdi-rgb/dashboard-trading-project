@@ -1,8 +1,9 @@
 {
+  "/page": "app/page.js",
+  "/register/page": "app/register/page.js",
   "/login/page": "app/login/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/rewards/page": "app/rewards/page.js",
-  "/onboarding/page": "app/onboarding/page.js",
-  "/challenges/page": "app/challenges/page.js",
-  "/page": "app/page.js"
+  "/backtest/page": "app/backtest/page.js",
+  "/community/page": "app/community/page.js",
+  "/challenges/page": "app/challenges/page.js"
 }
