@@ -347,6 +347,7 @@ export default function DashboardPage() {
     { href: '/dashboard', label: 'Dashboard', icon: BarChart3, active: true },
     { href: '/journal', label: 'Journal', icon: BookOpen },
     { href: '/calendar', label: 'Calendrier', icon: Calendar },
+    { href: '/backtest', label: 'Backtesting', icon: Target },
     { href: '/community', label: 'Communauté', icon: Users },
     { href: '/challenges', label: 'Challenges', icon: Trophy },
     { href: '/economic', label: 'Économie', icon: Newspaper },
