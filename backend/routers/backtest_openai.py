@@ -14,8 +14,18 @@ from utils.models import BacktestCreate, BacktestTrade
 
 router = APIRouter(prefix="/api/backtest", tags=["Backtesting"])
 
-# Initialize OpenAI client
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+# OpenAI client - initialized lazily
+_client = None
+
+def get_openai_client():
+    global _client
+    if _client is None:
+        api_key = os.environ.get("OPENAI_API_KEY")
+        if not api_key:
+            raise HTTPException(500, "OpenAI API key not configured")
+        _client = OpenAI(api_key=api_key)
+    return _client
+
 TEXT_MODEL = "gpt-4o-mini"
 
 @router.post("")
