@@ -99,6 +99,7 @@ payments_collection = db["payments"]
 ai_conversations_collection = db["ai_conversations"]
 ai_messages_collection = db["ai_messages"]  # (souvent utilisé aussi, au cas où)
 # =========================
+economic_events_collection = db["economic_events"]
 # =========================
 # EXTRA COLLECTIONS (ALL IMPORT SAFETY)
 # =========================
