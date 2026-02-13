@@ -99,6 +99,16 @@ payments_collection = db["payments"]
 ai_conversations_collection = db["ai_conversations"]
 ai_messages_collection = db["ai_messages"]  # (souvent utilisé aussi, au cas où)
 # =========================
+# =========================
+# EXTRA COLLECTIONS (ALL IMPORT SAFETY)
+# =========================
+achievements_collection = db["achievements"]
+user_achievements_collection = db["user_achievements"]
+streaks_collection = db["streaks"]
+seasons_collection = db["seasons"]
+rewards_collection = db["rewards"]
+user_rewards_collection = db["user_rewards"]
+ai_conversations_collection = db["ai_conversations"]
 # UTIL
 # =========================
 def now_utc():
