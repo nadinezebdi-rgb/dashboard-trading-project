@@ -121,6 +121,7 @@ Réponds de manière personnalisée, pratique et motivante. Donne des conseils c
 Réponds en français."""
 
     try:
+        client = get_openai_client()
         response = client.chat.completions.create(
             model=TEXT_MODEL,
             messages=[
@@ -179,6 +180,7 @@ Le briefing doit inclure:
 Sois concis, pratique et motivant. Réponds en français."""
 
     try:
+        client = get_openai_client()
         response = client.chat.completions.create(
             model=TEXT_MODEL,
             messages=[
