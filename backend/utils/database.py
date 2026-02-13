@@ -70,16 +70,31 @@ community_likes_collection = db["community_likes"]
 # COLLECTIONS (Gamification)
 # =========================
 challenges_collection = db["challenges"]
-achievements_collection = db["achievements"]
 user_challenges_collection = db["user_challenges"]
+
 badges_collection = db["badges"]
 user_badges_collection = db["user_badges"]
+
+achievements_collection = db["achievements"]
+user_achievements_collection = db["user_achievements"]
+
 xp_transactions_collection = db["xp_transactions"]
 leaderboard_collection = db["leaderboard"]
-user_achievements_collection = db["user_achievements"]
+
+# ✅ NEW: streaks (fix current error)
+streaks_collection = db["streaks"]
+
 # =========================
-# (Optional) timestamp helper
+# COLLECTIONS (Other / optional)
+# (safe to declare even if not used yet)
+# =========================
+tickets_collection = db["tickets"]
+push_subscriptions_collection = db["push_subscriptions"]
+notifications_collection = db["notifications"]
+payments_collection = db["payments"]
+
+# =========================
+# UTIL
 # =========================
 def now_utc():
     return datetime.now(timezone.utc)
-
