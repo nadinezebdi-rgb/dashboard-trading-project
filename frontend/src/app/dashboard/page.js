@@ -430,6 +430,18 @@ export default function DashboardPage() {
             />
           </div>
 
+          {/* TradingView Chart */}
+          <div className="card mb-8">
+            <div className="flex items-center justify-between mb-4 pb-2 border-b" style={{ borderColor: 'var(--border)' }}>
+              <div className="flex items-center gap-2">
+                <BarChart3 className="w-5 h-5 text-primary" />
+                <h2 className="font-heading text-lg font-bold uppercase tracking-tight">Graphique EURUSD</h2>
+              </div>
+              <span className="text-xs" style={{ color: 'var(--muted-foreground)' }}>TradingView</span>
+            </div>
+            <TradingViewWidget symbol="FX:EURUSD" height={450} />
+          </div>
+
           {/* Heatmap */}
           <div className="card mb-8">
             <div className="flex items-center justify-between mb-6 pb-4 border-b" style={{ borderColor: 'var(--border)' }}>
