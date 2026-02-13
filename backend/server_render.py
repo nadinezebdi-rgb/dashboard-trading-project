@@ -19,21 +19,32 @@ from routers.backtest_openai import router as backtest_router
 
 # Import database for startup tasks
 from utils.database import (
-    client, users_collection, trades_collection, 
+    client, users_collection, trades_collection,
     setups_collection, payment_transactions_collection
 )
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: create indexes
-    users_collection.create_index("email", unique=True)
-    trades_collection.create_index("user_id")
-    trades_collection.create_index("created_at")
-    setups_collection.create_index("user_id")
-    payment_transactions_collection.create_index("session_id")
+    # Startup: create indexes (do not crash the whole app if DB is temporarily unavailable)
+    try:
+        users_collection.create_index("email", unique=True)
+        trades_collection.create_index("user_id")
+        trades_collection.create_index("created_at")
+        setups_collection.create_index("user_id")
+        payment_transactions_collection.create_index("session_id")
+        print("✅ Mongo indexes ensured")
+    except Exception as e:
+        print("⚠️ Mongo not ready at startup (indexes skipped):", repr(e))
+
     yield
+
     # Shutdown
-    client.close()
+    try:
+        client.close()
+        print("✅ Mongo client closed")
+    except Exception as e:
+        print("⚠️ Error closing Mongo client:", repr(e))
+
 
 app = FastAPI(title="Trading AI Platform", lifespan=lifespan)
 
@@ -54,32 +65,4 @@ app.include_router(ai_router)  # OpenAI version
 app.include_router(community.router)
 app.include_router(gamification.router)
 app.include_router(backtest_router)  # OpenAI version
-app.include_router(tickets.router)
-app.include_router(push.router)
-app.include_router(payments.router)
-app.include_router(notifications.router)
-
-# ============== HEALTH CHECK ==============
-
-@app.get("/health")
-async def health_check_root():
-    """Health check endpoint for Render"""
-    return {
-        "status": "healthy",
-        "timestamp": datetime.now(timezone.utc).isoformat()
-    }
-
-@app.get("/api/health")
-async def health_check():
-    """Health check endpoint with /api prefix"""
-    return {
-        "status": "healthy",
-        "timestamp": datetime.now(timezone.utc).isoformat()
-    }
-
-# ============== MAIN ==============
-
-if __name__ == "__main__":
-    import uvicorn
-    port = int(os.environ.get("PORT", 8001))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+app.i
