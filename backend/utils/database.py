@@ -76,7 +76,7 @@ badges_collection = db["badges"]
 user_badges_collection = db["user_badges"]
 xp_transactions_collection = db["xp_transactions"]
 leaderboard_collection = db["leaderboard"]
-
+user_achievements_collection = db["user_achievements"]
 # =========================
 # (Optional) timestamp helper
 # =========================
