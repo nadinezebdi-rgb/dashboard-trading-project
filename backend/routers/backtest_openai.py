@@ -71,6 +71,7 @@ Analyse cette stratégie et fournis:
 Réponds en français de manière professionnelle et détaillée."""
 
     try:
+        client = get_openai_client()
         response = client.chat.completions.create(
             model=TEXT_MODEL,
             messages=[
