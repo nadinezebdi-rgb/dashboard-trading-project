@@ -162,6 +162,36 @@ class CheckoutRequest(BaseModel):
     plan: str  # "starter", "pro", "elite"
     origin_url: str
 
+class BacktestCreate(BaseModel):
+    name: str
+    strategy_description: str
+    symbol: str
+    timeframe: str  # "1m", "5m", "15m", "1h", "4h", "1d"
+    start_date: str
+    end_date: str
+    initial_capital: float = 10000.0
+    risk_per_trade: float = 1.0  # percentage
+    entry_rules: List[str]
+    exit_rules: List[str]
+    stop_loss_type: str = "fixed"  # "fixed", "atr", "percentage"
+    stop_loss_value: float = 1.0
+    take_profit_type: str = "fixed"  # "fixed", "rr_ratio", "percentage"
+    take_profit_value: float = 2.0
+
+class BacktestTrade(BaseModel):
+    entry_date: str
+    exit_date: str
+    direction: str  # "LONG" or "SHORT"
+    entry_price: float
+    exit_price: float
+    pnl: float
+    pnl_percent: float
+    notes: Optional[str] = None
+
+class BacktestResults(BaseModel):
+    backtest_id: str
+    trades: List[BacktestTrade]
+
 # ============== HELPERS ==============
 
 def hash_password(password: str) -> str:
