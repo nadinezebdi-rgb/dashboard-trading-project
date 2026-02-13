@@ -208,6 +208,7 @@ Fournis:
 Réponds en français de manière concise."""
 
     try:
+        client = get_openai_client()
         response = client.chat.completions.create(
             model=TEXT_MODEL,
             messages=[
