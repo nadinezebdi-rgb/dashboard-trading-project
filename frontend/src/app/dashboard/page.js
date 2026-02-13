@@ -246,6 +246,37 @@ export default function DashboardPage() {
   const [briefing, setBriefing] = useState(null);
   const [loadingBriefing, setLoadingBriefing] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedSymbol, setSelectedSymbol] = useState('FX:EURUSD');
+
+  // Available trading symbols
+  const TRADING_SYMBOLS = [
+    { category: 'Forex', symbols: [
+      { value: 'FX:EURUSD', label: 'EUR/USD' },
+      { value: 'FX:GBPUSD', label: 'GBP/USD' },
+      { value: 'FX:USDJPY', label: 'USD/JPY' },
+      { value: 'FX:USDCHF', label: 'USD/CHF' },
+      { value: 'FX:AUDUSD', label: 'AUD/USD' },
+      { value: 'FX:USDCAD', label: 'USD/CAD' },
+    ]},
+    { category: 'Crypto', symbols: [
+      { value: 'BINANCE:BTCUSDT', label: 'BTC/USDT' },
+      { value: 'BINANCE:ETHUSDT', label: 'ETH/USDT' },
+      { value: 'BINANCE:SOLUSDT', label: 'SOL/USDT' },
+      { value: 'BINANCE:XRPUSDT', label: 'XRP/USDT' },
+    ]},
+    { category: 'Indices', symbols: [
+      { value: 'FOREXCOM:SPXUSD', label: 'S&P 500' },
+      { value: 'FOREXCOM:NSXUSD', label: 'NASDAQ 100' },
+      { value: 'FOREXCOM:DJI', label: 'Dow Jones' },
+      { value: 'TVC:DAX', label: 'DAX 40' },
+      { value: 'TVC:CAC40', label: 'CAC 40' },
+    ]},
+    { category: 'Commodités', symbols: [
+      { value: 'TVC:GOLD', label: 'Or (XAU/USD)' },
+      { value: 'TVC:SILVER', label: 'Argent (XAG/USD)' },
+      { value: 'TVC:USOIL', label: 'Pétrole WTI' },
+    ]},
+  ];
 
   useEffect(() => {
     if (!authLoading && !user) {
