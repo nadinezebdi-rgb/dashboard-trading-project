@@ -36,6 +36,7 @@ Plateforme SaaS pour traders avec assistant IA, journal de trading, coaching per
 - [x] Analyse de setup IA avec vision GPT-5.2
 - [x] **Widget TradingView** intégré sur dashboard (Feb 13, 2026)
 - [x] **Sélecteur multi-symboles**: Forex, Crypto, Indices, Commodités (Feb 13, 2026)
+- [x] **Backtesting IA**: Analyse de stratégies avec GPT-5.2 (Feb 13, 2026)
 
 ### Analytiques ✅
 - [x] Calendrier mensuel des trades
