@@ -279,6 +279,35 @@ async def claim_reward(reward_id: str, user: dict = Depends(get_current_user)):
 
 # ============== USER PROGRESS ==============
 
+@router.get("/profile")
+async def get_gamification_profile(user: dict = Depends(get_current_user)):
+    """Get user gamification profile (alias for progress)"""
+    user_data = users_collection.find_one({"_id": user["id"]})
+    
+    current_level = user_data.get("level", 1)
+    current_xp = user_data.get("xp", 0)
+    xp_for_next = current_level * 1000
+    xp_progress = (current_xp % 1000) / 10
+    
+    achievements_count = user_achievements_collection.count_documents({"user_id": user["id"]})
+    active_challenges = user_challenges_collection.count_documents({
+        "user_id": user["id"],
+        "completed": False
+    })
+    streak = streaks_collection.find_one({"user_id": user["id"]})
+    
+    return {
+        "level": current_level,
+        "xp": current_xp,
+        "xp_for_next_level": xp_for_next,
+        "xp_progress_percent": round(xp_progress, 1),
+        "achievements_unlocked": achievements_count,
+        "active_challenges": active_challenges,
+        "current_streak": streak.get("current_streak", 0) if streak else 0,
+        "name": user_data.get("name", "Trader"),
+        "title": user_data.get("title", "Apprenti Trader")
+    }
+
 @router.get("/progress")
 async def get_user_progress(user: dict = Depends(get_current_user)):
     """Get comprehensive user progress"""
