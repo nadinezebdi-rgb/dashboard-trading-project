@@ -16,23 +16,60 @@ router = APIRouter(prefix="/api/community", tags=["Community"])
 
 @router.get("/posts")
 async def get_posts(skip: int = 0, limit: int = 20, user: dict = Depends(get_optional_user)):
-    """Get community posts"""
-    posts = list(community_posts_collection.find().sort("created_at", -1).skip(skip).limit(limit))
+    """Get community posts with optimized aggregation"""
+    # Use aggregation pipeline to avoid N+1 queries
+    pipeline = [
+        {"$sort": {"created_at": -1}},
+        {"$skip": skip},
+        {"$limit": limit},
+        {"$lookup": {
+            "from": "users",
+            "localField": "user_id",
+            "foreignField": "_id",
+            "as": "author_data"
+        }},
+        {"$lookup": {
+            "from": "community_likes",
+            "localField": "_id",
+            "foreignField": "post_id",
+            "as": "likes"
+        }},
+        {"$lookup": {
+            "from": "community_comments",
+            "localField": "_id",
+            "foreignField": "post_id",
+            "as": "comments"
+        }},
+        {"$addFields": {
+            "likes_count": {"$size": "$likes"},
+            "comments_count": {"$size": "$comments"},
+            "author_info": {"$arrayElemAt": ["$author_data", 0]}
+        }},
+        {"$project": {
+            "_id": 1,
+            "title": 1,
+            "content": 1,
+            "tags": 1,
+            "user_id": 1,
+            "screenshot_base64": 1,
+            "created_at": 1,
+            "likes_count": 1,
+            "comments_count": 1,
+            "author_info.name": 1,
+            "author_info.level": 1,
+            "likes.user_id": 1
+        }}
+    ]
+    
+    posts = list(community_posts_collection.aggregate(pipeline))
     
     result = []
     for post in posts:
-        user_id = post.get("user_id")
-        if not user_id:
-            continue
-            
-        author = users_collection.find_one({"_id": user_id})
-        likes_count = community_likes_collection.count_documents({"post_id": post["_id"]})
-        comments_count = community_comments_collection.count_documents({"post_id": post["_id"]})
-        
         is_liked = False
         if user:
-            is_liked = community_likes_collection.find_one({"post_id": post["_id"], "user_id": user["id"]}) is not None
+            is_liked = any(like.get("user_id") == user["id"] for like in post.get("likes", []))
         
+        author_info = post.get("author_info", {})
         result.append({
             "id": str(post["_id"]),
             "title": post["title"],
@@ -41,11 +78,11 @@ async def get_posts(skip: int = 0, limit: int = 20, user: dict = Depends(get_opt
             "has_screenshot": bool(post.get("screenshot_base64")),
             "author": {
                 "id": post["user_id"],
-                "name": author.get("name", "Anonyme") if author else "Anonyme",
-                "level": author.get("level", 1) if author else 1
+                "name": author_info.get("name", "Anonyme") if author_info else "Anonyme",
+                "level": author_info.get("level", 1) if author_info else 1
             },
-            "likes_count": likes_count,
-            "comments_count": comments_count,
+            "likes_count": post.get("likes_count", 0),
+            "comments_count": post.get("comments_count", 0),
             "is_liked": is_liked,
             "created_at": post["created_at"].isoformat() if isinstance(post["created_at"], datetime) else post["created_at"]
         })
