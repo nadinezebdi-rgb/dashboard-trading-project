@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Import routers
-from routers import auth, trades, ai, community, gamification, backtest, tickets, push, payments
+from routers import auth, trades, ai, community, gamification, backtest, tickets, push, payments, notifications
 
 # Import database for startup tasks
 from utils.database import (
@@ -54,6 +54,7 @@ app.include_router(backtest.router)
 app.include_router(tickets.router)
 app.include_router(push.router)
 app.include_router(payments.router)
+app.include_router(notifications.router)
 
 # ============== HEALTH CHECK ==============
 
