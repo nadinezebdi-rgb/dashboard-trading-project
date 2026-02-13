@@ -128,7 +128,11 @@ class ApiClient {
   async createCheckout(plan) {
     return this.request('/api/payments/checkout', {
       method: 'POST',
-      body: JSON.stringify({ plan, origin_url: window.location.origin })
+      body: JSON.stringify({ 
+        plan_id: plan, 
+        success_url: `${window.location.origin}/subscription?success=true`,
+        cancel_url: `${window.location.origin}/subscription?canceled=true`
+      })
     });
   }
 
