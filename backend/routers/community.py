@@ -21,7 +21,11 @@ async def get_posts(skip: int = 0, limit: int = 20, user: dict = Depends(get_opt
     
     result = []
     for post in posts:
-        author = users_collection.find_one({"_id": post["user_id"]})
+        user_id = post.get("user_id")
+        if not user_id:
+            continue
+            
+        author = users_collection.find_one({"_id": user_id})
         likes_count = community_likes_collection.count_documents({"post_id": post["_id"]})
         comments_count = community_comments_collection.count_documents({"post_id": post["_id"]})
         
