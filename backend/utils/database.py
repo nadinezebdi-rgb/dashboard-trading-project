@@ -93,7 +93,11 @@ tickets_collection = db["tickets"]
 push_subscriptions_collection = db["push_subscriptions"]
 notifications_collection = db["notifications"]
 payments_collection = db["payments"]
-
+# =========================
+# COLLECTIONS (AI)
+# =========================
+ai_conversations_collection = db["ai_conversations"]
+ai_messages_collection = db["ai_messages"]  # (souvent utilisé aussi, au cas où)
 # =========================
 # UTIL
 # =========================
