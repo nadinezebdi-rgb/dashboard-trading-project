@@ -56,9 +56,17 @@ app.include_router(push.router)
 
 # ============== HEALTH CHECK ==============
 
+@app.get("/health")
+async def health_check_root():
+    """Health check endpoint for Kubernetes probes (without /api prefix)"""
+    return {
+        "status": "healthy",
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    }
+
 @app.get("/api/health")
 async def health_check():
-    """Health check endpoint"""
+    """Health check endpoint with /api prefix"""
     return {
         "status": "healthy",
         "timestamp": datetime.now(timezone.utc).isoformat()
