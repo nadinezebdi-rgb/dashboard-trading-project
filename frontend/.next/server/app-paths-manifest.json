@@ -1,9 +1,8 @@
 {
   "/login/page": "app/login/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/challenges/page": "app/challenges/page.js",
   "/rewards/page": "app/rewards/page.js",
   "/onboarding/page": "app/onboarding/page.js",
-  "/journal/page": "app/journal/page.js",
-  "/community/page": "app/community/page.js"
+  "/challenges/page": "app/challenges/page.js",
+  "/page": "app/page.js"
 }
