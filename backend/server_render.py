@@ -47,6 +47,11 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Trading AI Platform", lifespan=lifespan)
+from fastapi.responses import RedirectResponse
+
+@app.get("/")
+def root():
+    return RedirectResponse(url="/docs")
 
 # CORS - Allow frontend origin
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "*")
