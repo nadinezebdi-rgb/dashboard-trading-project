@@ -70,4 +70,4 @@ app.include_router(ai_router)  # OpenAI version
 app.include_router(community.router)
 app.include_router(gamification.router)
 app.include_router(backtest_router)  # OpenAI version
-
+Add root redirect to /docs
